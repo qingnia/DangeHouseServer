@@ -77,12 +77,20 @@ int player::move()
 	}
 	position* nextPos = (this->pos).getNeibourPos(dir);
 	room* nextRoom = myMap->getRoom(*nextPos);
-	if (nextRoom == nullptr)
+	direction revDir = reverseDir(dir);
+    if (nextRoom == nullptr)
 	{
 		//玩家要走的位置没有房间
 		//1.检查这个位置从当前房间能不能通过
 		//2.如果能通过，则从牌库中拿到一个新房间
 		//3.执行房间事件、考验、将新房间放进地图
+        nextRoom = myMap->getNewRoom(this->floor, dir);
+        if (nextRoom == nullptr)
+        {
+            //新房间也没，卡池已空
+            return -2;
+        }
+        //新房间的事件、考验等
 	}
 	else
 	{

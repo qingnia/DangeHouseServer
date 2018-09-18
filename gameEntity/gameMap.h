@@ -9,11 +9,13 @@
 #define gameMap_h
 
 #include <stdio.h>
+#include <map>
+#include <vector>
 #include "position.h"
 #include "room.h"
 #include "player.hpp"
 #include "action.h"
-#include <map>
+#include "../utils/commonFun.h"
 
 class gameMap{
     int id;
@@ -30,8 +32,12 @@ class gameMap{
     list<player> playerList;
     list<action> actionList;
 
+    vector<int>::iterator roomIter, itemIter, issueIter, infoIter;
+    vector<int>           roomList, itemList, issueList, infoList;
+
     int initPlayerList(int playerNum);
     int initActionList();
+    int initCardList();
 
     //等待输入函数
     position inputPosition();
@@ -40,7 +46,10 @@ public:
     gameMap(int playerNum);
 
     room* getRoom(position pos);
+    room* getRoomByID(int roomID);
     player getPlayer(int id);
+
+    room* getNewRoom(int floor, direction);
 
     int run();
 };

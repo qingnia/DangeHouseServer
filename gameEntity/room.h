@@ -10,6 +10,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <vector>
 #include "../utils/file.h"
 #include "../utils/diyType.h"
 
@@ -19,6 +20,8 @@ class room{
     room();
 public:
     room(int id);
+
+    vector<int> suiteLayer;
 
     int left;
     int right;

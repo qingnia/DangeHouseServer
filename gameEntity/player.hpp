@@ -34,6 +34,7 @@ class gameMgr;
 using namespace std;
 class player {
 
+    int floor;
     position pos;
 	int mapID;
 

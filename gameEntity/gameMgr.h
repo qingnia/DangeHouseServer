@@ -21,11 +21,10 @@ private:
 
 	int mapIncrValue;
 
+
 public:
 	~gameMgr();
 	static gameMgr* getGameMgr();
-
-	static position getNeibournPos(position, direction);
 
 	gameMap* getMap(int mapID);
 	gameMap* initNewMap(int playerNum);

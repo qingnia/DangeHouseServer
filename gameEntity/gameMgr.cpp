@@ -55,4 +55,3 @@ void gameMgr::update()
 
 	return;
 }
-

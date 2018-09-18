@@ -21,6 +21,22 @@ int gameMap::initPlayerList(int playerNum)
     return 0;
 }
 
+int gameMap::initCardList()
+{
+    this->roomList = myShuffle(10);
+    this->roomIter = this->roomList.begin();
+    
+    this->itemList = myShuffle(5);
+    this->itemIter = this->itemList.begin();
+    
+    this->issueList = myShuffle(5);
+    this->issueIter = this->itemList.begin();
+    
+    this->infoList = myShuffle(5);
+    this->infoIter = this->itemList.begin();
+    return 0;
+}
+
 int gameMap::initActionList()
 {
     action act = action(atStart);
@@ -73,28 +89,31 @@ gameMap::gameMap(int playerNum)
     ret[51][50] = 2;
     ret[52][50] = 3;
     this->pos2room = ret;
-
     this->initPlayerList(playerNum);
+    this->initCardList();
 }
 
-
-room* gameMap::getRoom(position pos)
+room* gameMap::getRoomByID(int roomID)
 {
-
-    int x = pos.x;
-    int y = pos.y;
-    int roomID = this->pos2room[x][y];
-
     map<int, room*>::iterator iter;
     iter = this->id2room.find(roomID);
     if (iter != this->id2room.end())
     {
         return iter->second;
     }
-
-    room* newRoom = new room(roomID);
-    this->id2room.insert(pair<int, room*>(roomID, newRoom));
     return nullptr;
+}
+
+room* gameMap::getRoom(position pos)
+{
+    int x = pos.x;
+    int y = pos.y;
+    int roomID = this->pos2room[x][y];
+
+    return this->getRoomByID(roomID);
+    //room* newRoom = new room(roomID);
+    //this->id2room.insert(pair<int, room*>(roomID, newRoom));
+    //return nullptr;
 }
 
 player gameMap::getPlayer(int id)
@@ -110,6 +129,23 @@ player gameMap::getPlayer(int id)
     //错误处理
     //todo
 	return player();
+}
+
+room* gameMap::getNewRoom(int floor, direction dir)
+{
+    room* newRoom;
+    while(true)
+    {
+        int roomID = *this->roomIter;
+        newRoom = this->getRoomByID(roomID);
+        if (in_vector(floor, newRoom->suiteLayer) & newRoom->canPass(dir))
+        {
+            this->roomList.erase(this->roomIter);
+            break;
+        }
+        this->roomIter++;
+    }
+    return newRoom;
 }
 
 int gameMap::run()
