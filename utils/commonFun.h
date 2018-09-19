@@ -29,6 +29,7 @@ bool in_vector(int value, vector<int> vec);
 template <class Type>
 Type stringToNum(const string str);
 
-map<int, vector<string>> readCsvData(string fname, int pKeyPos = 0);
+//要求：1.主键在首列，2.主键是数字,3.首行忽略
+map<int, map<string, string>> readCsvData(string fname);
 
 #endif /* commonFun_h */

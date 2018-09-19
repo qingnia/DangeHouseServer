@@ -10,6 +10,30 @@
 
 #include <stdio.h>
 #include "commonFun.h"
+#include "diyType.h"
+
+enum configReadType
+{
+	numberInt,
+	numberFloat,
+	stringDesc,
+	arrayValue,
+	mapKey,
+	mapValue,
+};
+
+struct fileConfig
+{
+	string fname;
+	map<string, > kvMap;		//完全依赖表里面的字段名
+};
+enum configType
+{
+	roomCard,
+	issueCard,
+	itemCard,
+	infoCard,
+};
 
 class config
 {
@@ -20,6 +44,7 @@ private:
 	map<int, vector<string>> roomConfig, itemConfig, infoConfig, issueConfig;
 
 	bool initRoomConfig();
+	fileConfig getConfig(configType);
 public:
 	config* getSingleConfig();
 	~config();

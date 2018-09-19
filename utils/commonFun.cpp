@@ -63,30 +63,48 @@ string Trim(string& str)
 	return str;
 }
 
-map<int, vector<string>> readCsvData(string fname, int pKeyPos = 0)
+map<int, map<string, string>> readCsvData(string fname)
 {
-	map<int, vector<string>> fileInfo;
+	map<int, map<string, string>> fileInfo;
 	ifstream fin(fname);
 	string line;
-	int fieldPos;
+
+	//统一忽略首行
+	getline(fin, line);
 
 	string field;
-	int key;
+
+	//第二行是字段名
+	getline(fin, line);
+	istringstream sin(line);
+	vector<string> keys;
+	while (getline(sin, field, ','))
+	{
+		keys.push_back(field);
+	}
+
+	string value;
+	int pKey;	//每一行的主键,主键必须是数字
+	string key;		//具体的字段名
+	int fieldPos;
 	while (getline(fin, line))
 	{
 		istringstream sin(line);
-		vector<string> fields;
+		map<string, string> kv;
+
 		fieldPos = 0;
-		while (getline(sin, field, ','))
+		while (getline(sin, value, ','))
 		{
-			fieldPos++;
-			fields.push_back(field);
-			if (fieldPos == pKeyPos)
+			//首列是key
+			if (fieldPos == 0)
 			{
-				key = stringToNum<int>(field);
+				pKey = stringToNum<int>(value);
 			}
-			fileInfo.insert(pair<int, vector<string>>(key, fields));
+			kv[keys[fieldPos]] = value;
+			
+			fieldPos++;
 		}
+		fileInfo[pKey] = kv;
 	}
 	return fileInfo;
 }

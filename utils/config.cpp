@@ -25,11 +25,33 @@ config* config::getSingleConfig()
 	return gameConfig;
 }
 
+fileConfig getConfig(configType type)
+{
+	fileConfig fc;
+	switch (type)
+	{
+	case roomCard:
+		break;
+	case issueCard:
+		break;
+	case itemCard:
+		break;
+	case infoCard:
+		break;
+	default:
+		break;
+	}
+	return fc;
+}
+
 bool config::initRoomConfig()
 {
-	//readCsvData("../")
+	//string filename=
+	//readCsvData("")
+	return false;
 }
 map<int, string> config::getRoomConfig()
 {
-
+	map<int, string> myMap;
+	return myMap;
 }
