@@ -1,0 +1,23 @@
+序号,名字,英文名,所属楼层,附加类型：0时间，1物品，2预兆
+Id,Name,Type,Icon,type
+1,入口大堂,Entrance Hall,1,0
+2,上台阶,Upper Landing,2,1
+3,下台阶,Basement Landing,0,2
+4,煤导槽,Coal Chute,1,2
+5,地下楼梯,Stairs from Basement,0,0
+6,升降梯,Mystic Elevator,0|1|2,1
+7,阁楼,Attic,2,0
+8,墓园,Graveyard,1,1
+9,楼座,Gallery,2,2
+10,陵墓,Catacombs,0,2
+11,裂缝,Chasm,0,0
+12,塔楼,Tower,2,1
+13,地窖,Crypt ,0,0
+14,暖炉房,Furnace Room ,0,1
+15,保险库,Vault ,0|2,2
+16,地下湖,Underground Lake,2,2
+17,礼拜堂,Chapel ,1|2,0
+18,建身房,Gymnasium,0|2,1
+19,食品储藏库,Larder,0,1
+20,图书室,Library ,0|2,2
+21,荒废的房间,Abandoned Room,0|1,0

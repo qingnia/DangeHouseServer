@@ -11,7 +11,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <vector>
-#include "../utils/file.h"
+#include "../utils/commonFun.h"
 #include "../utils/diyType.h"
 
 using namespace std;

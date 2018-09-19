@@ -22,7 +22,7 @@ room::room(int id)
     sprintf(tmp, "%d", id);
     string roomID(tmp);
     //string roomID = new string(tmp); 
-    readCsvData("room.csv", "ID", roomID);
+    readCsvData("room.csv", 1, roomID);
 }
 
 bool room::canPass(direction dir)
