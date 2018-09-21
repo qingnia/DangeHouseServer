@@ -17,6 +17,7 @@ class gameMgr
 private:
 	static gameMgr* gm;
 	map<int, gameMap*> id2Map;
+	map<int, resItem*> id2Res;
 	gameMgr();
 
 	int mapIncrValue;

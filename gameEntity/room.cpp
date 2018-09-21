@@ -14,6 +14,33 @@ room::room()
 
 room::room(int id)
 {
+	config* conf = config::getSingleConfig();
+	map<string, string> roomConfig = conf->getConfig(roomCard, id);
+
+	map<string, string>::iterator iter;
+	string key, value;
+	for (iter = roomConfig.begin(); iter != roomConfig.end(); iter++)
+	{
+		key = iter->first;
+		value = iter->second;
+		if (key == "name")
+		{
+			this->name = value;
+		}
+		else if(key == "enlishName")
+		{
+			this->enlishName = value;
+		}
+		else if (key == "layer")
+		{
+			this->suiteLayer = split<int>(value, "|");
+		}
+		else if (key == "type")
+		{
+			this->type = configType(stringToNum<int>(value));
+		}
+	}
+	map<string, string>::iterator iter = find(roomConfig.begin(), roomConfig.end(), "name");
     //stringstream ss;
     //ss<<id;
     //string roomID = ss.str();

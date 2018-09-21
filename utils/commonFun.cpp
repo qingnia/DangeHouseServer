@@ -110,9 +110,38 @@ map<int, map<string, string>> readCsvData(string fname)
 }
 
 template <class Type>
-Type stringToNum(const string str) {
+Type stringToNum(const string str)
+{
 	istringstream iss(str);
 	Type num;
 	iss >> num;
 	return num;
+}
+
+template <class Iterator, class T>
+Iterator find(Iterator begin, Iterator end, const T &value)
+{
+	while (begin != end && *begin != value) {
+		++begin;
+	}
+	return begin;
+}
+
+template <class Type>
+vector<Type> split(const string &str, const string &pattern)
+{
+	//const char* convert to char*
+	char * strc = new char[strlen(str.c_str()) + 1];
+	strcpy(strc, str.c_str());
+	vector<Type> resultVec;
+	char* tmpStr = strtok(strc, pattern.c_str());
+	while (tmpStr != NULL)
+	{
+		resultVec.push_back(stringToNum<Type>(tmpStr));
+		tmpStr = strtok(NULL, pattern.c_str());
+	}
+
+	delete[] strc;
+
+	return resultVec;
 }

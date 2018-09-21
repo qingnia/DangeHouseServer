@@ -25,33 +25,37 @@ config* config::getSingleConfig()
 	return gameConfig;
 }
 
-fileConfig getConfig(configType type)
+map<string, string> config::getConfig(configType type, int id)
 {
-	fileConfig fc;
+	//map<string, string> fc;
+	map<int, map<string, string>>::iterator iter;
 	switch (type)
 	{
 	case roomCard:
+		if (this->roomConfig.size() <= 0)
+		{
+			this->roomConfig = readCsvData("../tables/Room.csv");
+		}
+		iter = this->roomConfig.find(id);
+		if (iter != this->roomConfig.end())
+		{
+			return iter->second;
+		}
+		//fc.fname = "../config/Room.csv";
+		//fc.kvMap[string("Name")] = stringDesc;
+		//fc.kvMap[string("enlishName")] = stringDesc;
+		//fc.kvMap[string("layer")] = vectorInt;
+		//fc.kvMap[string("type")] = numberInt;
+		//this->roomConfig = loadConfig(fc);
 		break;
 	case issueCard:
 		break;
-	case itemCard:
+	case resCard:
 		break;
 	case infoCard:
 		break;
 	default:
 		break;
 	}
-	return fc;
-}
-
-bool config::initRoomConfig()
-{
-	//string filename=
-	//readCsvData("")
-	return false;
-}
-map<int, string> config::getRoomConfig()
-{
-	map<int, string> myMap;
-	return myMap;
+	return iter->second;
 }

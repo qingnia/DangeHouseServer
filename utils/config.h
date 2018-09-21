@@ -17,7 +17,7 @@ enum configReadType
 	numberInt,
 	numberFloat,
 	stringDesc,
-	arrayValue,
+	vectorInt,
 	mapKey,
 	mapValue,
 };
@@ -25,13 +25,13 @@ enum configReadType
 struct fileConfig
 {
 	string fname;
-	map<string, > kvMap;		//完全依赖表里面的字段名
+	map<string, configReadType> kvMap;		//完全依赖表里面的字段名
 };
 enum configType
 {
 	roomCard,
 	issueCard,
-	itemCard,
+	resCard,
 	infoCard,
 };
 
@@ -41,15 +41,13 @@ private:
 	config();
 	static config* gameConfig;
 
-	map<int, vector<string>> roomConfig, itemConfig, infoConfig, issueConfig;
+	map<int, map<string, string>> roomConfig, itemConfig, infoConfig, issueConfig;
 
-	bool initRoomConfig();
-	fileConfig getConfig(configType);
 public:
-	config* getSingleConfig();
+	static config* getSingleConfig();
 	~config();
 
-	map<int, string> getRoomConfig();
+	map<string, string> getConfig(configType, int);
 };
 
 #endif

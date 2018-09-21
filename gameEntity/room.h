@@ -13,21 +13,21 @@
 #include <vector>
 #include "../utils/commonFun.h"
 #include "../utils/diyType.h"
+#include "../utils/config.h"
 
 using namespace std;
 
 class room{
+	string name, enlishName;
     room();
 public:
     room(int id);
 
     vector<int> suiteLayer;
 
-    int left;
-    int right;
-    int up;
-    int down;
+    int left, right, up, down;
 
+	configType type;
 	bool canPass(direction);
 };
 

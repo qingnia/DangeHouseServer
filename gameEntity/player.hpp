@@ -13,6 +13,7 @@
 #include <iostream>
 #include "position.h"
 #include "../utils/diyType.h"
+#include "resItem.h"
 
 struct oper{
 	direction dir;
@@ -42,10 +43,7 @@ class player {
     int age;
     int id;
 
-    int strength;
-    int speed;
-    int spirit;
-    int knowledge;
+    int strength, speed, spirit, knowledge;
     list<int> items;
     list<int> skills;
 
