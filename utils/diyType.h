@@ -22,6 +22,11 @@ enum direction {
 	right,
 };
 
-
+enum moveRoomType
+{
+	enter,
+	pass,
+	leave,
+};
 
 #endif

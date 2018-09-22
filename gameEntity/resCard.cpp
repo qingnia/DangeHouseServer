@@ -1,21 +1,21 @@
 ﻿//
-//  resItem.cpp
+//  resCard.cpp
 //  testC
 //
 //  Created by 陈帅 on 2018/9/21.
 //
 
-#include "resItem.h"
+#include "resCard.h"
 
-resItem::resItem()
+resCard::resCard()
 {
 }
 
-resItem::~resItem()
+resCard::~resCard()
 {
 }
 
-int resItem::initItem(int id)
+bool resCard::init(int id)
 {
 	config* gameConf = config::getSingleConfig();
 	map<string, string> resConf = gameConf->getConfig(resCard, id);

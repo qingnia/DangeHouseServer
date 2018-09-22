@@ -23,7 +23,12 @@ int gameMap::initPlayerList(int playerNum)
 
 int gameMap::initCardList()
 {
-    this->roomList = myShuffle(10);
+	map<int, map<string, string>>::iterator confIter;
+
+	config* conf = config::getSingleConfig();
+	int roomNum = conf->roomConfig.size();
+    this->roomList = myShuffle(roomNum);
+	//confIter = conf-
     this->roomIter = this->roomList.begin();
     
     this->itemList = myShuffle(5);
@@ -95,11 +100,11 @@ gameMap::gameMap(int playerNum)
 
 room* gameMap::getRoomByID(int roomID)
 {
-    map<int, room*>::iterator iter;
+    map<int, card*>::iterator iter;
     iter = this->id2room.find(roomID);
     if (iter != this->id2room.end())
     {
-        return iter->second;
+        return dynamic_cast<room*>(iter->second);
     }
     return nullptr;
 }

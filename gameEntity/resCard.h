@@ -1,25 +1,25 @@
 ﻿//
-//  resItem.h
+//  resCard.h
 //  testC
 //
 //  Created by 陈帅 on 2018/9/21.
 //
 
-#ifndef resItem_h
-#define resItem_h
+#ifndef resCard_h
+#define resCard_h
 
 #include <stdio.h>
 #include "../utils/config.h"
 
-class resItem
+class resCard:card
 {
 private:
 
 
 public:
-	resItem();
-	int initItem(int id);
-	~resItem();
+	resCard();
+	bool init(int);
+	~resCard();
 
 };
 

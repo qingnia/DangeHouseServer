@@ -13,6 +13,7 @@
 #include <vector>
 #include "position.h"
 #include "room.h"
+#include "issueCard.h"
 #include "player.hpp"
 #include "action.h"
 #include "../utils/commonFun.h"
@@ -27,7 +28,7 @@ class gameMap{
 
     int** pos2room;
 
-    map<int, room*> id2room;
+    map<int, card*> id2room, id2issue, id2res, id2info;
 
     list<player> playerList;
     list<action> actionList;
@@ -50,6 +51,7 @@ public:
     player getPlayer(int id);
 
     room* getNewRoom(int floor, direction);
+	int getNewItem(configType);
 
     int run();
 };

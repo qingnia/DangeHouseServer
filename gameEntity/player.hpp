@@ -13,7 +13,7 @@
 #include <iostream>
 #include "position.h"
 #include "../utils/diyType.h"
-#include "resItem.h"
+#include "resCard.h"
 
 struct oper{
 	direction dir;
@@ -58,7 +58,7 @@ public:
     int getSpeed();
     int getSpirit();
     int getKnowledge();
-    int gainNewItem(int itemID);
+    int gainNewItem(configType);
 
     int getRoom();
 
@@ -69,6 +69,7 @@ public:
     int useSkill(int id);
 
     direction inputDir();
+	void enterNewRoom(room*);
 
 };
 

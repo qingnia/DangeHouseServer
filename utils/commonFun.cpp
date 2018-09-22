@@ -119,7 +119,7 @@ Type stringToNum(const string str)
 }
 
 template <class Iterator, class T>
-Iterator find(Iterator begin, Iterator end, const T &value)
+Iterator myFind(Iterator begin, Iterator end, const T &value)
 {
 	while (begin != end && *begin != value) {
 		++begin;

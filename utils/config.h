@@ -41,11 +41,13 @@ private:
 	config();
 	static config* gameConfig;
 
-	map<int, map<string, string>> roomConfig, itemConfig, infoConfig, issueConfig;
+	
 
 public:
 	static config* getSingleConfig();
 	~config();
+
+	map<int, map<string, string>> roomConfig, itemConfig, infoConfig, issueConfig;
 
 	map<string, string> getConfig(configType, int);
 };

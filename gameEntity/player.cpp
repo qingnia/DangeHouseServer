@@ -90,6 +90,8 @@ int player::move()
             //新房间也没，卡池已空
             return -2;
         }
+		//进新房间要拿东西
+		this->gainNewItem(nextRoom->type);
         //新房间的事件、考验等
 	}
 	else
@@ -110,6 +112,21 @@ int player::move()
 int player::stop()
 {
 	return 0;
+}
+
+int player::gainNewItem(configType ct)
+{
+	switch (ct)
+	{
+	case issueCard:
+		break;
+	case resCard:
+		break;
+	case infoCard:
+		break;
+	default:
+		break;
+	}
 }
 
 int player::getID()

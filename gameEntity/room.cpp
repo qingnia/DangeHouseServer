@@ -12,10 +12,10 @@ room::room()
 
 }
 
-room::room(int id)
+bool room::init(map<string, string> roomConfig)
 {
-	config* conf = config::getSingleConfig();
-	map<string, string> roomConfig = conf->getConfig(roomCard, id);
+	//config* conf = config::getSingleConfig();
+	//map<string, string> roomConfig = conf->getConfig(roomCard, id);
 
 	map<string, string>::iterator iter;
 	string key, value;
@@ -40,16 +40,17 @@ room::room(int id)
 			this->type = configType(stringToNum<int>(value));
 		}
 	}
-	map<string, string>::iterator iter = find(roomConfig.begin(), roomConfig.end(), "name");
+	map<string, string>::iterator iter = myFind(roomConfig.begin(), roomConfig.end(), "name");
     //stringstream ss;
     //ss<<id;
     //string roomID = ss.str();
     
-    char tmp[32];
-    sprintf(tmp, "%d", id);
-    string roomID(tmp);
+    //char tmp[32];
+    //sprintf(tmp, "%d", id);
+    //string roomID(tmp);
     //string roomID = new string(tmp); 
-    readCsvData("room.csv");
+    //readCsvData("room.csv");
+	return true;
 }
 
 bool room::canPass(direction dir)

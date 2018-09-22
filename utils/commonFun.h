@@ -30,7 +30,7 @@ template <class Type>
 Type stringToNum(const string str);
 
 template <class Iterator, class T>
-Iterator find(Iterator begin, Iterator end, const T &value);
+Iterator myFind(Iterator begin, Iterator end, const T &value);
 
 template <class Type>
 vector<Type> split(const string &str, const string &pattern);
