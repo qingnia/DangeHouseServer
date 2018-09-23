@@ -27,13 +27,6 @@ struct fileConfig
 	string fname;
 	map<string, configReadType> kvMap;		//完全依赖表里面的字段名
 };
-enum configType
-{
-	roomCard,
-	issueCard,
-	resCard,
-	infoCard,
-};
 
 class config
 {
@@ -47,7 +40,7 @@ public:
 	static config* getSingleConfig();
 	~config();
 
-	map<int, map<string, string>> roomConfig, itemConfig, infoConfig, issueConfig;
+	map<int, map<string, string> > roomConfig, resConfig, infoConfig, issueConfig;
 
 	map<string, string> getConfig(configType, int);
 };

@@ -19,7 +19,21 @@ issueCard::~issueCard()
 {
 }
 
-bool init(int id)
+issueCard::issueCard(map<string, string> issueConfig)
 {
-	return true;
+	map<string, string>::iterator iter;
+	string key, value;
+	for (iter = issueConfig.begin(); iter != issueConfig.end(); iter++)
+	{
+		key = iter->first;
+		value = iter->second;
+		if (key == "name")
+		{
+			this->name = value;
+		}
+		else if(key == "enlishName")
+		{
+			this->enlishName = value;
+		}
+	}
 }

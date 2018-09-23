@@ -24,6 +24,13 @@ player::player(int id, int mapID)
     this->pos = position(50, 50);
 }
 
+gameMap* player::getMyMap()
+{
+	gameMgr* gm = gameMgr::getGameMgr();
+	gameMap* myMap = gm->getMap(this->mapID);
+	return myMap;
+}
+
 int player::getStrength()
 {
     return this->strength;
@@ -68,15 +75,14 @@ int player::move()
 
 	direction dir = this->inputDir();
 
-	gameMgr* gm = gameMgr::getGameMgr();
-	gameMap* myMap = gm->getMap(this->mapID);
-	room* thisRoom = myMap->getRoom(this->pos);
+	gameMap* myMap = this->getMyMap();
+	roomCard* thisRoom = myMap->getRoom(this->pos);
 	if (!thisRoom->canPass(dir))
 	{
 		return -1;
 	}
 	position* nextPos = (this->pos).getNeibourPos(dir);
-	room* nextRoom = myMap->getRoom(*nextPos);
+	roomCard* nextRoom = myMap->getRoom(*nextPos);
 	direction revDir = reverseDir(dir);
     if (nextRoom == nullptr)
 	{
@@ -116,17 +122,24 @@ int player::stop()
 
 int player::gainNewItem(configType ct)
 {
+	gameMap* myMap = this->getMyMap();
+	issueCard* newIssue;
+	resCard* newRes;
 	switch (ct)
 	{
-	case issueCard:
+	case issue:
+		newIssue = myMap->getNewIssue();
 		break;
-	case resCard:
+	case res:
+		newRes = myMap->getNewRes();
+		this->resList.push_back(newRes);
 		break;
-	case infoCard:
+	case info:
 		break;
 	default:
 		break;
-	}
+	};
+	return 0;
 }
 
 int player::getID()

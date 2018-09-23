@@ -29,4 +29,12 @@ enum moveRoomType
 	leave,
 };
 
+enum configType
+{
+	room,
+	issue,
+	res,
+	info,
+};
+
 #endif

@@ -23,22 +23,36 @@ int gameMap::initPlayerList(int playerNum)
 
 int gameMap::initCardList()
 {
-	map<int, map<string, string>>::iterator confIter;
-
+	map<int, map<string, string> >::iterator confIter;
+    card* newCard;
 	config* conf = config::getSingleConfig();
-	int roomNum = conf->roomConfig.size();
-    this->roomList = myShuffle(roomNum);
-	//confIter = conf-
+    
+    //房间初始化
+    this->roomList = myShuffle(conf->roomConfig.size());
+    for(confIter = conf->roomConfig.begin(); confIter != conf->roomConfig.end(); confIter++)
+    {
+        this->id2room[confIter->first] = (card*) new roomCard(confIter->second);
+    }
     this->roomIter = this->roomList.begin();
     
-    this->itemList = myShuffle(5);
-    this->itemIter = this->itemList.begin();
+    //物品初始化
+    this->resList = myShuffle(conf->resConfig.size());
+    for(confIter = conf->resConfig.begin(); confIter != conf->resConfig.end(); confIter++)
+    {
+        this->id2res[confIter->first] = (card*) new resCard(confIter->second);
+    }
+    this->resIter = this->resList.begin();
     
-    this->issueList = myShuffle(5);
-    this->issueIter = this->itemList.begin();
+    //事件初始化
+    this->issueList = myShuffle(conf->issueConfig.size());
+    for(confIter = conf->issueConfig.begin(); confIter != conf->issueConfig.end(); confIter++)
+    {
+        this->id2issue[confIter->first] = (card*) new issueCard(confIter->second);
+    }
+    this->issueIter = this->resList.begin();
     
     this->infoList = myShuffle(5);
-    this->infoIter = this->itemList.begin();
+    this->infoIter = this->infoList.begin();
     return 0;
 }
 
@@ -98,26 +112,26 @@ gameMap::gameMap(int playerNum)
     this->initCardList();
 }
 
-room* gameMap::getRoomByID(int roomID)
+roomCard* gameMap::getRoomByID(int roomID)
 {
     map<int, card*>::iterator iter;
     iter = this->id2room.find(roomID);
     if (iter != this->id2room.end())
     {
-        return dynamic_cast<room*>(iter->second);
+        return dynamic_cast<roomCard*>(iter->second);
     }
     return nullptr;
 }
 
-room* gameMap::getRoom(position pos)
+roomCard* gameMap::getRoom(position pos)
 {
     int x = pos.x;
     int y = pos.y;
     int roomID = this->pos2room[x][y];
 
     return this->getRoomByID(roomID);
-    //room* newRoom = new room(roomID);
-    //this->id2room.insert(pair<int, room*>(roomID, newRoom));
+    //roomCard* newRoom = new roomCard(roomID);
+    //this->id2room.insert(pair<int, roomCard*>(roomID, newRoom));
     //return nullptr;
 }
 
@@ -136,9 +150,9 @@ player gameMap::getPlayer(int id)
 	return player();
 }
 
-room* gameMap::getNewRoom(int floor, direction dir)
+roomCard* gameMap::getNewRoom(int floor, direction dir)
 {
-    room* newRoom;
+    roomCard* newRoom;
     while(true)
     {
         int roomID = *this->roomIter;

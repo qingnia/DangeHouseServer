@@ -12,8 +12,9 @@
 #include <map>
 #include <vector>
 #include "position.h"
-#include "room.h"
+#include "roomCard.h"
 #include "issueCard.h"
+#include "resCard.h"
 #include "player.hpp"
 #include "action.h"
 #include "../utils/commonFun.h"
@@ -33,8 +34,8 @@ class gameMap{
     list<player> playerList;
     list<action> actionList;
 
-    vector<int>::iterator roomIter, itemIter, issueIter, infoIter;
-    vector<int>           roomList, itemList, issueList, infoList;
+    vector<int>::iterator roomIter, resIter, issueIter, infoIter;
+    vector<int>           roomList, resList, issueList, infoList;
 
     int initPlayerList(int playerNum);
     int initActionList();
@@ -46,12 +47,15 @@ public:
 	gameMap();
     gameMap(int playerNum);
 
-    room* getRoom(position pos);
-    room* getRoomByID(int roomID);
+    roomCard* getRoom(position pos);
+    roomCard* getRoomByID(int roomID);
     player getPlayer(int id);
 
-    room* getNewRoom(int floor, direction);
-	int getNewItem(configType);
+    roomCard* getNewRoom(int floor, direction);
+	class resCard* getNewRes();
+    class issueCard* getNewIssue();
+
+
 
     int run();
 };

@@ -9,16 +9,19 @@
 #define Card_h
 
 #include <stdio.h>
+#include <string>
+
+using namespace std;
 
 class card
 {
 private:
+protected:
 	int id;
-
+	string name, enlishName;
 public:
 	card();
-	bool virtual init(int)
-	~card();
+	virtual ~card();
 
 };
 

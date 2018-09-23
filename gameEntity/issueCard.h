@@ -6,12 +6,15 @@
 //
 
 #include "card.h"
+#include<map>
+
+using namespace std;
 class issueCard :
 	public card
 {
-public:
 	issueCard();
-	~issueCard();
+public:
+	issueCard(map<string, string>);
+	virtual ~issueCard();
 
-	bool init(int);
 };

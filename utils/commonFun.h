@@ -36,6 +36,6 @@ template <class Type>
 vector<Type> split(const string &str, const string &pattern);
 
 //要求：1.主键在首列，2.主键是数字,3.首行忽略
-map<int, map<string, string>> readCsvData(string fname);
+map<int, map<string, string> > readCsvData(string fname);
 
 #endif /* commonFun_h */

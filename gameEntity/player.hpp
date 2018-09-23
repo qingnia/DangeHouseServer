@@ -12,24 +12,10 @@
 #include <list>
 #include <iostream>
 #include "position.h"
+#include "gameMap.h"
 #include "../utils/diyType.h"
 #include "resCard.h"
-
-struct oper{
-	direction dir;
-    char input;
-    position pos;
-
-public:
-    oper(char c)
-    {
-        this->input = c;
-    }
-    oper(position pos)
-    {
-        this->pos = pos;
-    }
-};
+#include "roomCard.h"
 
 class gameMgr;
 using namespace std;
@@ -44,11 +30,13 @@ class player {
     int id;
 
     int strength, speed, spirit, knowledge;
-    list<int> items;
+    list<resCard*> resList;
+ //   list<infoCard*> infoList;
     list<int> skills;
 
     int moveNum;
     
+    gameMap* getMyMap();
 public:
     player();
     player(int id, int mapID);
@@ -69,7 +57,7 @@ public:
     int useSkill(int id);
 
     direction inputDir();
-	void enterNewRoom(room*);
+	void enterNewRoom(roomCard*);
 
 };
 

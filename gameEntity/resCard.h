@@ -9,17 +9,17 @@
 #define resCard_h
 
 #include <stdio.h>
+#include "card.h"
 #include "../utils/config.h"
 
 class resCard:card
 {
 private:
-
+	resCard();
 
 public:
-	resCard();
-	bool init(int);
-	~resCard();
+	resCard(map<string, string>);
+	virtual ~resCard();
 
 };
 

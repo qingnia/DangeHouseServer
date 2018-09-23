@@ -15,9 +15,21 @@ resCard::~resCard()
 {
 }
 
-bool resCard::init(int id)
+resCard::resCard(map<string, string> resConfig)
 {
-	config* gameConf = config::getSingleConfig();
-	map<string, string> resConf = gameConf->getConfig(resCard, id);
-	return true;
+	map<string, string>::iterator iter;
+	string key, value;
+	for (iter = resConfig.begin(); iter != resConfig.end(); iter++)
+	{
+		key = iter->first;
+		value = iter->second;
+		if (key == "name")
+		{
+			this->name = value;
+		}
+		else if(key == "enlishName")
+		{
+			this->enlishName = value;
+		}
+	}
 }

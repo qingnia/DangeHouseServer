@@ -1,0 +1,40 @@
+﻿//
+//  main.hpp
+//  testC
+//
+//  Created by 陈帅 on 2018/9/16.
+//
+
+#ifndef roomCard_h
+#define roomCard_h
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <vector>
+#include "card.h"
+#include "../utils/commonFun.h"
+#include "../utils/diyType.h"
+#include "../utils/config.h"
+
+using namespace std;
+
+class roomCard:card{
+
+    roomCard();
+public:
+    virtual ~roomCard();
+    
+    //bool init(map<string, string> roomCardConfig);
+    roomCard(map<string, string>);
+
+    vector<int> suiteLayer;
+
+    int left, right, up, down;
+
+	moveRoomType testType;
+
+	configType type;
+	bool canPass(direction);
+};
+
+#endif /* roomCard_hpp */
