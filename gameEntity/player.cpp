@@ -176,3 +176,43 @@ int player::getID()
 {
     return this->id;
 }
+
+int player::incrSpeed(int num)
+{
+	this->m_speed += num;
+	if (this->m_speed <= 0)
+	{
+		//死亡
+	}
+	return this->m_speed;
+}
+
+int player::incrStrength(int num)
+{
+	this->m_strength += num;
+	if (this->m_strength <= 0)
+	{
+		//死亡
+	}
+	return this->m_strength;
+}
+
+int player::incrSpirit(int num)
+{
+	this->m_spirit += num;
+	if(this->m_spirit <= 0)
+	{
+		//死亡
+	}
+	return this->m_spirit;
+}
+
+int player::incrKnowledge(int num)
+{
+	this->m_knowledge += num;
+	if(this->m_knowledge <= 0)
+	{
+		//死亡
+	}
+	return this->m_knowledge;
+}

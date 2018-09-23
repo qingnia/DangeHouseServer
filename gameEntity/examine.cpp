@@ -30,6 +30,16 @@ examine::examine(int examID)
         {
             this->et = stringToNum<examType>(value);
         }
+        else if (key == "attack")
+        {
+            this->attackValue = stringToNum<int>(value);
+        }
+        else if (key == "attackEffect")
+        {
+            //攻击的影响，默认配置必须是：0_0_0_0
+            //如果有影响，这样：1_0_0_3
+            this->attackEffect = effect(value);
+        }
         else if(key == "effect")
         {
             //要求配置比较复杂：et1_min1_max1_eNum1|et2_min2_max2_eNum2|....
@@ -57,43 +67,63 @@ void examine::showMsg()
     cout<<""<<endl;
 }
 
-void examine::affect(player p, int num, int compareNum = 0)
+void examine::affect(player p)
 {
-    if(this->needAttack)
+    this->showMsg();
+    list<int> diceNums = p.excuteExam(this->et);
+    int score = accumulate(diceNums.begin(), diceNums.end(), 0);
+    if(this->attackValue > 0)
     {
-        if(num < compareNum)
+        int compareNum = random(2 * this->attackValue);
+        if(score < compareNum)
         {
-        }
-        else
-        {
+            this->excutePunish(p, this->attackEffect);
         }
     }
-    list<effect>::iterator iter;
-    for (iter = this->efList.begin();
-		iter != this->efList.end(); iter++)
-	{
-        effect ef = *iter;
-        if (num < ef.min || num > ef.max)
-        {
-            continue;
-        }
-        switch(ef.et)
-        {
-        case speed:
-            break;
-        case strength:
-            break;
-        case spirit:
-            break;
-        case knowledge:
-            break;
-        case physicalDamage:
-            break;
-        case mindDamage:
-            break;
-        default:
-            break;
-        }
-        break;
-	}
+    else
+    {
+        list<effect>::iterator iter;
+        for (iter = this->efList.begin(); iter != this->efList.end(); iter++)
+	    {
+           effect ef = *iter;
+           if (score >= ef.min & score <= ef.max)
+           {
+               this->excutePunish(p, ef);
+               break;
+           }
+	    }
+    }
 }
+
+bool examine::excutePunish(player p, effect ef)
+{
+    examType attribute = ef.et;
+    if (ef.et == physicalDamage)
+    {
+        //选择
+        attribute = speed;
+    }
+    else if (ef.et == mindDamage)
+    {
+        //选择
+        attribute = spirit;
+    }
+    switch(attribute)
+    {
+    case speed:
+        p.incrSpeed(ef.eNum);
+        break;
+    case strength:
+        p.incrStrength(ef.eNum);
+        break;
+    case spirit:
+        p.incrSpirit(ef.eNum);
+        break;
+    case knowledge:
+        p.incrKnowledge(ef.eNum);
+        break;
+    default:
+        break;
+    }
+    return true;
+} 

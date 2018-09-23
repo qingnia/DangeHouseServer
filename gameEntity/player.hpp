@@ -48,6 +48,8 @@ public:
     int getKnowledge();
     int gainNewItem(configType);
 
+    int incrSpeed(int), incrStrength(int), incrSpirit(int), incrKnowledge(int);
+
     int getRoom();
 
 //    oper getOperate();

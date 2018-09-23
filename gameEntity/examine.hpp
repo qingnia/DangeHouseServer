@@ -10,6 +10,7 @@
 
 #include <stdio.h>
 #include <list>
+#include<numeric>
 #include "player.hpp"
 using namespace std;
 
@@ -27,12 +28,12 @@ struct effect{
         this->eNum = conf[3];
     }
 
-    effect(examType et, int min, int max, int eNum)
+    effect()
     {
-        this->et = et;
-        this->min = min;
-        this->max = max;
-        this->eNum = eNum;
+        this->et = speed;
+        this->min = 0;
+        this->max = 0;
+        this->eNum = 0;
     }
 };
 
@@ -45,13 +46,17 @@ public:
 
     string name, enlishName;
     examType et;
-    bool needAttack;
+
+    int attackValue;
+    effect attackEffect;
 
     //区间判定
     //（1，3，6）氛围0-1，2-3，4-6三个区间
     list<effect> efList;
 
-    void affect(player p, int num, int compareNum);
+    void affect(player p);
+
+    bool excutePunish(player, effect);
 };
 
 #endif /* examine_hpp */
