@@ -35,6 +35,7 @@ enum configType
 	issue,
 	res,
 	info,
+	exam,
 };
 
 enum examType{

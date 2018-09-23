@@ -20,6 +20,7 @@ private:
 protected:
 	int id;
 	string name, enlishName;
+	examine cardExam;
 public:
 	card();
 	virtual ~card();

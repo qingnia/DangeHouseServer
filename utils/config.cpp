@@ -28,10 +28,10 @@ config* config::getSingleConfig()
 map<string, string> config::getConfig(configType type, int id)
 {
 	//map<string, string> fc;
-	map<int, map<string, string>>::iterator iter;
+	map<int, map<string, string> >::iterator iter;
 	switch (type)
 	{
-	case roomCard:
+	case room:
 		if (this->roomConfig.size() <= 0)
 		{
 			this->roomConfig = readCsvData("../tables/Room.csv");
@@ -48,11 +48,22 @@ map<string, string> config::getConfig(configType type, int id)
 		//fc.kvMap[string("type")] = numberInt;
 		//this->roomConfig = loadConfig(fc);
 		break;
-	case issueCard:
+	case issue:
 		break;
-	case resCard:
+	case res:
 		break;
-	case infoCard:
+	case info:
+		break;
+	case exam:
+		if (this->examConfig.size() <= 0)
+		{
+			this->examConfig = readCsvData("../tables/Exam.csv");
+		}
+		iter = this->examConfig.find(id);
+		if (iter != this->examConfig.end())
+		{
+			return iter->second;
+		}
 		break;
 	default:
 		break;

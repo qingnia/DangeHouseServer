@@ -39,6 +39,10 @@ roomCard::roomCard(map<string, string> roomConfig)
 		{
 			this->type = configType(stringToNum<int>(value));
 		}
+		else if (key == "examID")
+		{
+			this->cardExam = examine(stringToNum<int>(value));
+		}
 	}
 	//map<string, string>::iterator iter = myFind(roomConfig.begin(), roomConfig.end(), "name");
     //stringstream ss;
