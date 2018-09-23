@@ -20,6 +20,8 @@
 
 using namespace std;
 
+#define random(x) (rand()%x)
+
 vector<int> myShuffle(int num);
 
 direction reverseDir(direction);

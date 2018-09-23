@@ -37,4 +37,14 @@ enum configType
 	info,
 };
 
+enum examType{
+    speed,
+    strength,
+    spirit,
+    knowledge,
+    physicalDamage,
+    mindDamage,
+    none,
+};
+
 #endif

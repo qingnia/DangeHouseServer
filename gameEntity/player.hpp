@@ -29,7 +29,7 @@ class player {
     int age;
     int id;
 
-    int strength, speed, spirit, knowledge;
+    int m_strength, m_speed, m_spirit, m_knowledge;
     list<resCard*> resList;
  //   list<infoCard*> infoList;
     list<int> skills;
@@ -57,6 +57,7 @@ public:
     int useSkill(int id);
 
     direction inputDir();
+    list<int> excuteExam(examType);
 	void enterNewRoom(roomCard*);
 
 };

@@ -17,10 +17,10 @@ player::player(int id, int mapID)
 {
 	this->mapID = mapID;
     this->id = id;
-    this->strength = 3;
-    this->speed = 4;
-    this->knowledge = 4;
-    this->spirit = 4;
+    this->m_strength = 3;
+    this->m_speed = 4;
+    this->m_knowledge = 4;
+    this->m_spirit = 4;
     this->pos = position(50, 50);
 }
 
@@ -33,7 +33,7 @@ gameMap* player::getMyMap()
 
 int player::getStrength()
 {
-    return this->strength;
+    return this->m_strength;
 }
 
 direction player::inputDir()
@@ -64,11 +64,41 @@ direction player::inputDir()
     return dir;
 }
 
+list<int> player::excuteExam(examType et)
+{
+	int diceNum;
+	switch(et)
+	{
+	case speed:
+		diceNum = this->m_speed;
+		break;
+	case strength:
+		diceNum = this->m_strength;
+		break;
+	case spirit:
+		diceNum = this->m_spirit;
+		break;
+	case knowledge:
+		diceNum = this->m_knowledge;
+		break;
+	default:
+		//todo 错误处理
+		break;
+	};
+	list<int> diceNums(diceNum);
+	for(int i = 0; i < diceNum; i++)
+	{
+		int num = random(2);
+		diceNums.push_back(num);
+	}
+	return diceNums;
+}
+
 int player::move()
 {
     //行动值在停止行动时清零
     //一次移动一格，移动距离达到速度停止
-    if (this->moveNum >= this->speed)
+    if (this->moveNum >= this->m_speed)
     {
         return -1;
     }

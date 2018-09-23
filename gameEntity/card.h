@@ -10,6 +10,7 @@
 
 #include <stdio.h>
 #include <string>
+#include "examine.hpp"
 
 using namespace std;
 

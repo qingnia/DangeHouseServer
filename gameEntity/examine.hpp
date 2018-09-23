@@ -13,16 +13,6 @@
 #include "player.hpp"
 using namespace std;
 
-enum examType{
-    speed,
-    strength,
-    spirit,
-    knowledge,
-    physicalDamage,
-    mindDamage,
-    none,
-};
-
 typedef struct{
     //影响类型
     examType et;
@@ -33,6 +23,8 @@ typedef struct{
 
 class examine{
 
+private:
+    void showMsg();
 public:
     examType et;
     bool needAttack;
