@@ -6,6 +6,11 @@
 //
 #include "examine.hpp"
 
+examine::examine()
+{
+    this->et = etNone;
+}
+
 examine::examine(int examID)
 {
 	config* conf = config::getSingleConfig();
@@ -69,8 +74,12 @@ void examine::showMsg()
 
 void examine::affect(player p)
 {
+    if (this->et == etNone)
+    {
+        return;
+    }
     this->showMsg();
-    list<int> diceNums = p.excuteExam(this->et);
+    list<int> diceNums = p.rollDice(this->et);
     int score = accumulate(diceNums.begin(), diceNums.end(), 0);
     if(this->attackValue > 0)
     {
@@ -98,28 +107,30 @@ void examine::affect(player p)
 bool examine::excutePunish(player p, effect ef)
 {
     examType attribute = ef.et;
-    if (ef.et == physicalDamage)
+    if (ef.et == etPhysicalDamage)
     {
+        string tip = "你收到%d点物理损伤，请选择1:速度，2:力量";
+        cout<<tip<<endl;
         //选择
-        attribute = speed;
+        attribute = etSpeed;
     }
-    else if (ef.et == mindDamage)
+    else if (ef.et == etMindDamage)
     {
         //选择
-        attribute = spirit;
+        attribute = etSpirit;
     }
     switch(attribute)
     {
-    case speed:
+    case etSpeed:
         p.incrSpeed(ef.eNum);
         break;
-    case strength:
+    case etStrength:
         p.incrStrength(ef.eNum);
         break;
-    case spirit:
+    case etSpirit:
         p.incrSpirit(ef.eNum);
         break;
-    case knowledge:
+    case etKnowledge:
         p.incrKnowledge(ef.eNum);
         break;
     default:

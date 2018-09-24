@@ -4,13 +4,14 @@
 //
 //  Created by 陈帅 on 2018/9/22.
 //
+#ifndef issueCard_h
+#define issueCard_h
 
 #include "card.h"
 #include<map>
 
 using namespace std;
-class issueCard :
-	public card
+class issueCard: public card
 {
 	issueCard();
 public:
@@ -18,3 +19,5 @@ public:
 	virtual ~issueCard();
 
 };
+
+#endif

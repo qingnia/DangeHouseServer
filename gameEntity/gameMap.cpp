@@ -49,7 +49,7 @@ int gameMap::initCardList()
     {
         this->id2issue[confIter->first] = (card*) new issueCard(confIter->second);
     }
-    this->issueIter = this->resList.begin();
+    this->issueIter = this->issueList.begin();
     
     this->infoList = myShuffle(5);
     this->infoIter = this->infoList.begin();
@@ -94,14 +94,14 @@ gameMap::gameMap(int playerNum)
     //为了保证可用，地图大小100*100
     //大厅看作连通的两个房间加上楼梯
 
-    this->height = 1;
-    this->length = 100;
-    this->widht = 100;
+    this->m_height = 1;
+    this->m_length = 100;
+    this->m_width = 100;
 
-    int** ret = (int**)malloc(this->length * sizeof(int));
-    for (int i = 0; i < this->length; i++) {
-        for (int j = 0; j < this->widht; j++) {
-            ret[i] = (int*)malloc(this->widht * sizeof(int));
+    int** ret = (int**)malloc(this->m_length * sizeof(int));
+    for (int i = 0; i < this->m_length; i++) {
+        for (int j = 0; j < this->m_width; j++) {
+            ret[i] = (int*)malloc(this->m_width * sizeof(int));
         }
     }
     ret[50][50] = 1;
@@ -165,6 +165,48 @@ roomCard* gameMap::getNewRoom(int floor, direction dir)
         this->roomIter++;
     }
     return newRoom;
+}
+
+issueCard* gameMap::getNewIssue()
+{
+    issueCard* newIssue;
+    int issueID = *this->issueIter;
+    this->issueIter++;
+    
+    config* conf = config::getSingleConfig();
+    map<string, string> issueConfig = conf->getConfig(ctIssue, issueID);
+    newIssue = new issueCard(issueConfig);
+    return newIssue;
+}
+
+infoCard* gameMap::getNewInfo()
+{
+    infoCard* newInfo;
+    int infoID = *this->infoIter;
+    this->infoIter++;
+    
+    config* conf = config::getSingleConfig();
+    map<string, string> infoConfig = conf->getConfig(ctInfo, infoID);
+    newInfo = new infoCard(infoConfig);
+    return newInfo;
+}
+
+bool gameMap::getReality(player p1)
+{
+    if (this->m_process > 0)
+    {
+        return true;
+    }
+    //cout<<"尝试揭露真相吧"<<endl;
+    int infoNum = this->m_infoNum;
+    list<int> diceNums = p1.rollDice(etNone, infoNum);
+    int score = accumulate(diceNums.begin(), diceNums.end(), 0);
+    if (score > 6)
+    {
+        this->m_process++;
+        return true;
+    }
+    return false;
 }
 
 int gameMap::run()

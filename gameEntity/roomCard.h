@@ -18,7 +18,8 @@
 
 using namespace std;
 
-class roomCard:card{
+class roomCard:card
+{
 
     roomCard();
 public:

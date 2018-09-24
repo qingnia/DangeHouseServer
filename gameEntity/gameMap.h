@@ -15,16 +15,14 @@
 #include "roomCard.h"
 #include "issueCard.h"
 #include "resCard.h"
+#include "infoCard.hpp"
 #include "player.hpp"
 #include "action.h"
 #include "../utils/commonFun.h"
 
 class gameMap{
-    int id;
-    int widht;
-    int length;
-    int height;
-
+    int id, m_width, m_length, m_height, m_infoNum, m_process;
+    
     list<action>::iterator nextAction;
 
     int** pos2room;
@@ -52,10 +50,11 @@ public:
     player getPlayer(int id);
 
     roomCard* getNewRoom(int floor, direction);
-	class resCard* getNewRes();
-    class issueCard* getNewIssue();
+	resCard* getNewRes();
+    issueCard* getNewIssue();
+    infoCard* getNewInfo();
 
-
+    bool getReality(player p);
 
     int run();
 };

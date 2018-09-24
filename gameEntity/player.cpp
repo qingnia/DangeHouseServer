@@ -47,16 +47,16 @@ direction player::inputDir()
     switch(input)
     {
     case 'w':
-		dir = up;
+		dir = dirUp;
         break;
     case 's':
-		dir = down;
+		dir = dirDown;
         break;
     case 'a':
-		dir = direction::left;
+		dir = dirLeft;
         break;
     case 'd':
-		dir = direction::right;
+		dir = dirRight;
         break;
     default:
         break;
@@ -64,24 +64,25 @@ direction player::inputDir()
     return dir;
 }
 
-list<int> player::excuteExam(examType et)
+list<int> player::rollDice(examType et, int forceDiceNum)
 {
 	int diceNum;
 	switch(et)
 	{
-	case speed:
+	case etSpeed:
 		diceNum = this->m_speed;
 		break;
-	case strength:
+	case etStrength:
 		diceNum = this->m_strength;
 		break;
-	case spirit:
+	case etSpirit:
 		diceNum = this->m_spirit;
 		break;
-	case knowledge:
+	case etKnowledge:
 		diceNum = this->m_knowledge;
 		break;
 	default:
+		diceNum = forceDiceNum;
 		//todo 错误处理
 		break;
 	};
@@ -155,16 +156,21 @@ int player::gainNewItem(configType ct)
 	gameMap* myMap = this->getMyMap();
 	issueCard* newIssue;
 	resCard* newRes;
+	infoCard* newInfo;
 	switch (ct)
 	{
-	case issue:
+	case ctIssue:
 		newIssue = myMap->getNewIssue();
+		//一次性的考验直接不保存，如果是持续性的，需要保存状态
+		newIssue->cardExam.affect(*this);
 		break;
-	case res:
+	case ctRes:
 		newRes = myMap->getNewRes();
 		this->resList.push_back(newRes);
 		break;
-	case info:
+	case ctInfo:
+		newInfo = myMap->getNewInfo();
+		//如果不是作祟阶段，需要进行揭露真相
 		break;
 	default:
 		break;

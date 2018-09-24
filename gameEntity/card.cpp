@@ -14,3 +14,9 @@ card::card()
 card::~card()
 {
 }
+
+bool card::showMsg()
+{
+    cout<<this->m_desc<<endl;
+    return true;
+}

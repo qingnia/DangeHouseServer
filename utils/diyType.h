@@ -16,10 +16,10 @@ enum actionType {
 };
 
 enum direction {
-	up,
-	down,
-	left,
-	right,
+	dirUp,
+	dirDown,
+	dirLeft,
+	dirRight,
 };
 
 enum moveRoomType
@@ -31,21 +31,21 @@ enum moveRoomType
 
 enum configType
 {
-	room,
-	issue,
-	res,
-	info,
-	exam,
+	ctRoom,
+	ctIssue,
+	ctRes,
+	ctInfo,
+	ctExam,
 };
 
 enum examType{
-    speed,
-    strength,
-    spirit,
-    knowledge,
-    physicalDamage,
-    mindDamage,
-    none,
+    etSpeed,
+    etStrength,
+    etSpirit,
+    etKnowledge,
+    etPhysicalDamage,
+    etMindDamage,
+    etNone,
 };
 
 #endif

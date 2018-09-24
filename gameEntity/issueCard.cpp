@@ -31,9 +31,17 @@ issueCard::issueCard(map<string, string> issueConfig)
 		{
 			this->name = value;
 		}
-		else if(key == "enlishName")
+		else if (key == "enlishName")
 		{
 			this->enlishName = value;
+		}
+		else if (key == "desc")
+		{
+			this->m_desc = value;
+		}
+		else if (key == "examID")
+		{
+			this->cardExam = examine(stringToNum<int>(value));
 		}
 	}
 }

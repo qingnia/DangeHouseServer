@@ -16,6 +16,7 @@
 #include "../utils/diyType.h"
 #include "resCard.h"
 #include "roomCard.h"
+#include "infoCard.hpp"
 
 class gameMgr;
 using namespace std;
@@ -59,7 +60,7 @@ public:
     int useSkill(int id);
 
     direction inputDir();
-    list<int> excuteExam(examType);
+    list<int> rollDice(examType, int forceDiceNum = 0);
 	void enterNewRoom(roomCard*);
 
 };

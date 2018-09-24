@@ -30,7 +30,7 @@ struct effect{
 
     effect()
     {
-        this->et = speed;
+        this->et = etNone;
         this->min = 0;
         this->max = 0;
         this->eNum = 0;
@@ -42,6 +42,7 @@ class examine{
 private:
     void showMsg();
 public:
+    examine();
     examine(int);
 
     string name, enlishName;
