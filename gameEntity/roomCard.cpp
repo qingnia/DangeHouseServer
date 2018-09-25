@@ -12,6 +12,10 @@ roomCard::roomCard()
 
 }
 
+roomCard::~roomCard()
+{
+}
+
 roomCard::roomCard(map<string, string> roomConfig)
 {
 	//config* conf = config::getSingleConfig();
@@ -34,6 +38,10 @@ roomCard::roomCard(map<string, string> roomConfig)
 		else if (key == "layer")
 		{
 			this->suiteLayer = split<int>(value, "|");
+		}
+		else if (key == "canPassArray")
+		{
+			this->exportArray = split<int>(value, "|");
 		}
 		else if (key == "type")
 		{
@@ -59,27 +67,34 @@ roomCard::roomCard(map<string, string> roomConfig)
 
 bool roomCard::canPass(direction dir)
 {
+	int checkDir = (int)dir;
+	if (this->exportArray[checkDir] == 1)
+	{
+		return true;
+	}
+	return false;
+	/**
 	switch (dir)
 	{
-	case direction::up:
+	case dirUp:
 		if (this->up == 1)
 		{
 			return true;
 		}
 		break;
-	case direction::down:
+	case dirDown:
 		if (this->down == 1)
 		{
 			return true;
 		}
 		break;
-	case direction::left:
+	case dirLeft:
 		if (this->left == 1)
 		{
 			return true;
 		}
 		break;
-	case direction::right:
+	case dirRight:
 		if (this->right == 1)
 			return true;
 		break;
@@ -87,5 +102,6 @@ bool roomCard::canPass(direction dir)
 		return false;
 		break;
 	}
-	return false;
+	*/
+	//return false;
 }

@@ -12,7 +12,7 @@
 #include <list>
 #include <iostream>
 #include "position.h"
-#include "gameMap.h"
+
 #include "../utils/diyType.h"
 #include "resCard.h"
 #include "roomCard.h"
@@ -22,7 +22,7 @@ class gameMgr;
 using namespace std;
 class player {
 
-    int floor;
+    int m_floor;
     position pos;
 	int mapID;
 
@@ -37,7 +37,7 @@ class player {
 
     int moveNum;
     
-    gameMap* getMyMap();
+
 public:
     player();
     player(int id, int mapID);

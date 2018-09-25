@@ -24,16 +24,16 @@ position* position::getNeibourPos(direction dir)
 	position* pos = nullptr;
 	switch (dir)
 	{
-	case up:
+	case dirUp:
 		pos = new position(this->x, this->y + 1);
 		break;
-	case down:
+	case dirDown:
 		pos = new position(this->x, this->y - 1);
 		break;
-	case direction::left:
+	case dirLeft:
 		pos = new position(this->x - 1, this->y);
 		break;
-	case direction::right:
+	case dirRight:
 		pos = new position(this->x + 1, this->y);
 		break;
 	default:

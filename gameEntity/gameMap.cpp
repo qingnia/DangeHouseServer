@@ -11,11 +11,15 @@ gameMap::gameMap()
 {
 }
 
+gameMap::~gameMap()
+{
+}
+
 int gameMap::initPlayerList(int playerNum)
 {
     for(int i = 0; i < playerNum; i++)
     {
-        player p(i, this->id);
+        player p(i, this->m_id);
         this->playerList.push_back(p);
     }
     return 0;
@@ -79,7 +83,7 @@ int gameMap::initActionList()
     return 0;
 }
 
-gameMap::gameMap(int playerNum)
+gameMap::gameMap(int playerNum, int mapID)
 {
     if(this->pos2room[50][50])
     {
@@ -97,19 +101,31 @@ gameMap::gameMap(int playerNum)
     this->m_height = 1;
     this->m_length = 100;
     this->m_width = 100;
+	this->m_id = mapID;
 
+	/**
     int** ret = (int**)malloc(this->m_length * sizeof(int));
     for (int i = 0; i < this->m_length; i++) {
         for (int j = 0; j < this->m_width; j++) {
             ret[i] = (int*)malloc(this->m_width * sizeof(int));
         }
     }
-    ret[50][50] = 1;
-    ret[51][50] = 2;
-    ret[52][50] = 3;
-    this->pos2room = ret;
+	
+	for (int i = 0; i < this->m_length; i++)
+	{
+		this->pos2room[i] = map<int, int> newMap(50);
+	}
+	*/
+	this->pos2room[50][50] = 1;
+	this->pos2room[51][50] = 2;
+	this->pos2room[52][50] = 3;
+    //ret[50][50] = 1;
+    //ret[51][50] = 2;
+    //ret[52][50] = 3;
+    //this->pos2room = ret;
     this->initPlayerList(playerNum);
     this->initCardList();
+	this->initActionList();
 }
 
 roomCard* gameMap::getRoomByID(int roomID)
@@ -191,6 +207,18 @@ infoCard* gameMap::getNewInfo()
     return newInfo;
 }
 
+resCard* gameMap::getNewRes()
+{
+	resCard* newRes;
+	int infoID = *this->resIter;
+	this->resIter++;
+
+	config* conf = config::getSingleConfig();
+	map<string, string> resConfig = conf->getConfig(ctInfo, infoID);
+	newRes = new resCard(resConfig);
+	return newRes;
+}
+
 bool gameMap::getReality(player p1)
 {
     if (this->m_process > 0)
@@ -228,6 +256,7 @@ int gameMap::run()
     default:
         break;
     }
+	this->nextAction++;
     return 0;
 }
 

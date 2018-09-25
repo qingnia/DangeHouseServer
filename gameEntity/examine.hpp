@@ -10,8 +10,11 @@
 
 #include <stdio.h>
 #include <list>
-#include<numeric>
-#include "player.hpp"
+#include <numeric>
+#include <iostream>
+#include "../utils/commonFun.h"
+#include "../utils/config.h"
+//#include "player.hpp"
 using namespace std;
 
 struct effect{
@@ -55,9 +58,9 @@ public:
     //（1，3，6）氛围0-1，2-3，4-6三个区间
     list<effect> efList;
 
-    void affect(player p);
+ //   void affect(player p);
 
-    bool excutePunish(player, effect);
+    //bool excutePunish(player, effect);
 };
 
 #endif /* examine_hpp */

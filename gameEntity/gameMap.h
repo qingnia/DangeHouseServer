@@ -21,13 +21,14 @@
 #include "../utils/commonFun.h"
 
 class gameMap{
-    int id, m_width, m_length, m_height, m_infoNum, m_process;
+    int m_id, m_width, m_length, m_height, m_infoNum, m_process;
     
     list<action>::iterator nextAction;
 
-    int** pos2room;
+    //int** pos2room;
+	map<int, map<int, int> > pos2room;
 
-    map<int, card*> id2room, id2issue, id2res, id2info;
+    map<int, card* > id2room, id2issue, id2res, id2info;
 
     list<player> playerList;
     list<action> actionList;
@@ -43,7 +44,7 @@ class gameMap{
     position inputPosition();
 public:
 	gameMap();
-    gameMap(int playerNum);
+    gameMap(int playerNum, int mapID);
 
     roomCard* getRoom(position pos);
     roomCard* getRoomByID(int roomID);
@@ -57,6 +58,8 @@ public:
     bool getReality(player p);
 
     int run();
+
+	~gameMap();
 };
 
 #endif /* gameMap_h */

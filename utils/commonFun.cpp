@@ -11,8 +11,8 @@ vector<int> myShuffle(int num)
 {
 	vector<int> tmpVec(num);
 
-	for (int i = 0; i < num; ++i) {
-		tmpVec.push_back(i);
+	for (int i = 0; i < num; i++) {
+		tmpVec[i] = i;
 	}
 
 	// obtain a time-based seed:  
@@ -23,20 +23,20 @@ vector<int> myShuffle(int num)
 
 direction reverseDir(direction dir)
 {
-	direction revDir = up;
+	direction revDir = dirUp;
 	switch (dir)
 	{
-	case up:
-		revDir = down;
+	case dirUp:
+		revDir = dirDown;
 		break;
-	case down:
-		revDir = up;
+	case dirDown:
+		revDir = dirUp;
 		break;
-	case direction::left:
-		revDir = direction::right;
+	case dirLeft:
+		revDir = dirRight;
 		break;
-	case direction::right:
-		revDir = direction::left;
+	case dirRight:
+		revDir = dirLeft;
 		break;
 	default:
 		break;
@@ -109,14 +109,6 @@ map<int, map<string, string>> readCsvData(string fname)
 	return fileInfo;
 }
 
-template <class Type>
-Type stringToNum(const string str)
-{
-	istringstream iss(str);
-	Type num;
-	iss >> num;
-	return num;
-}
 
 template <class Iterator, class T>
 Iterator myFind(Iterator begin, Iterator end, const T &value)
@@ -125,23 +117,4 @@ Iterator myFind(Iterator begin, Iterator end, const T &value)
 		++begin;
 	}
 	return begin;
-}
-
-template <class Type>
-vector<Type> split(const string &str, const string &pattern)
-{
-	//const char* convert to char*
-	char * strc = new char[strlen(str.c_str()) + 1];
-	strcpy(strc, str.c_str());
-	vector<Type> resultVec;
-	char* tmpStr = strtok(strc, pattern.c_str());
-	while (tmpStr != NULL)
-	{
-		resultVec.push_back(stringToNum<Type>(tmpStr));
-		tmpStr = strtok(NULL, pattern.c_str());
-	}
-
-	delete[] strc;
-
-	return resultVec;
 }

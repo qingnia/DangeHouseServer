@@ -12,7 +12,7 @@
 #include "card.h"
 #include "../utils/config.h"
 
-class resCard:card
+class resCard: public card
 {
 private:
 	resCard();

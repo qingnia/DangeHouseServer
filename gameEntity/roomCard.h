@@ -18,7 +18,7 @@
 
 using namespace std;
 
-class roomCard:card
+class roomCard: public card
 {
 
     roomCard();
@@ -30,7 +30,8 @@ public:
 
     vector<int> suiteLayer;
 
-    int left, right, up, down;
+    //int left, right, up, down;
+	vector<int> exportArray;
 
 	moveRoomType testType;
 

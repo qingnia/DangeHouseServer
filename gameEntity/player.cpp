@@ -7,28 +7,35 @@
 
 #include "player.hpp"
 #include "gameMgr.h"
+#include "gameMap.h"
 
+/***************************内部常用函数**********************************/
+gameMap* getMyMap(int mapID)
+{
+	gameMgr* gm = gameMgr::getGameMgr();
+	gameMap* myMap = gm->getMap(mapID);
+	return myMap;
+}
+
+/***************************内部常用函数**********************************/
 player::player()
 {
+	this->moveNum = 0;
+	this->m_floor = 1;
     this->pos = position(50, 50);
 }
 
 player::player(int id, int mapID)
 {
+	this->moveNum = 0;
 	this->mapID = mapID;
     this->id = id;
     this->m_strength = 3;
     this->m_speed = 4;
     this->m_knowledge = 4;
     this->m_spirit = 4;
+	this->m_floor = 1;
     this->pos = position(50, 50);
-}
-
-gameMap* player::getMyMap()
-{
-	gameMgr* gm = gameMgr::getGameMgr();
-	gameMap* myMap = gm->getMap(this->mapID);
-	return myMap;
 }
 
 int player::getStrength()
@@ -106,7 +113,7 @@ int player::move()
 
 	direction dir = this->inputDir();
 
-	gameMap* myMap = this->getMyMap();
+	gameMap* myMap = getMyMap(this->mapID);
 	roomCard* thisRoom = myMap->getRoom(this->pos);
 	if (!thisRoom->canPass(dir))
 	{
@@ -121,7 +128,7 @@ int player::move()
 		//1.检查这个位置从当前房间能不能通过
 		//2.如果能通过，则从牌库中拿到一个新房间
 		//3.执行房间事件、考验、将新房间放进地图
-        nextRoom = myMap->getNewRoom(this->floor, dir);
+        nextRoom = myMap->getNewRoom(this->m_floor, dir);
         if (nextRoom == nullptr)
         {
             //新房间也没，卡池已空
@@ -153,7 +160,7 @@ int player::stop()
 
 int player::gainNewItem(configType ct)
 {
-	gameMap* myMap = this->getMyMap();
+	gameMap* myMap = getMyMap(this->mapID);
 	issueCard* newIssue;
 	resCard* newRes;
 	infoCard* newInfo;
@@ -162,7 +169,7 @@ int player::gainNewItem(configType ct)
 	case ctIssue:
 		newIssue = myMap->getNewIssue();
 		//一次性的考验直接不保存，如果是持续性的，需要保存状态
-		newIssue->cardExam.affect(*this);
+//		newIssue->cardExam.affect(*this);
 		break;
 	case ctRes:
 		newRes = myMap->getNewRes();

@@ -10,6 +10,8 @@
 config* config::gameConfig = new config();
 config::config()
 {
+	//this->roomConfig = readCsvData("../tables/Room.csv");
+	this->roomConfig = readCsvData("E:/vsProjects/Serious/tables/Room.csv");
 }
 
 config::~config()
@@ -31,7 +33,7 @@ map<string, string> config::getConfig(configType type, int id)
 	map<int, map<string, string> >::iterator iter;
 	switch (type)
 	{
-	case room:
+	case ctRoom:
 		if (this->roomConfig.size() <= 0)
 		{
 			this->roomConfig = readCsvData("../tables/Room.csv");
@@ -48,13 +50,13 @@ map<string, string> config::getConfig(configType type, int id)
 		//fc.kvMap[string("type")] = numberInt;
 		//this->roomConfig = loadConfig(fc);
 		break;
-	case issue:
+	case ctIssue:
 		break;
-	case res:
+	case ctRes:
 		break;
-	case info:
+	case ctInfo:
 		break;
-	case exam:
+	case ctExam:
 		if (this->examConfig.size() <= 0)
 		{
 			this->examConfig = readCsvData("../tables/Exam.csv");

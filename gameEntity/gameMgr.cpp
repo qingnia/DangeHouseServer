@@ -11,6 +11,7 @@ gameMgr* gameMgr::gm = new gameMgr();
 
 gameMgr::gameMgr()
 {
+	this->mapIncrValue = 0;
 }
 
 gameMgr::~gameMgr()
@@ -38,7 +39,7 @@ gameMap* gameMgr::getMap(int mapID)
 gameMap* gameMgr::initNewMap(int playerNum)
 {
 	gm->mapIncrValue++;
-	gameMap* newMap = new gameMap(playerNum);
+	gameMap* newMap = new gameMap(playerNum, gm->mapIncrValue);
 	gm->id2Map.insert(pair<int, gameMap*>(gm->mapIncrValue, newMap));
 	
 	return nullptr;

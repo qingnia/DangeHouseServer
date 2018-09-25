@@ -14,7 +14,7 @@ examine::examine()
 examine::examine(int examID)
 {
 	config* conf = config::getSingleConfig();
-    map<string, string> examConfig = conf->getConfig(exam, examID);
+    map<string, string> examConfig = conf->getConfig(ctExam, examID);
     //房间初始化
     map<string, string>::iterator iter;
  	string key, value;
@@ -33,7 +33,7 @@ examine::examine(int examID)
 		}
         else if(key == "examType")
         {
-            this->et = stringToNum<examType>(value);
+            this->et = (examType)stringToNum<int>(value);
         }
         else if (key == "attack")
         {
@@ -71,7 +71,7 @@ void examine::showMsg()
     string info = "你必须以%d进行能力考验";
     cout<<""<<endl;
 }
-
+/**
 void examine::affect(player p)
 {
     if (this->et == etNone)
@@ -138,3 +138,4 @@ bool examine::excutePunish(player p, effect ef)
     }
     return true;
 } 
+*/
