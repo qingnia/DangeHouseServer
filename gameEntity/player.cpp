@@ -27,9 +27,12 @@ player::player()
 
 player::player(int id, int mapID)
 {
+	stringstream ss;
+	ss<<"初始化玩家"<<id<<"玩家速度："<<4<<"，力量："<<3<<"，知识："<<4<<"精神："<<4;
+	logInfo(ss.str());
 	this->moveNum = 0;
 	this->mapID = mapID;
-    this->id = id;
+    this->m_id = id;
     this->m_strength = 3;
     this->m_speed = 4;
     this->m_knowledge = 4;
@@ -93,17 +96,25 @@ list<int> player::rollDice(examType et, int forceDiceNum)
 		//todo 错误处理
 		break;
 	};
+	stringstream ss;
+	ss<<"掷骰子，骰子数量为："<<diceNum<<"，每个骰子点数分别为：";
 	list<int> diceNums(diceNum);
 	for(int i = 0; i < diceNum; i++)
 	{
 		int num = random(2);
+		ss<<num<<",  ";
 		diceNums.push_back(num);
 	}
+	ss<<"掷骰结束。";
+	logInfo(ss.str());
 	return diceNums;
 }
 
 int player::move()
 {
+	stringstream ss;
+	ss<<"轮到玩家"<<this->getID()<<"移动,玩家速度："<<this->m_speed<<"当前移动步数："<<this->moveNum;
+	logInfo(ss.str());
     //行动值在停止行动时清零
     //一次移动一格，移动距离达到速度停止
     if (this->moveNum >= this->m_speed)
@@ -121,6 +132,9 @@ int player::move()
 	}
 	position* nextPos = (this->pos).getNeibourPos(dir);
 	roomCard* nextRoom = myMap->getRoom(*nextPos);
+	ss.clear();
+	ss<<"玩家进入新房间："<<nextRoom->getName()<<"\n\t,"<<nextRoom->getDesc();
+	logInfo(ss.str());
 	direction revDir = reverseDir(dir);
     if (nextRoom == nullptr)
 	{
@@ -164,19 +178,27 @@ int player::gainNewItem(configType ct)
 	issueCard* newIssue;
 	resCard* newRes;
 	infoCard* newInfo;
+
+	stringstream ss;
 	switch (ct)
 	{
 	case ctIssue:
 		newIssue = myMap->getNewIssue();
+		ss<<"房间类型为：事件/n/t     "<<newIssue->getName()<<"/n/t  "<<newIssue->getDesc();
+		logInfo(ss.str());
 		//一次性的考验直接不保存，如果是持续性的，需要保存状态
 //		newIssue->cardExam.affect(*this);
 		break;
 	case ctRes:
 		newRes = myMap->getNewRes();
+		ss<<"房间类型为：物品/n/t     "<<newRes->getName()<<"/n/t  "<<newRes->getDesc();
+		logInfo(ss.str());
 		this->resList.push_back(newRes);
 		break;
 	case ctInfo:
 		newInfo = myMap->getNewInfo();
+		ss<<"房间类型为：预兆/n/t     "<<newInfo->getName()<<"/n/t  "<<newInfo->getDesc();
+		logInfo(ss.str());
 		//如果不是作祟阶段，需要进行揭露真相
 		break;
 	default:
@@ -187,7 +209,7 @@ int player::gainNewItem(configType ct)
 
 int player::getID()
 {
-    return this->id;
+    return this->m_id;
 }
 
 int player::incrSpeed(int num)

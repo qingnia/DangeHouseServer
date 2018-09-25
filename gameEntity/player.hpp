@@ -28,8 +28,8 @@ class player {
 
     string name;
     int age;
-    int id;
-
+    int m_id;
+    
     int m_strength, m_speed, m_spirit, m_knowledge;
     list<resCard*> resList;
  //   list<infoCard*> infoList;

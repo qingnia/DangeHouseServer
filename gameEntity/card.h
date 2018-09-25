@@ -19,11 +19,15 @@ class card
 private:
 protected:
 	int id;
-	string name, enlishName, m_desc;
+	string m_name, m_enlishName, m_desc;
 
 	bool showMsg();
 public:
 	examine cardExam;
+
+	string getName();
+	string getEnlishName();
+	string getDesc();
 	
 	card();
 	virtual ~card();

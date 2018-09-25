@@ -17,6 +17,9 @@ gameMap::~gameMap()
 
 int gameMap::initPlayerList(int playerNum)
 {
+    char msg[128];
+    sprintf(msg, "新地图生成，玩家一共%d人", &playerNum);
+    logInfo(msg);
     for(int i = 0; i < playerNum; i++)
     {
         player p(i, this->m_id);
@@ -242,14 +245,18 @@ int gameMap::run()
     action act = *(this->nextAction);
     player p = act.p;
 	position pos;
+    char msg[128];
     switch(act.at)
     {
     case atStart:
+        sprintf(msg, "新一轮开始，开始阶段：");
+        logInfo(msg);    
         break;
     case atMove:
 		p.move();
         break;
     case atStop:
+        sprintf(msg, "本轮结束");
         break;
     case atOver:
         break;

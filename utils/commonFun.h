@@ -17,6 +17,7 @@
 #include <random>
 #include <chrono>
 #include "diyType.h"
+#include "log.hpp"
 
 using namespace std;
 

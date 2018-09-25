@@ -20,3 +20,18 @@ bool card::showMsg()
     cout<<this->m_desc<<endl;
     return true;
 }
+
+string card::getName()
+{
+    return this->m_name;
+}
+
+string card::getEnlishName()
+{
+    return this->m_enlishName;
+}
+
+string card::getDesc()
+{
+    return this->m_desc;
+}

@@ -29,11 +29,11 @@ issueCard::issueCard(map<string, string> issueConfig)
 		value = iter->second;
 		if (key == "name")
 		{
-			this->name = value;
+			this->m_name = value;
 		}
 		else if (key == "enlishName")
 		{
-			this->enlishName = value;
+			this->m_enlishName = value;
 		}
 		else if (key == "desc")
 		{

@@ -12,6 +12,8 @@ config::config()
 {
 	//this->roomConfig = readCsvData("../tables/Room.csv");
 	this->roomConfig = readCsvData("E:/vsProjects/Serious/tables/Room.csv");
+	this->issueConfig = readCsvData("E:/vsProjects/Serious/tables/issue.csv");
+	this->examConfig = readCsvData("E:/vsProjects/Serious/tables/Examine.csv");
 }
 
 config::~config()
