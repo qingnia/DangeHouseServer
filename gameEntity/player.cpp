@@ -115,6 +115,7 @@ int player::move()
 	stringstream ss;
 	ss<<"轮到玩家"<<this->getID()<<"移动,玩家速度："<<this->m_speed<<"当前移动步数："<<this->moveNum;
 	logInfo(ss.str());
+	ss.clear();
     //行动值在停止行动时清零
     //一次移动一格，移动距离达到速度停止
     if (this->moveNum >= this->m_speed)
@@ -132,9 +133,7 @@ int player::move()
 	}
 	position* nextPos = (this->pos).getNeibourPos(dir);
 	roomCard* nextRoom = myMap->getRoom(*nextPos);
-	ss.clear();
-	ss<<"玩家进入新房间："<<nextRoom->getName()<<"\n\t,"<<nextRoom->getDesc();
-	logInfo(ss.str());
+
 	direction revDir = reverseDir(dir);
     if (nextRoom == nullptr)
 	{
@@ -148,6 +147,8 @@ int player::move()
             //新房间也没，卡池已空
             return -2;
         }
+		ss << "玩家进入新房间：" << nextRoom->getName() << "\n\t," << nextRoom->getDesc();
+		logInfo(ss.str());
 		//进新房间要拿东西
 		this->gainNewItem(nextRoom->type);
         //新房间的事件、考验等

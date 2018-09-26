@@ -25,11 +25,11 @@ resCard::resCard(map<string, string> resConfig)
 		value = iter->second;
 		if (key == "name")
 		{
-			this->name = value;
+			this->m_name = value;
 		}
 		else if(key == "enlishName")
 		{
-			this->enlishName = value;
+			this->m_enlishName = value;
 		}
 	}
 }

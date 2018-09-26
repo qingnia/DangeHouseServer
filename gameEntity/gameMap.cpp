@@ -18,7 +18,7 @@ gameMap::~gameMap()
 int gameMap::initPlayerList(int playerNum)
 {
     char msg[128];
-    sprintf(msg, "新地图生成，玩家一共%d人", &playerNum);
+    sprintf(msg, "新地图生成，玩家一共%d人", playerNum);
     logInfo(msg);
     for(int i = 0; i < playerNum; i++)
     {

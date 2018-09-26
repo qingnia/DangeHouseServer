@@ -35,6 +35,10 @@ roomCard::roomCard(map<string, string> roomConfig)
 		{
 			this->m_enlishName = value;
 		}
+		else if (key == "desc")
+		{
+			this->m_desc = value;
+		}
 		else if (key == "layer")
 		{
 			this->suiteLayer = split<int>(value, "|");
