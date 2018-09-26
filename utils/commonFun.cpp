@@ -75,9 +75,9 @@ string Trim(string& str)
 	return str;
 }
 
-map<int, map<string, string>> readCsvData(string fname)
+map<int, map<string, string> > readCsvData(string fname)
 {
-	map<int, map<string, string>> fileInfo;
+	map<int, map<string, string> > fileInfo;
 	ifstream fin(fname);
 	string line;
 
@@ -152,7 +152,31 @@ string ws2s(const wstring& ws)
 
 string fileStr2Str(string str)
 {
-	std::wstring_convert<std::codecvt_utf8<wchar_t>> conv;
+	std::wstring_convert<std::codecvt_utf8<wchar_t> > conv;
 	wstring wb = conv.from_bytes(str);
 	return ws2s(wb);
+}
+
+string getDirString(direction dir)
+{
+	string str;
+	switch(dir)
+	{
+	case dirUp:
+		str = "上";
+		break;
+	case dirDown:
+		str = "下";
+		break;
+	case dirLeft:
+		str = "左";
+		break;
+	case dirRight:
+		str = "右";
+		break;
+	default:
+		str = "停";
+		break;
+	}
+	return str;
 }

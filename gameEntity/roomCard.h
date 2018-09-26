@@ -20,6 +20,8 @@ using namespace std;
 
 class roomCard: public card
 {
+    moveRoomType mrt;
+    int roomRotation;
 
     roomCard();
 public:
@@ -37,6 +39,11 @@ public:
 
 	configType type;
 	bool canPass(direction);
+
+    bool needExam(moveRoomType);
+
+    bool canChangeRotation();
+    bool changeRotation(direction fromDir, direction choseDir);
 
 };
 

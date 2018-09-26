@@ -17,17 +17,18 @@ enum actionType {
 
 enum direction {
 	dirUp,
+	dirRight,
 	dirDown,
 	dirLeft,
-	dirRight,
 	dirStop,
 };
 
 enum moveRoomType
 {
-	enter,
-	pass,
-	leave,
+	mrtEnter,
+	mrtPass,
+	mrtLeave,
+	mrtNone,
 };
 
 enum configType

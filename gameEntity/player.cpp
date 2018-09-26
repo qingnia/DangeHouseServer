@@ -110,13 +110,98 @@ list<int> player::rollDice(examType et, int forceDiceNum)
 	return diceNums;
 }
 
-int player::enterRoom(roomCard* room)
+int player::excuteExam(examine exam)
 {
+	if (exam.et == etNone)
+    {
+        return 0;
+    }
+    exam.showMsg();
+    list<int> diceNums = this->rollDice(exam.et);
+    int score = accumulate(diceNums.begin(), diceNums.end(), 0);
+    if(exam.attackValue > 0)
+    {
+        int compareNum = random(2 * exam.attackValue);
+        if(score < compareNum)
+        {
+            this->excutePunish(exam.attackEffect);
+        }
+    }
+    else
+    {
+        list<effect>::iterator iter;
+        for (iter = exam.efList.begin(); iter != exam.efList.end(); iter++)
+	    {
+           effect ef = *iter;
+           if (score >= ef.min & score <= ef.max)
+           {
+               this->excutePunish(ef);
+               break;
+           }
+	    }
+    }
 	return 0;
 }
 
-int player::leaveRoom(roomCard* thisRoom)
+int player::excutePunish(effect ef)
+{  
+	examType attribute = ef.et;
+    if (ef.et == etPhysicalDamage)
+    {
+        string tip = "你收到%d点物理损伤，请选择1:速度，2:力量";
+        cout<<tip<<endl;
+        //选择
+        attribute = etSpeed;
+    }
+    else if (ef.et == etMindDamage)
+    {
+        //选择
+        attribute = etSpirit;
+    }
+    switch(attribute)
+    {
+    case etSpeed:
+        this->incrSpeed(ef.eNum);
+        break;
+    case etStrength:
+        this->incrStrength(ef.eNum);
+        break;
+    case etSpirit:
+        this->incrSpirit(ef.eNum);
+        break;
+    case etKnowledge:
+        this->incrKnowledge(ef.eNum);
+        break;
+    default:
+        break;
+    }
+    return true;
+}
+
+int player::enterRoom(roomCard* room)
 {
+	if (room->needExam(mrtEnter))
+	{
+		this->excuteExam(room->cardExam);
+	}
+	return 0;
+}
+
+int player::leaveRoom(roomCard* room)
+{
+	if (room->needExam(mrtLeave))
+	{
+		this->excuteExam(room->cardExam);
+	}
+	return 0;
+}
+
+int player::passRoom(roomCard* room)
+{
+	if (room->needExam(mrtPass))
+	{
+		this->excuteExam(room->cardExam)
+	}
 	return 0;
 }
 
@@ -140,6 +225,7 @@ int player::moveTo(direction dir)
 			//新房间也没，卡池已空
 			return -2;
 		}
+		this->changeNewRoomRotation(dir, nextRoom);
 		ss << "玩家进入新房间：" << nextRoom->getName() << "\n\t   " << nextRoom->getDesc();
 		logInfo(ss.str());
 
@@ -195,17 +281,38 @@ int player::move()
 		{
 			return -1;
 		}
-		this->leaveRoom(thisRoom);
-		//通过房间的校验
+		if (this->moveNum == 0)
+		{
+			this->leaveRoom(thisRoom);
+		}
+		else
+		{
+			this->passRoom(thisRoom);
+		}
 
 		this->moveTo(dir);
 	}
 
+	//移动结束后把行动力恢复
+	this->moveNum = 0;
 	return 0;
 }
 
 int player::stop()
 {
+	return 0;
+}
+
+int player::changeNewRoomRotation(direction fromDir, roomCard* room)
+{
+	direction dir = dirStop;
+	while(! room->changeRotation(fromDir, dir))
+	{
+		if (room->canChangeRotation())
+		{
+			dir = this->inputDir();
+		}
+	}
 	return 0;
 }
 
@@ -224,6 +331,8 @@ int player::gainNewItem(configType ct)
 		ss<<"房间类型为：事件\n\t     "<<newIssue->getName()<<"\n\t  "<<newIssue->getDesc();
 		logInfo(ss.str());
 		//一次性的考验直接不保存，如果是持续性的，需要保存状态
+		//事件一定有考验
+		this->excuteExam(newIssue->cardExam);
 //		newIssue->cardExam.affect(*this);
 		break;
 	case ctRes:

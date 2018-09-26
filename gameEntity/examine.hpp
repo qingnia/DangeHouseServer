@@ -43,7 +43,7 @@ struct effect{
 class examine{
 
 private:
-    void showMsg();
+
 public:
     examine();
     examine(int);
@@ -51,6 +51,8 @@ public:
     string name, enlishName;
     examType et;
 
+    void showMsg();
+    
     int attackValue;
     effect attackEffect;
 

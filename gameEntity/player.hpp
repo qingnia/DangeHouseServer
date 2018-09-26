@@ -62,8 +62,14 @@ public:
     direction inputDir();
     list<int> rollDice(examType, int forceDiceNum = 0);
 	int enterRoom(roomCard*);
-	int leaveRoom(roomCard*);
+	int leaveRoom(roomCard*);   //从上一回合进入，这一回合离开，是“离开房间”
+    int passRoom(roomCard*);    //这一回合进入，这一回合离开，是“通过房间”
 	int moveTo(direction);
+
+    int excuteExam(examine);
+    int excutePunish(effect);
+
+    int changeNewRoomRotation(direction, roomCard*);
 
 };
 

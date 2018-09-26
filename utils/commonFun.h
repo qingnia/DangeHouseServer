@@ -47,7 +47,8 @@ Type stringToNum(const string& str)
 
 // any simple type convert to string
 template<class src_type>
-string type2str(src_type src) {
+string type2str(src_type src)
+{
 	strstream ss;
 	ss << src;
 	string ret;
@@ -88,5 +89,7 @@ map<int, map<string, string> > readCsvData(string fname);
 string ws2s(const wstring& ws);
 
 string fileStr2Str(string);
+
+string getDirString(direction);
 
 #endif /* commonFun_h */
