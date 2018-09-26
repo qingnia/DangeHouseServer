@@ -29,7 +29,7 @@ issueCard::issueCard(map<string, string> issueConfig)
 		value = iter->second;
 		if (key == "name")
 		{
-			this->m_name = value;
+			this->m_name = fileStr2Str(value);
 		}
 		else if (key == "enlishName")
 		{
@@ -37,7 +37,7 @@ issueCard::issueCard(map<string, string> issueConfig)
 		}
 		else if (key == "desc")
 		{
-			this->m_desc = value;
+			this->m_desc = fileStr2Str(value);
 		}
 		else if (key == "examID")
 		{

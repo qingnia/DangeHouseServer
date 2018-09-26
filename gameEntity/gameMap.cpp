@@ -35,7 +35,7 @@ int gameMap::initCardList()
 	config* conf = config::getSingleConfig();
     
     //房间初始化
-    this->roomList = myShuffle(conf->roomConfig.size());
+    this->roomList = myShuffle2List(conf->roomConfig.size());
     for(confIter = conf->roomConfig.begin(); confIter != conf->roomConfig.end(); confIter++)
     {
         this->id2room[confIter->first] = (card*) new roomCard(confIter->second);
@@ -43,7 +43,7 @@ int gameMap::initCardList()
     this->roomIter = this->roomList.begin();
     
     //物品初始化
-    this->resList = myShuffle(conf->resConfig.size());
+    this->resList = myShuffle2List(conf->resConfig.size());
     for(confIter = conf->resConfig.begin(); confIter != conf->resConfig.end(); confIter++)
     {
         this->id2res[confIter->first] = (card*) new resCard(confIter->second);
@@ -51,14 +51,18 @@ int gameMap::initCardList()
     this->resIter = this->resList.begin();
     
     //事件初始化
-    this->issueList = myShuffle(conf->issueConfig.size());
+    this->issueList = myShuffle2List(conf->issueConfig.size());
     for(confIter = conf->issueConfig.begin(); confIter != conf->issueConfig.end(); confIter++)
     {
         this->id2issue[confIter->first] = (card*) new issueCard(confIter->second);
     }
     this->issueIter = this->issueList.begin();
     
-    this->infoList = myShuffle(5);
+    this->infoList = myShuffle2List(conf->infoConfig.size());
+	for (confIter = conf->infoConfig.begin(); confIter != conf->infoConfig.end(); confIter++)
+	{
+		this->id2info[confIter->first] = (card*) new infoCard(confIter->second);
+	}
     this->infoIter = this->infoList.begin();
     return 0;
 }
@@ -169,19 +173,43 @@ player gameMap::getPlayer(int id)
 	return player();
 }
 
-roomCard* gameMap::getNewRoom(int floor, direction dir)
+roomCard* gameMap::bindNewRoom(int floor, position pos)
 {
     roomCard* newRoom;
     while(true)
     {
-        int roomID = *this->roomIter;
+		int roomID = this->roomList.front();
+		this->roomList.pop_front();
+//		int roomID = *(this->roomIter);
+		newRoom = this->getRoomByID(roomID);
+		if (in_vector(floor, newRoom->suiteLayer))
+		{
+			this->pos2room[pos.x][pos.y] = roomID;
+			break;
+		}
+		this->roomList.push_back(roomID);
+		/**
+        int roomID = *(this->roomIter);
         newRoom = this->getRoomByID(roomID);
-        if (in_vector(floor, newRoom->suiteLayer) & newRoom->canPass(dir))
+        if (in_vector(floor, newRoom->suiteLayer))
         {
+			this->pos2room[pos.x][pos.y] = roomID;
             this->roomList.erase(this->roomIter);
             break;
         }
         this->roomIter++;
+		if (this->roomIter == this->roomList.end())
+		{
+			if (this->roomList.size() > 0)
+			{
+				this->roomIter = this->roomList.begin();
+			}
+			else
+			{
+				return nullptr;
+			}
+		}
+		*/
     }
     return newRoom;
 }
@@ -189,8 +217,8 @@ roomCard* gameMap::getNewRoom(int floor, direction dir)
 issueCard* gameMap::getNewIssue()
 {
     issueCard* newIssue;
-    int issueID = *this->issueIter;
-    this->issueIter++;
+	int issueID = this->issueList.front();
+	this->issueList.pop_front();
     
     config* conf = config::getSingleConfig();
     map<string, string> issueConfig = conf->getConfig(ctIssue, issueID);
@@ -201,8 +229,8 @@ issueCard* gameMap::getNewIssue()
 infoCard* gameMap::getNewInfo()
 {
     infoCard* newInfo;
-    int infoID = *this->infoIter;
-    this->infoIter++;
+	int infoID = this->infoList.front();
+	this->infoList.pop_front();
     
     config* conf = config::getSingleConfig();
     map<string, string> infoConfig = conf->getConfig(ctInfo, infoID);
@@ -213,8 +241,8 @@ infoCard* gameMap::getNewInfo()
 resCard* gameMap::getNewRes()
 {
 	resCard* newRes;
-	int infoID = *this->resIter;
-	this->resIter++;
+	int infoID = this->resList.front();
+	this->resList.pop_front();
 
 	config* conf = config::getSingleConfig();
 	map<string, string> resConfig = conf->getConfig(ctInfo, infoID);
@@ -257,6 +285,7 @@ int gameMap::run()
         break;
     case atStop:
         sprintf(msg, "本轮结束");
+		this->initActionList();
         break;
     case atOver:
         break;

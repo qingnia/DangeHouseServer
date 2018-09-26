@@ -12,7 +12,7 @@ vector<int> myShuffle(int num)
 	vector<int> tmpVec(num);
 
 	for (int i = 0; i < num; i++) {
-		tmpVec[i] = i;
+		tmpVec[i] = i + 1;
 	}
 
 	// obtain a time-based seed:  
@@ -20,6 +20,18 @@ vector<int> myShuffle(int num)
 	shuffle(tmpVec.begin(), tmpVec.end(), default_random_engine(seed));
 	return tmpVec;
 }
+
+list<int> myShuffle2List(int num)
+{
+	vector<int> shuffleNums = myShuffle(num);
+
+	list<int> tmpList;
+	for (int i = 0; i < num; i++) {
+		tmpList.push_back(shuffleNums[i]);
+	}
+	return tmpList;
+}
+
 
 direction reverseDir(direction dir)
 {
@@ -117,4 +129,30 @@ Iterator myFind(Iterator begin, Iterator end, const T &value)
 		++begin;
 	}
 	return begin;
+}
+
+string ws2s(const wstring& ws)
+{
+	string curLocale = setlocale(LC_ALL, NULL);  // curLocale = "C";
+
+	setlocale(LC_ALL, "chs");
+
+	const wchar_t* _Source = ws.c_str();
+	size_t _Dsize = 2 * ws.size() + 1;
+	char* _Dest = new char[_Dsize];
+	memset(_Dest, 0, _Dsize);
+	wcstombs(_Dest, _Source, _Dsize);
+	string result = _Dest;
+	delete []_Dest;
+
+	setlocale(LC_ALL, curLocale.c_str());
+
+	return result;
+}
+
+string fileStr2Str(string str)
+{
+	std::wstring_convert<std::codecvt_utf8<wchar_t>> conv;
+	wstring wb = conv.from_bytes(str);
+	return ws2s(wb);
 }

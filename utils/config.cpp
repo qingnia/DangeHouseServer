@@ -12,7 +12,9 @@ config::config()
 {
 	//this->roomConfig = readCsvData("../tables/Room.csv");
 	this->roomConfig = readCsvData("E:/vsProjects/Serious/tables/Room.csv");
-	this->issueConfig = readCsvData("E:/vsProjects/Serious/tables/issue.csv");
+	this->issueConfig = readCsvData("E:/vsProjects/Serious/tables/Issue.csv");
+	this->resConfig = readCsvData("E:/vsProjects/Serious/tables/Res.csv");
+	this->infoConfig = readCsvData("E:/vsProjects/Serious/tables/Info.csv");
 	this->examConfig = readCsvData("E:/vsProjects/Serious/tables/Examine.csv");
 }
 
@@ -53,10 +55,29 @@ map<string, string> config::getConfig(configType type, int id)
 		//this->roomConfig = loadConfig(fc);
 		break;
 	case ctIssue:
+		if (this->issueConfig.size() <= 0)
+		{
+			this->issueConfig = readCsvData("../tables/Issue.csv");
+		}
+		iter = this->issueConfig.find(id);
+		if (iter != this->issueConfig.end())
+		{
+			return iter->second;
+		}
 		break;
 	case ctRes:
+		iter = this->resConfig.find(id);
+		if (iter != this->resConfig.end())
+		{
+			return iter->second;
+		}
 		break;
 	case ctInfo:
+		iter = this->infoConfig.find(id);
+		if (iter != this->infoConfig.end())
+		{
+			return iter->second;
+		}
 		break;
 	case ctExam:
 		if (this->examConfig.size() <= 0)

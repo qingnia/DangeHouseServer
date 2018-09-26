@@ -37,6 +37,7 @@ public:
 
 	configType type;
 	bool canPass(direction);
+
 };
 
 #endif /* roomCard_hpp */

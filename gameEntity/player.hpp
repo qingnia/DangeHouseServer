@@ -61,7 +61,9 @@ public:
 
     direction inputDir();
     list<int> rollDice(examType, int forceDiceNum = 0);
-	void enterNewRoom(roomCard*);
+	int enterRoom(roomCard*);
+	int leaveRoom(roomCard*);
+	int moveTo(direction);
 
 };
 

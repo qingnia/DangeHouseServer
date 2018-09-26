@@ -33,8 +33,8 @@ class gameMap{
     list<player> playerList;
     list<action> actionList;
 
-    vector<int>::iterator roomIter, resIter, issueIter, infoIter;
-    vector<int>           roomList, resList, issueList, infoList;
+    list<int>::iterator roomIter, resIter, issueIter, infoIter;
+    list<int>           roomList, resList, issueList, infoList;
 
     int initPlayerList(int playerNum);
     int initActionList();
@@ -50,7 +50,7 @@ public:
     roomCard* getRoomByID(int roomID);
     player getPlayer(int id);
 
-    roomCard* getNewRoom(int floor, direction);
+    roomCard* bindNewRoom(int floor, position pos);
 	resCard* getNewRes();
     issueCard* getNewIssue();
     infoCard* getNewInfo();

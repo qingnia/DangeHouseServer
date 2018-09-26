@@ -20,6 +20,7 @@ enum direction {
 	dirDown,
 	dirLeft,
 	dirRight,
+	dirStop,
 };
 
 enum moveRoomType
@@ -31,10 +32,10 @@ enum moveRoomType
 
 enum configType
 {
-	ctRoom,
 	ctIssue,
 	ctRes,
 	ctInfo,
+	ctRoom,
 	ctExam,
 };
 

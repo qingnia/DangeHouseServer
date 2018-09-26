@@ -25,11 +25,11 @@ infoCard::infoCard(map<string, string> infoConfig)
 		value = iter->second;
 		if (key == "name")
 		{
-			this->m_name = value;
+			this->m_name = fileStr2Str(value);
 		}
 		else if(key == "enlishName")
 		{
-			this->m_enlishName = value;
+			this->m_enlishName = fileStr2Str(value);
 		}
 	}
 }

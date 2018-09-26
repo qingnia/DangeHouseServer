@@ -110,6 +110,70 @@ list<int> player::rollDice(examType et, int forceDiceNum)
 	return diceNums;
 }
 
+int player::enterRoom(roomCard* room)
+{
+	return 0;
+}
+
+int player::leaveRoom(roomCard* thisRoom)
+{
+	return 0;
+}
+
+int player::moveTo(direction dir)
+{
+	stringstream ss;
+
+	gameMap* myMap = getMyMap(this->mapID);
+	position* nextPos = (this->pos).getNeibourPos(dir);
+	roomCard* nextRoom = myMap->getRoom(*nextPos);
+
+	if (nextRoom == nullptr)
+	{
+		//玩家要走的位置没有房间
+		//1.检查这个位置从当前房间能不能通过
+		//2.如果能通过，则从牌库中拿到一个新房间
+		//3.执行房间事件、考验、将新房间放进地图
+		nextRoom = myMap->bindNewRoom(this->m_floor, *nextPos);
+		if (nextRoom == nullptr)
+		{
+			//新房间也没，卡池已空
+			return -2;
+		}
+		ss << "玩家进入新房间：" << nextRoom->getName() << "\n\t   " << nextRoom->getDesc();
+		logInfo(ss.str());
+
+		this->enterRoom(nextRoom);
+
+		//进新房间要拿东西
+		this->gainNewItem(nextRoom->type);
+		//新房间的事件、考验等
+		this->moveNum = this->m_speed;
+	}
+	else
+	{
+		direction revDir = reverseDir(dir);
+		if (!nextRoom->canPass(revDir))
+		{
+			return -1;
+		}
+		ss << "这个房间已经被人开发过，可以进入：" << nextRoom->getName() << "\n\t   " << nextRoom->getDesc();
+		logInfo(ss.str());
+
+		this->enterRoom(nextRoom);
+		//这个位置已经有了房间
+		//1.检查两个房间是否互通
+		//如果互通，则通过，步数+1
+		//执行房间内事件，如果遭遇敌人，步数再+1
+		//检查步数，如果还未走完，则继续等待玩家输入
+		this->moveNum++;
+	}
+
+	this->pos.x = nextPos->x;
+	this->pos.y = nextPos->y;
+	return 0;
+}
+
 int player::move()
 {
 	stringstream ss;
@@ -118,53 +182,25 @@ int player::move()
 	ss.clear();
     //行动值在停止行动时清零
     //一次移动一格，移动距离达到速度停止
-    if (this->moveNum >= this->m_speed)
-    {
-        return -1;
-    }
-
-	direction dir = this->inputDir();
-
-	gameMap* myMap = getMyMap(this->mapID);
-	roomCard* thisRoom = myMap->getRoom(this->pos);
-	if (!thisRoom->canPass(dir))
+	while (this->moveNum < this->m_speed)
 	{
-		return -1;
-	}
-	position* nextPos = (this->pos).getNeibourPos(dir);
-	roomCard* nextRoom = myMap->getRoom(*nextPos);
+		direction dir = this->inputDir();
+		if (dir == dirStop)
+		{
+			break;
+		}
+		gameMap* myMap = getMyMap(this->mapID);
+		roomCard* thisRoom = myMap->getRoom(this->pos);
+		if (!thisRoom->canPass(dir))
+		{
+			return -1;
+		}
+		this->leaveRoom(thisRoom);
+		//通过房间的校验
 
-	direction revDir = reverseDir(dir);
-    if (nextRoom == nullptr)
-	{
-		//玩家要走的位置没有房间
-		//1.检查这个位置从当前房间能不能通过
-		//2.如果能通过，则从牌库中拿到一个新房间
-		//3.执行房间事件、考验、将新房间放进地图
-        nextRoom = myMap->getNewRoom(this->m_floor, dir);
-        if (nextRoom == nullptr)
-        {
-            //新房间也没，卡池已空
-            return -2;
-        }
-		ss << "玩家进入新房间：" << nextRoom->getName() << "\n\t," << nextRoom->getDesc();
-		logInfo(ss.str());
-		//进新房间要拿东西
-		this->gainNewItem(nextRoom->type);
-        //新房间的事件、考验等
-	}
-	else
-	{
-		//这个位置已经有了房间
-		//1.检查两个房间是否互通
-		//如果互通，则通过，步数+1
-		//执行房间内事件，如果遭遇敌人，步数再+1
-		//检查步数，如果还未走完，则继续等待玩家输入
+		this->moveTo(dir);
 	}
 
-    this->moveNum++;
-    this->pos.x = pos.x;
-    this->pos.y = pos.y;
 	return 0;
 }
 
@@ -185,20 +221,20 @@ int player::gainNewItem(configType ct)
 	{
 	case ctIssue:
 		newIssue = myMap->getNewIssue();
-		ss<<"房间类型为：事件/n/t     "<<newIssue->getName()<<"/n/t  "<<newIssue->getDesc();
+		ss<<"房间类型为：事件\n\t     "<<newIssue->getName()<<"\n\t  "<<newIssue->getDesc();
 		logInfo(ss.str());
 		//一次性的考验直接不保存，如果是持续性的，需要保存状态
 //		newIssue->cardExam.affect(*this);
 		break;
 	case ctRes:
 		newRes = myMap->getNewRes();
-		ss<<"房间类型为：物品/n/t     "<<newRes->getName()<<"/n/t  "<<newRes->getDesc();
+		ss<<"房间类型为：物品\n\t     "<<newRes->getName()<<"\n\t  "<<newRes->getDesc();
 		logInfo(ss.str());
 		this->resList.push_back(newRes);
 		break;
 	case ctInfo:
 		newInfo = myMap->getNewInfo();
-		ss<<"房间类型为：预兆/n/t     "<<newInfo->getName()<<"/n/t  "<<newInfo->getDesc();
+		ss<<"房间类型为：预兆\n\t     "<<newInfo->getName()<<"\n\t  "<<newInfo->getDesc();
 		logInfo(ss.str());
 		//如果不是作祟阶段，需要进行揭露真相
 		break;

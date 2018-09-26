@@ -1,6 +1,6 @@
-﻿序号,名字,英文名,房间描述,所属楼层,是否可行,附加类型：0时间，1物品，2预兆
+序号,名字,英文名,房间描述,所属楼层,是否可行,附加类型：0时间，1物品，2预兆
 id,name,enlishName,desc,layer,canPassArray,type
-1,入口大堂,Entrance Hall,初始房间,1,1|1|1|1,0
+1,荒废的房间,Abandoned Room,叉叉叉,0|1,1|1|1|1,0
 2,上台阶,Upper Landing,上入口,2,1|1|1|1,1
 3,下台阶,Basement Landing,下入口,0,1|1|1|1,2
 4,煤导槽,Coal Chute,叉叉叉,1,1|1|1|1,2
@@ -20,4 +20,3 @@ id,name,enlishName,desc,layer,canPassArray,type
 18,建身房,Gymnasium,叉叉叉,0|2,1|1|1|1,1
 19,食品储藏库,Larder,叉叉叉,0,1|1|1|1,1
 20,图书室,Library ,叉叉叉,0|2,1|1|1|1,2
-21,荒废的房间,Abandoned Room,叉叉叉,0|1,1|1|1|1,0

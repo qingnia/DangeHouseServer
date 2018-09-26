@@ -6,6 +6,7 @@
 //
 
 #include "roomCard.h"
+#include <codecvt>
 
 roomCard::roomCard()
 {
@@ -29,7 +30,7 @@ roomCard::roomCard(map<string, string> roomConfig)
 		value = iter->second;
 		if (key == "name")
 		{
-			this->m_name = value;
+			this->m_name = fileStr2Str(value);
 		}
 		else if(key == "enlishName")
 		{
@@ -37,7 +38,7 @@ roomCard::roomCard(map<string, string> roomConfig)
 		}
 		else if (key == "desc")
 		{
-			this->m_desc = value;
+			this->m_desc = fileStr2Str(value);
 		}
 		else if (key == "layer")
 		{

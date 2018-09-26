@@ -11,11 +11,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <vector>
+#include <list>
 #include <map>
 #include <fstream>
 #include <sstream>
 #include <random>
 #include <chrono>
+#include <codecvt>
+#include <locale.h>
 #include "diyType.h"
 #include "log.hpp"
 
@@ -24,6 +27,7 @@ using namespace std;
 #define random(x) (rand()%x)
 
 vector<int> myShuffle(int num);
+list<int> myShuffle2List(int num);
 
 direction reverseDir(direction);
 
@@ -80,5 +84,9 @@ vector<Type> split(const string &str, const string &pattern)
 
 //要求：1.主键在首列，2.主键是数字,3.首行忽略
 map<int, map<string, string> > readCsvData(string fname);
+
+string ws2s(const wstring& ws);
+
+string fileStr2Str(string);
 
 #endif /* commonFun_h */
