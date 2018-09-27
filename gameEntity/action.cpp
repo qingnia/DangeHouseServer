@@ -17,15 +17,15 @@ action::action(actionType at)
     this->at = at;
 }
 
-action::action(actionType at, player p)
+action::action(actionType at, player* p)
 {
     this->at = at;
-    this->p = p;
+	this->p = p;
 }
 
-action::action(actionType at, player p, position pos)
+action::action(actionType at, player* p, position pos)
 {
     this->at = at;
-    this->p = p;
+	this->p = p;
     this->pos = pos;
 }

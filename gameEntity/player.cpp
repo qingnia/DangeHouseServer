@@ -144,12 +144,18 @@ int player::excuteExam(examine exam)
 }
 
 int player::excutePunish(effect ef)
-{  
+{
+	stringstream ss;
+	string efAttr = getETString(ef.et);
+	ss << "你受到" << ef.eNum << "点" << efAttr << "损伤";
+	logInfo(ss.str());
+	ss.clear();
+
 	examType attribute = ef.et;
     if (ef.et == etPhysicalDamage)
     {
-        string tip = "你收到%d点物理损伤，请选择1:速度，2:力量";
-        cout<<tip<<endl;
+        ss<<"你收到%d点物理损伤，请选择1:速度，2:力量";
+		logInfo(ss.str());
         //选择
         attribute = etSpeed;
     }
@@ -200,7 +206,7 @@ int player::passRoom(roomCard* room)
 {
 	if (room->needExam(mrtPass))
 	{
-		this->excuteExam(room->cardExam)
+		this->excuteExam(room->cardExam);
 	}
 	return 0;
 }
@@ -243,7 +249,8 @@ int player::moveTo(direction dir)
 		{
 			return -1;
 		}
-		ss << "这个房间已经被人开发过，可以进入：" << nextRoom->getName() << "\n\t   " << nextRoom->getDesc();
+		this->moveNum++;
+		ss << "这个房间已经被人开发过，可以进入，玩家速度："<<this->moveNum<<"房间名：" << nextRoom->getName() << "\n\t   " << nextRoom->getDesc();
 		logInfo(ss.str());
 
 		this->enterRoom(nextRoom);
@@ -305,7 +312,7 @@ int player::stop()
 
 int player::changeNewRoomRotation(direction fromDir, roomCard* room)
 {
-	direction dir = dirStop;
+	direction dir = dirUp;
 	while(! room->changeRotation(fromDir, dir))
 	{
 		if (room->canChangeRotation())

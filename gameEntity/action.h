@@ -17,10 +17,10 @@ class action{
 public:
     action();
     action(actionType at);
-    action(actionType at, player p);
-    action(actionType at, player p, position pos);
+    action(actionType at, player* p);
+    action(actionType at, player* p, position pos);
 
-    player p;
+	player* p;
     position pos;
     actionType at;
 };

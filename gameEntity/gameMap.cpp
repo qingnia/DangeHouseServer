@@ -76,10 +76,10 @@ int gameMap::initActionList()
 		iter != playerList.end(); iter++)
 	{
         //actionType at = move;
-        action startAct(atMove, *iter);
+        action startAct(atMove, &(*iter));
         this->actionList.push_back(startAct);
 
-        action stopAct(atStop, *iter);
+        action stopAct(atStop, &(*iter));
         this->actionList.push_back(stopAct);
 	}
 
@@ -180,7 +180,6 @@ roomCard* gameMap::bindNewRoom(int floor, position pos)
     {
 		int roomID = this->roomList.front();
 		this->roomList.pop_front();
-//		int roomID = *(this->roomIter);
 		newRoom = this->getRoomByID(roomID);
 		if (in_vector(floor, newRoom->suiteLayer))
 		{
@@ -188,28 +187,6 @@ roomCard* gameMap::bindNewRoom(int floor, position pos)
 			break;
 		}
 		this->roomList.push_back(roomID);
-		/**
-        int roomID = *(this->roomIter);
-        newRoom = this->getRoomByID(roomID);
-        if (in_vector(floor, newRoom->suiteLayer))
-        {
-			this->pos2room[pos.x][pos.y] = roomID;
-            this->roomList.erase(this->roomIter);
-            break;
-        }
-        this->roomIter++;
-		if (this->roomIter == this->roomList.end())
-		{
-			if (this->roomList.size() > 0)
-			{
-				this->roomIter = this->roomList.begin();
-			}
-			else
-			{
-				return nullptr;
-			}
-		}
-		*/
     }
     return newRoom;
 }
@@ -268,26 +245,31 @@ bool gameMap::getReality(player p1)
     return false;
 }
 
+//用action作回调，实际效果不好，还不如轮流查询。
+//中间状态作用于其他人身上，会作为补充询问在中间某个流程内发起，不影响整体流程
+//如万箭齐发，作为格外流程处理
 int gameMap::run()
 {
+	stringstream ss;
     action act = *(this->nextAction);
-    player p = act.p;
+    player* p = act.p;
 	position pos;
     char msg[128];
     switch(act.at)
     {
     case atStart:
-        sprintf(msg, "新一轮开始，开始阶段：");
-        logInfo(msg);    
+		ss << "新一轮开始，开始阶段："; 
+		logInfo(ss.str());
         break;
     case atMove:
-		p.move();
+		p->move();
         break;
     case atStop:
-        sprintf(msg, "本轮结束");
-		this->initActionList();
         break;
     case atOver:
+		ss << "本轮结束";
+		logInfo(ss.str());
+		this->initActionList();
         break;
     default:
         break;

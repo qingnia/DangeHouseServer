@@ -91,5 +91,6 @@ string ws2s(const wstring& ws);
 string fileStr2Str(string);
 
 string getDirString(direction);
+string getETString(examType);
 
 #endif /* commonFun_h */

@@ -47,6 +47,7 @@ enum examType{
     etKnowledge,
     etPhysicalDamage,
     etMindDamage,
+	etDice,
     etNone,
 };
 

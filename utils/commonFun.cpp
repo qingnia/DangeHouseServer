@@ -180,3 +180,32 @@ string getDirString(direction dir)
 	}
 	return str;
 }
+
+string getETString(examType et)
+{
+	string str;
+	switch (et)
+	{
+	case etSpeed:
+		str = "速度";
+		break;
+	case etStrength:
+		str = "力量";
+		break;
+	case etSpirit:
+		str = "精神";
+		break;
+	case etKnowledge:
+		str = "知识";
+		break;
+	case etPhysicalDamage:
+		str = "物理损伤";
+		break;
+	case etMindDamage:
+		str = "精神损伤";
+		break;
+	default:
+		break;
+	}
+	return str;
+}

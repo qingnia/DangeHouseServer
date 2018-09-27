@@ -60,16 +60,21 @@ examine::examine(int examID)
 
 void examine::showMsg()
 {
-    printf("你必须以 %d 进行能力考验\n", (int)(this->et));
+	stringstream ss;
+	string efAttr = getETString(this->et);
+	ss << "你必须以“" << efAttr << "”进行能力考验\n";
+    //printf("你必须以 %d 进行能力考验\n", (int)(this->et));
     list<effect>::iterator iter;
     for(iter = this->efList.begin(); iter != this->efList.end(); iter++)
     {
-        printf("如果得分在%d和%d之间，则%d收到%d点损伤\n", iter->min, iter->max, iter->et, iter->eNum);
+		efAttr = getETString(this->et);
+		ss << "如果得分在" << iter->min << "和" << iter->max << "之间则" << efAttr << "受到" << iter->eNum << "点损伤\n";
     }
     //string roomID(tmp);
     //string roomID = new string(tmp)
-    string info = "你必须以%d进行能力考验";
-    cout<<""<<endl;
+    //string info = "你必须以%d进行能力考验";
+	logInfo(ss.str());
+    //cout<<""<<endl;
 }
 /**
 void examine::affect(player p)
