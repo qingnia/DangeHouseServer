@@ -24,13 +24,13 @@ class player {
 
     int m_floor;
     position pos;
-	int mapID;
 
     string name;
     int age;
-    int m_id;
+    int m_id, mapID;
     
-    int m_strength, m_speed, m_spirit, m_knowledge;
+    //int m_strength, m_speed, m_spirit, m_knowledge;
+    map<examType, int> et2level;
     list<resCard*> resList;
  //   list<infoCard*> infoList;
     list<int> skills;
@@ -43,13 +43,15 @@ public:
     player(int id, int mapID);
 
     int getID();
-    int getStrength();
+    //int getStrength();
     int getSpeed();
     int getSpirit();
     int getKnowledge();
     int gainNewItem(configType);
 
-    int incrSpeed(int), incrStrength(int), incrSpirit(int), incrKnowledge(int);
+    //int incrSpeed(int), incrStrength(int), incrSpirit(int), incrKnowledge(int);
+    int incrETLevel(examType, int);
+    int getETValue(examType);
 
     int getRoom();
 
@@ -68,6 +70,10 @@ public:
 
     int excuteExam(examine);
     int excutePunish(effect);
+
+    bool gainBuff(cardUseType, card*);
+
+    bool getReality();
 
     int changeNewRoomRotation(direction, roomCard*);
 

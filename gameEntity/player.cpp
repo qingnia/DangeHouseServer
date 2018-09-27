@@ -33,18 +33,19 @@ player::player(int id, int mapID)
 	this->moveNum = 0;
 	this->mapID = mapID;
     this->m_id = id;
-    this->m_strength = 3;
-    this->m_speed = 4;
-    this->m_knowledge = 4;
-    this->m_spirit = 4;
+    this->et2level[etSpeed] = 4;
+	this->et2level[etStrength] = 3;
+    this->et2level[etKnowledge] = 4;
+    this->et2level[etSpirit] = 4;
 	this->m_floor = 1;
     this->pos = position(50, 50);
 }
 
+/*
 int player::getStrength()
 {
     return this->m_strength;
-}
+}*/
 
 direction player::inputDir()
 {
@@ -76,11 +77,17 @@ direction player::inputDir()
 
 list<int> player::rollDice(examType et, int forceDiceNum)
 {
-	int diceNum;
+
+	int diceNum = forceDiceNum;
+	if (diceNum == 0)
+	{
+		diceNum = this->getETValue(et);
+	}
+	/*
 	switch(et)
 	{
 	case etSpeed:
-		diceNum = this->m_speed;
+		diceNum = this->getETValue(et);
 		break;
 	case etStrength:
 		diceNum = this->m_strength;
@@ -96,6 +103,7 @@ list<int> player::rollDice(examType et, int forceDiceNum)
 		//todo 错误处理
 		break;
 	};
+	*/
 	stringstream ss;
 	ss<<"掷骰子，骰子数量为："<<diceNum<<"，每个骰子点数分别为：";
 	list<int> diceNums(diceNum);
@@ -164,6 +172,8 @@ int player::excutePunish(effect ef)
         //选择
         attribute = etSpirit;
     }
+	this->incrETLevel(attribute, ef.eNum);
+	/*
     switch(attribute)
     {
     case etSpeed:
@@ -181,9 +191,31 @@ int player::excutePunish(effect ef)
     default:
         break;
     }
+	*/
     return true;
 }
 
+bool player::getReality()
+{
+	gameMap* myMap = getMyMap(this->mapID);
+    if (myMap->getProcess() > 0)
+    {
+        return true;
+    }
+
+	stringstream ss;
+    ss<<"尝试揭露真相吧";
+	logInfo(ss.str());
+    int infoNum = myMap->getInfoNum();
+    list<int> diceNums = this->rollDice(etNone, infoNum);
+    int score = accumulate(diceNums.begin(), diceNums.end(), 0);
+    if (score > 6)
+    {
+        myMap->incrProcess();
+        return true;
+    }
+    return false;
+}
 int player::enterRoom(roomCard* room)
 {
 	if (room->needExam(mrtEnter))
@@ -240,7 +272,7 @@ int player::moveTo(direction dir)
 		//进新房间要拿东西
 		this->gainNewItem(nextRoom->type);
 		//新房间的事件、考验等
-		this->moveNum = this->m_speed;
+		this->moveNum = this->getSpeed();
 	}
 	else
 	{
@@ -275,7 +307,7 @@ int player::move()
 	ss.clear();
     //行动值在停止行动时清零
     //一次移动一格，移动距离达到速度停止
-	while (this->moveNum < this->m_speed)
+	while (this->moveNum < this->getSpeed())
 	{
 		direction dir = this->inputDir();
 		if (dir == dirStop)
@@ -354,7 +386,9 @@ int player::gainNewItem(configType ct)
 		newInfo = myMap->getNewInfo();
 		ss<<"房间类型为：预兆\n\t     "<<newInfo->getName()<<"\n\t  "<<newInfo->getDesc();
 		logInfo(ss.str());
+
 		//如果不是作祟阶段，需要进行揭露真相
+		this->getReality();
 		break;
 	default:
 		break;
@@ -367,34 +401,42 @@ int player::getID()
     return this->m_id;
 }
 
+/*
 int player::incrSpeed(int num)
 {
+	this->et2level[etSpeed]++;
+	*
 	this->m_speed += num;
 	if (this->m_speed <= 0)
 	{
 		//死亡
 	}
-	return this->m_speed;
+	*
+	return this->et2level[etSpeed];
 }
 
 int player::incrStrength(int num)
 {
+	this->et2level[etStrength]++;
+	*
 	this->m_strength += num;
 	if (this->m_strength <= 0)
 	{
 		//死亡
 	}
-	return this->m_strength;
+	*
+	return this->et2level[etStrength];
 }
 
 int player::incrSpirit(int num)
 {
+	this->et2level[etSpirit]++;
 	this->m_spirit += num;
 	if(this->m_spirit <= 0)
 	{
 		//死亡
 	}
-	return this->m_spirit;
+	return this->et2level[etSpirit];
 }
 
 int player::incrKnowledge(int num)
@@ -405,4 +447,35 @@ int player::incrKnowledge(int num)
 		//死亡
 	}
 	return this->m_knowledge;
+}
+*/
+int player::incrETLevel(examType et, int num)
+{
+	this->et2level[et] += num;
+	if(this->getETValue(et) <= 0)
+	{
+		//死亡
+	}
+	return this->et2level[et];
+}
+
+int player::getETValue(examType et)
+{
+	return 5;
+}
+
+bool gainBuff(cardUseType cut, card* c)
+{
+	map<examType, int> buff = c->getBuff(cut);
+
+	examType et;
+	int value;
+	map<examType, int>::iterator iter;
+	for(iter = buff.begin(); iter != buff.end(); iter++)
+	{
+		et = iter->first;
+		value = iter->second;
+		//数值加减
+	}
+	return true;
 }

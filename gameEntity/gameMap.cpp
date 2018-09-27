@@ -109,6 +109,8 @@ gameMap::gameMap(int playerNum, int mapID)
     this->m_length = 100;
     this->m_width = 100;
 	this->m_id = mapID;
+    this->m_infoNum = 0;
+    this->m_process = 0;
 
 	/**
     int** ret = (int**)malloc(this->m_length * sizeof(int));
@@ -208,7 +210,9 @@ infoCard* gameMap::getNewInfo()
     infoCard* newInfo;
 	int infoID = this->infoList.front();
 	this->infoList.pop_front();
-    
+
+    this->m_infoNum++;
+
     config* conf = config::getSingleConfig();
     map<string, string> infoConfig = conf->getConfig(ctInfo, infoID);
     newInfo = new infoCard(infoConfig);
@@ -227,23 +231,6 @@ resCard* gameMap::getNewRes()
 	return newRes;
 }
 
-bool gameMap::getReality(player p1)
-{
-    if (this->m_process > 0)
-    {
-        return true;
-    }
-    //cout<<"尝试揭露真相吧"<<endl;
-    int infoNum = this->m_infoNum;
-    list<int> diceNums = p1.rollDice(etNone, infoNum);
-    int score = accumulate(diceNums.begin(), diceNums.end(), 0);
-    if (score > 6)
-    {
-        this->m_process++;
-        return true;
-    }
-    return false;
-}
 
 //用action作回调，实际效果不好，还不如轮流查询。
 //中间状态作用于其他人身上，会作为补充询问在中间某个流程内发起，不影响整体流程
@@ -285,4 +272,20 @@ position gameMap::inputPosition()
     cin>>x;
     cin>>y;
     return position(x, y);
+}
+
+int gameMap::getInfoNum()
+{
+    return this->m_infoNum;
+}
+
+int gameMap::getProcess()
+{
+    return this->m_process;
+}
+
+int gameMap::incrProcess()
+{
+    this->m_process++;
+    return this->m_process;
 }

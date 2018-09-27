@@ -55,10 +55,13 @@ public:
     issueCard* getNewIssue();
     infoCard* getNewInfo();
 
-    bool getReality(player p);
-
     int run();
 
+
+    int getInfoNum();
+    int getProcess();
+    int incrProcess();
+    
 	~gameMap();
 };
 

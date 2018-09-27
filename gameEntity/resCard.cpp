@@ -39,5 +39,30 @@ resCard::resCard(map<string, string> resConfig)
 		{
 			this->m_desc = value;
 		}
+		else if (key == "buff")
+		{
+			//要求配置比较复杂：et1_eNum1|et2_eNum2|....
+            vector<string> effectConfig = split<string>(value, "|");
+            vector<string>::iterator iter;
+            for(iter = effectConfig.begin(); iter != effectConfig.end(); iter++)
+            {
+				vector<int> tmpVec = split<int>(*iter, "_");
+				examType et = (examType)tmpVec[0];
+				this->buff[et] = tmpVec[1];
+            }
+		}
+		else if (key == "deBuff")
+		{
+			//要求配置比较复杂：et1_eNum1|et2_eNum2|....
+            vector<string> effectConfig = split<string>(value, "|");
+            vector<string>::iterator iter;
+            for(iter = effectConfig.begin(); iter != effectConfig.end(); iter++)
+            {
+				vector<int> tmpVec = split<int>(*iter, "_");
+				examType et = (examType)tmpVec[0];
+				this->deBuff[et] = tmpVec[1];
+            }
+		}
 	}
 }
+

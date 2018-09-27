@@ -20,6 +20,8 @@ private:
 protected:
 	int id;
 	string m_name, m_enlishName, m_preDesc, m_desc;
+	map<examType, int> buff;	//拿到物品时
+	map<examType, int> deBuff;	//丢失物品时
 
 	bool showMsg();
 public:
@@ -28,6 +30,8 @@ public:
 	string getName();
 	string getEnlishName();
 	string getDesc();
+
+	map<examType, int> getBuff(cardUseType);
 	
 	card();
 	virtual ~card();

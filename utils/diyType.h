@@ -51,4 +51,10 @@ enum examType{
     etNone,
 };
 
+enum cardUseType
+{
+    cutGain,
+    cutLoss,
+};
+
 #endif

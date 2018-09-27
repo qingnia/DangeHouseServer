@@ -35,3 +35,20 @@ string card::getDesc()
 {
     return this->m_desc;
 }
+
+map<examType, int> card::getBuff(cardUseType cut)
+{
+    map<examType, int> buff;
+    switch(cut)
+    {
+    case cutGain:
+        buff = this->buff;
+        break;
+    case cutLoss:
+        buff = this->deBuff;
+        break;
+    default:
+        break;
+    }
+	return buff;
+}
