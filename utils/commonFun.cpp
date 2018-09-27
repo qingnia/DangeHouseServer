@@ -112,7 +112,7 @@ map<int, map<string, string> > readCsvData(string fname)
 			{
 				pKey = stringToNum<int>(value);
 			}
-			kv[keys[fieldPos]] = value;
+			kv[keys[fieldPos]] = fileStr2Str(value);
 			
 			fieldPos++;
 		}

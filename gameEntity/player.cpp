@@ -300,13 +300,15 @@ int player::move()
 		this->moveTo(dir);
 	}
 
-	//移动结束后把行动力恢复
-	this->moveNum = 0;
 	return 0;
 }
 
 int player::stop()
 {
+	//检查房间，看是否有停止时生效的
+
+	//移动结束后把行动力恢复
+	this->moveNum = 0;
 	return 0;
 }
 

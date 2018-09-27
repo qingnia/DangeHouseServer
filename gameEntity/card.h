@@ -19,7 +19,7 @@ class card
 private:
 protected:
 	int id;
-	string m_name, m_enlishName, m_desc;
+	string m_name, m_enlishName, m_preDesc, m_desc;
 
 	bool showMsg();
 public:

@@ -1,4 +1,4 @@
-//
+﻿//
 //  infoCard.h
 //  testC
 //
@@ -18,6 +18,7 @@ private:
 	infoCard();
 
 public:
+
 	infoCard(map<string, string>);
 	virtual ~infoCard();
 

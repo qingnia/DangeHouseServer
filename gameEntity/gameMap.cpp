@@ -265,6 +265,7 @@ int gameMap::run()
 		p->move();
         break;
     case atStop:
+		p->stop();
         break;
     case atOver:
 		ss << "本轮结束";
