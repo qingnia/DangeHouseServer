@@ -62,7 +62,7 @@ int gameMap::initCardList()
 	for (confIter = conf->infoConfig.begin(); confIter != conf->infoConfig.end(); confIter++)
 	{
 		this->id2info[confIter->first] = (card*) new infoCard(confIter->second);
-	}
+	} 
     this->infoIter = this->infoList.begin();
     return 0;
 }

@@ -10,12 +10,12 @@
 config* config::gameConfig = new config();
 config::config()
 {
-	//this->roomConfig = readCsvData("../tables/Room.csv");
-	this->roomConfig = readCsvData("E:/vsProjects/Serious/tables/Room.csv");
-	this->issueConfig = readCsvData("E:/vsProjects/Serious/tables/Issue.csv");
-	this->resConfig = readCsvData("E:/vsProjects/Serious/tables/Res.csv");
-	this->infoConfig = readCsvData("E:/vsProjects/Serious/tables/Info.csv");
-	this->examConfig = readCsvData("E:/vsProjects/Serious/tables/Examine.csv");
+	this->roomConfig = readCsvData("tables/Room.csv");
+	this->issueConfig = readCsvData("tables/Issue.csv");
+	this->resConfig = readCsvData("tables/Res.csv");
+	this->infoConfig = readCsvData("tables/Info.csv");
+	this->examConfig = readCsvData("tables/Examine.csv");
+	this->playerConfig = readCsvData("tables/Player.csv");
 }
 
 config::~config()
