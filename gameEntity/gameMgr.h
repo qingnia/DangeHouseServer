@@ -21,13 +21,13 @@ private:
 
 	int mapIncrValue;
 
-
+	map<int, int> choosePart(vector<int> roleIDList);
 public:
 	~gameMgr();
 	static gameMgr* getGameMgr();
 
 	gameMap* getMap(int mapID);
-	gameMap* initNewMap(int playerNum);
+	gameMap* initNewMap(vector<int> roleIDList);
 
 	void update();
 };

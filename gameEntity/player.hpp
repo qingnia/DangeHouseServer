@@ -27,46 +27,41 @@ class player {
 
     string name;
     int age;
-    int m_id, mapID;
+    int m_id, mapID, m_roleID;
     
-    //int m_strength, m_speed, m_spirit, m_knowledge;
     map<examType, int> et2level;
+    map<examType, vector<int> > etLevel2value;
     list<resCard*> resList;
  //   list<infoCard*> infoList;
     list<int> skills;
 
     int moveNum;
-    
 
-public:
-    player();
-    player(int id, int mapID);
-
-    int getID();
-    //int getStrength();
-    int getSpeed();
-    int getSpirit();
-    int getKnowledge();
     int gainNewItem(configType);
 
-    //int incrSpeed(int), incrStrength(int), incrSpirit(int), incrKnowledge(int);
     int incrETLevel(examType, int);
     int getETValue(examType);
+public:
+    player();
+    player(int roleID, int mapID, map<string, string>);
 
-    int getRoom();
+    int getID();
+    roomCard* getMyRoom();
 
 //    oper getOperate();
+    int start();
 	int move();
     int stop();
+
     int attack(int id);
     int useSkill(int id);
 
     direction inputDir();
     list<int> rollDice(examType, int forceDiceNum = 0);
-	int enterRoom(roomCard*);
-	int leaveRoom(roomCard*);   //从上一回合进入，这一回合离开，是“离开房间”
-    int passRoom(roomCard*);    //这一回合进入，这一回合离开，是“通过房间”
-	int moveTo(direction);
+	bool enterRoom(roomCard*);
+	bool leaveRoom(roomCard*);   //从上一回合进入，这一回合离开，是“离开房间”
+    bool passRoom(roomCard*);    //这一回合进入，这一回合离开，是“通过房间”
+    int moveTo(direction);
 
     int excuteExam(examine);
     int excutePunish(effect);

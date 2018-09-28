@@ -15,14 +15,19 @@ gameMap::~gameMap()
 {
 }
 
-int gameMap::initPlayerList(int playerNum)
+int gameMap::initPlayerList(map<int, int> roleID2PartID)
 {
-    char msg[128];
-    sprintf(msg, "新地图生成，玩家一共%d人", playerNum);
-    logInfo(msg);
-    for(int i = 0; i < playerNum; i++)
+    stringstream ss;
+    ss<<"新地图生成，玩家一共%d人"<< roleID2PartID.size();
+    logInfo(ss.str());
+
+    config* conf = config::getSingleConfig();
+    map<int, int>::iterator iter;
+    map<string, string> playerConfig;
+    for(iter = roleID2PartID.begin(); iter != roleID2PartID.end(); iter++)
     {
-        player p(i, this->m_id);
+        playerConfig = conf->playerConfig[this->m_id];
+        player p(iter->first, this->m_id, playerConfig);
         this->playerList.push_back(p);
     }
     return 0;
@@ -90,14 +95,14 @@ int gameMap::initActionList()
     return 0;
 }
 
-gameMap::gameMap(int playerNum, int mapID)
+gameMap::gameMap(int mapID, map<int, int> roleID2PartID)
 {
     if(this->pos2room[50][50])
     {
 		return;
     }
 
-    if (playerNum == 0)
+    if (roleID2PartID.size() <= 0)
     {
         //错误处理
     }
@@ -132,7 +137,8 @@ gameMap::gameMap(int playerNum, int mapID)
     //ret[51][50] = 2;
     //ret[52][50] = 3;
     //this->pos2room = ret;
-    this->initPlayerList(playerNum);
+    //假定两人玩游戏
+    this->initPlayerList(roleID2PartID);
     this->initCardList();
 	this->initActionList();
 }
@@ -238,6 +244,27 @@ resCard* gameMap::getNewRes()
 int gameMap::run()
 {
 	stringstream ss;
+    //放弃回调式处理，简单分为：开始、移动、结束，每个阶段循环处理每个玩家
+    list<player>::iterator iter;
+    //开始阶段
+    ss << "新一轮开始，开始阶段："; 
+	logInfo(ss.str());
+    ss.clear();
+    for(iter = this->playerList.begin(); iter != this->playerList.end(); iter++)
+    {
+        iter->start();
+    }
+    for(iter = this->playerList.begin(); iter != this->playerList.end(); iter++)
+    {
+        iter->move();
+    }
+	ss << "本轮结束";
+	logInfo(ss.str());
+    for(iter = this->playerList.begin(); iter != this->playerList.end(); iter++)
+    {
+        iter->stop();
+    }
+    /*
     action act = *(this->nextAction);
     player* p = act.p;
 	position pos;
@@ -245,8 +272,6 @@ int gameMap::run()
     switch(act.at)
     {
     case atStart:
-		ss << "新一轮开始，开始阶段："; 
-		logInfo(ss.str());
         break;
     case atMove:
 		p->move();
@@ -255,14 +280,13 @@ int gameMap::run()
 		p->stop();
         break;
     case atOver:
-		ss << "本轮结束";
-		logInfo(ss.str());
 		this->initActionList();
         break;
     default:
         break;
     }
 	this->nextAction++;
+    */
     return 0;
 }
 
@@ -288,4 +312,17 @@ int gameMap::incrProcess()
 {
     this->m_process++;
     return this->m_process;
+}
+
+bool gameMap::unravelRiddle(position pos, int playerID)
+{
+    this->m_process++;
+    roomCard* room = this->getRoom(pos);
+
+    return false;
+}
+
+bool gameMap::tryEnd()
+{
+    return false;
 }

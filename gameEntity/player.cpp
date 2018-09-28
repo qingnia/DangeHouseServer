@@ -25,20 +25,63 @@ player::player()
     this->pos = position(50, 50);
 }
 
-player::player(int id, int mapID)
+player::player(int roleID, int mapID, map<string, string> playerConfig)
 {
 	stringstream ss;
-	ss<<"初始化玩家"<<id<<"玩家速度："<<4<<"，力量："<<3<<"，知识："<<4<<"精神："<<4;
+	ss<<"初始化玩家 roleID:"<<roleID;
 	logInfo(ss.str());
 	this->moveNum = 0;
 	this->mapID = mapID;
-    this->m_id = id;
-    this->et2level[etSpeed] = 4;
-	this->et2level[etStrength] = 3;
-    this->et2level[etKnowledge] = 4;
-    this->et2level[etSpirit] = 4;
+    this->m_roleID = roleID;
 	this->m_floor = 1;
-    this->pos = position(50, 50);
+ 	this->pos = position(50, 50);
+	
+	map<string, string>::iterator iter;
+	string key, value;
+	for (iter = playerConfig.begin(); iter != playerConfig.end(); iter++)
+ 	{
+		key = iter->first;
+		value = iter->second;
+		if (key == "id")
+		{
+			this->m_id = stringToNum<int>(value);
+		}
+		else if (key == "originSpeedLevel")
+		{
+			this->et2level[etSpeed] = stringToNum<int>(value);
+		}
+		else if(key == "speedValue")
+		{
+			this->etLevel2value[etSpeed] = split<int>(value, "|");
+		}
+		else if(key == "originStrengthLevel")
+		{
+			this->et2level[etStrength] = stringToNum<int>(value);
+		}
+		else if(key == "strengthValue")
+		{
+			this->etLevel2value[etStrength] = split<int>(value, "|");
+		}
+		else if(key == "originSpiritLevel")
+		{
+			this->et2level[etSpirit] = stringToNum<int>(value);
+		}
+		else if(key == "spiritValue")
+		{
+			this->etLevel2value[etSpirit] = split<int>(value, "|");
+		}
+		else if(key == "originKnowledgeLevel")
+		{
+			this->et2level[etKnowledge] = stringToNum<int>(value);
+		}
+		else if(key == "knowledgeValue")
+		{
+			this->etLevel2value[etKnowledge] = split<int>(value, "|");
+		}
+ 	}
+	ss << "玩家速度：" << this->getETValue(etSpeed) <<"，力量："<< this->getETValue(etStrength);
+	ss <<"，知识："<< this->getETValue(etKnowledge) <<"精神："<< this->getETValue(etSpirit);
+	logInfo(ss.str());
 }
 
 /*
@@ -83,27 +126,6 @@ list<int> player::rollDice(examType et, int forceDiceNum)
 	{
 		diceNum = this->getETValue(et);
 	}
-	/*
-	switch(et)
-	{
-	case etSpeed:
-		diceNum = this->getETValue(et);
-		break;
-	case etStrength:
-		diceNum = this->m_strength;
-		break;
-	case etSpirit:
-		diceNum = this->m_spirit;
-		break;
-	case etKnowledge:
-		diceNum = this->m_knowledge;
-		break;
-	default:
-		diceNum = forceDiceNum;
-		//todo 错误处理
-		break;
-	};
-	*/
 	stringstream ss;
 	ss<<"掷骰子，骰子数量为："<<diceNum<<"，每个骰子点数分别为：";
 	list<int> diceNums(diceNum);
@@ -173,25 +195,6 @@ int player::excutePunish(effect ef)
         attribute = etSpirit;
     }
 	this->incrETLevel(attribute, ef.eNum);
-	/*
-    switch(attribute)
-    {
-    case etSpeed:
-        this->incrSpeed(ef.eNum);
-        break;
-    case etStrength:
-        this->incrStrength(ef.eNum);
-        break;
-    case etSpirit:
-        this->incrSpirit(ef.eNum);
-        break;
-    case etKnowledge:
-        this->incrKnowledge(ef.eNum);
-        break;
-    default:
-        break;
-    }
-	*/
     return true;
 }
 
@@ -211,35 +214,96 @@ bool player::getReality()
     int score = accumulate(diceNums.begin(), diceNums.end(), 0);
     if (score > 6)
     {
-        myMap->incrProcess();
+		myMap->unravelRiddle(this->pos, this->m_id);
         return true;
     }
     return false;
 }
-int player::enterRoom(roomCard* room)
+bool player::enterRoom(roomCard* room)
 {
 	if (room->needExam(mrtEnter))
 	{
 		this->excuteExam(room->cardExam);
 	}
-	return 0;
+	return true;
 }
 
-int player::leaveRoom(roomCard* room)
+bool player::leaveRoom(roomCard* room)
 {
 	if (room->needExam(mrtLeave))
 	{
 		this->excuteExam(room->cardExam);
 	}
-	return 0;
+	return true;
 }
 
-int player::passRoom(roomCard* room)
+bool player::passRoom(roomCard* room)
 {
 	if (room->needExam(mrtPass))
 	{
 		this->excuteExam(room->cardExam);
 	}
+	return true;
+}
+
+int player::start()
+{
+	roomCard* room = this->getMyRoom();
+	if (room->needExam(mrtStart))
+	{
+		this->excuteExam(room->cardExam);
+	}
+	return 0;
+}
+
+int player::move()
+{
+	stringstream ss;
+	ss<<"轮到玩家"<<this->getID()<<"移动,玩家速度："<< this->getETValue(etSpeed) <<"当前移动步数：" << this->moveNum;
+	logInfo(ss.str());
+	ss.clear();
+    //行动值在停止行动时清零
+    //一次移动一格，移动距离达到速度停止
+	while (this->moveNum < this->getETValue(etSpeed))
+	{
+		direction dir = this->inputDir();
+		if (dir == dirStop)
+		{
+			break;
+		}
+		gameMap* myMap = getMyMap(this->mapID);
+		roomCard* thisRoom = myMap->getRoom(this->pos);
+		if (!thisRoom->canPass(dir))
+		{
+			return -1;
+		}
+		bool canPass = false;
+		if (this->moveNum == 0)
+		{
+			canPass = this->leaveRoom(thisRoom);
+		}
+		else
+		{
+			canPass = this->passRoom(thisRoom);
+		}
+		if (canPass)
+		{
+			this->moveTo(dir);
+		}
+	}
+	return 0;
+}
+
+int player::stop()
+{
+	//检查房间，看是否有停止时生效的
+	roomCard* room = this->getMyRoom();
+	if (room->needExam(mrtStay))
+	{
+		this->excuteExam(room->cardExam);
+	}
+	//移动结束后把行动力恢复
+	this->moveNum = 0;
 	return 0;
 }
 
@@ -272,7 +336,7 @@ int player::moveTo(direction dir)
 		//进新房间要拿东西
 		this->gainNewItem(nextRoom->type);
 		//新房间的事件、考验等
-		this->moveNum = this->getSpeed();
+		this->moveNum = this->getETValue(etSpeed);
 	}
 	else
 	{
@@ -296,51 +360,6 @@ int player::moveTo(direction dir)
 
 	this->pos.x = nextPos->x;
 	this->pos.y = nextPos->y;
-	return 0;
-}
-
-int player::move()
-{
-	stringstream ss;
-	ss<<"轮到玩家"<<this->getID()<<"移动,玩家速度："<<this->m_speed<<"当前移动步数："<<this->moveNum;
-	logInfo(ss.str());
-	ss.clear();
-    //行动值在停止行动时清零
-    //一次移动一格，移动距离达到速度停止
-	while (this->moveNum < this->getSpeed())
-	{
-		direction dir = this->inputDir();
-		if (dir == dirStop)
-		{
-			break;
-		}
-		gameMap* myMap = getMyMap(this->mapID);
-		roomCard* thisRoom = myMap->getRoom(this->pos);
-		if (!thisRoom->canPass(dir))
-		{
-			return -1;
-		}
-		if (this->moveNum == 0)
-		{
-			this->leaveRoom(thisRoom);
-		}
-		else
-		{
-			this->passRoom(thisRoom);
-		}
-
-		this->moveTo(dir);
-	}
-
-	return 0;
-}
-
-int player::stop()
-{
-	//检查房间，看是否有停止时生效的
-
-	//移动结束后把行动力恢复
-	this->moveNum = 0;
 	return 0;
 }
 
@@ -401,67 +420,29 @@ int player::getID()
     return this->m_id;
 }
 
-/*
-int player::incrSpeed(int num)
+roomCard* player::getMyRoom()
 {
-	this->et2level[etSpeed]++;
-	*
-	this->m_speed += num;
-	if (this->m_speed <= 0)
-	{
-		//死亡
-	}
-	*
-	return this->et2level[etSpeed];
+	gameMap* myMap = getMyMap(this->mapID);
+	roomCard* room = myMap->getRoom(this->pos);
+	return room;
 }
-
-int player::incrStrength(int num)
-{
-	this->et2level[etStrength]++;
-	*
-	this->m_strength += num;
-	if (this->m_strength <= 0)
-	{
-		//死亡
-	}
-	*
-	return this->et2level[etStrength];
-}
-
-int player::incrSpirit(int num)
-{
-	this->et2level[etSpirit]++;
-	this->m_spirit += num;
-	if(this->m_spirit <= 0)
-	{
-		//死亡
-	}
-	return this->et2level[etSpirit];
-}
-
-int player::incrKnowledge(int num)
-{
-	this->m_knowledge += num;
-	if(this->m_knowledge <= 0)
-	{
-		//死亡
-	}
-	return this->m_knowledge;
-}
-*/
 int player::incrETLevel(examType et, int num)
 {
 	this->et2level[et] += num;
-	if(this->getETValue(et) <= 0)
+	if(this->getETValue(et) < 0)
 	{
 		//死亡
+		gameMap* myMap = getMyMap(this->mapID);
+		myMap->tryEnd();
 	}
 	return this->et2level[et];
 }
 
 int player::getETValue(examType et)
 {
-	return 5;
+	int level = this->et2level[et];
+	vector<int> Level2value = this->etLevel2value[et];
+	return Level2value[level];
 }
 
 bool gainBuff(cardUseType cut, card* c)

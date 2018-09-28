@@ -36,10 +36,36 @@ gameMap* gameMgr::getMap(int mapID)
 	return nullptr;
 }
 
-gameMap* gameMgr::initNewMap(int playerNum)
+map<int, int> gameMgr::choosePart(vector<int> roleIDList)
+{
+	map<int, int> roleID2Character;
+	stringstream ss;
+	config* conf = config::getSingleConfig();
+	list<int> leftPartList = myShuffle2List(conf->playerConfig.size());
+	vector<int>::iterator roleIter;
+	list<int>::iterator partIter = leftPartList.end();
+	for(roleIter = roleIDList.begin(); roleIter != roleIDList.end(); roleIter++)
+	{
+		string leftChara = list2String(leftPartList);
+		ss<< "剩余可选人物：" << leftChara;
+		int num;
+		while(partIter != leftPartList.end());
+		{
+			cin>>num;
+			partIter = find(leftPartList.begin(), leftPartList.end(), num);
+		}
+		roleID2Character[*roleIter] = num;
+		leftPartList.erase(partIter);
+		partIter = leftPartList.end();
+	}
+	return roleID2Character;
+}
+
+gameMap* gameMgr::initNewMap(vector<int> roleIDList)
 {
 	gm->mapIncrValue++;
-	gameMap* newMap = new gameMap(playerNum, gm->mapIncrValue);
+	map<int, int> roleID2Part = this->choosePart(roleIDList);	
+	gameMap* newMap = new gameMap(gm->mapIncrValue, roleID2Part);
 	gm->id2Map.insert(pair<int, gameMap*>(gm->mapIncrValue, newMap));
 	
 	return nullptr;

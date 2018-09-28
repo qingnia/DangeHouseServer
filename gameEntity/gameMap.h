@@ -36,7 +36,7 @@ class gameMap{
     list<int>::iterator roomIter, resIter, issueIter, infoIter;
     list<int>           roomList, resList, issueList, infoList;
 
-    int initPlayerList(int playerNum);
+    int initPlayerList(map<int, int>);
     int initActionList();
     int initCardList();
 
@@ -44,7 +44,7 @@ class gameMap{
     position inputPosition();
 public:
 	gameMap();
-    gameMap(int playerNum, int mapID);
+    gameMap(int mapID, map<int, int> roleID2PartID);
 
     roomCard* getRoom(position pos);
     roomCard* getRoomByID(int roomID);
@@ -57,6 +57,8 @@ public:
 
     int run();
 
+    bool unravelRiddle(position, int playerID);
+    bool tryEnd();
 
     int getInfoNum();
     int getProcess();

@@ -25,9 +25,11 @@ enum direction {
 
 enum moveRoomType
 {
+	mrtStart,
 	mrtEnter,
 	mrtPass,
 	mrtLeave,
+	mrtStay,
 	mrtNone,
 };
 

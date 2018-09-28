@@ -49,7 +49,7 @@ Type stringToNum(const string& str)
 template<class src_type>
 string type2str(src_type src)
 {
-	strstream ss;
+	stringstream ss;
 	ss << src;
 	string ret;
 	ss >> ret;
@@ -93,4 +93,15 @@ string fileStr2Str(string);
 string getDirString(direction);
 string getETString(examType);
 
+template <class Type>
+string list2String(list<Type> l)
+{
+	stringstream ss;
+	while(! l.empty())
+	{
+		ss << l.front << ", ";
+		l.pop_front();
+	}
+	return ss.str();
+}
 #endif /* commonFun_h */
