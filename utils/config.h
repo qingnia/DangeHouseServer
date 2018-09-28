@@ -40,7 +40,7 @@ public:
 	static config* getSingleConfig();
 	~config();
 
-	map<int, map<string, string> > roomConfig, resConfig, infoConfig, issueConfig, examConfig;
+	map<int, map<string, string> > roomConfig, resConfig, infoConfig, issueConfig, examConfig, playerConfig;
 
 	map<string, string> getConfig(configType, int);
 };

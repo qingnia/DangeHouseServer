@@ -27,11 +27,11 @@ infoCard::infoCard(map<string, string> infoConfig)
 		{
 			this->m_name = value;
 		}
-		else if(key == "enlishName")
+		else if (key == "enlishName")
 		{
 			this->m_enlishName = value;
 		}
-		else if(key == "preDesc")
+		else if (key == "preDesc")
 		{
 			this->m_preDesc = value;
 		}
@@ -39,4 +39,5 @@ infoCard::infoCard(map<string, string> infoConfig)
 		{
 			this->m_desc = value;
 		}
+	}
 }

@@ -30,7 +30,7 @@ roomCard::roomCard(map<string, string> roomConfig)
 		value = iter->second;
 		if (key == "name")
 		{
-			this->m_name = fileStr2Str(value);
+			this->m_name = value;
 		}
 		else if(key == "enlishName")
 		{
@@ -38,7 +38,7 @@ roomCard::roomCard(map<string, string> roomConfig)
 		}
 		else if (key == "desc")
 		{
-			this->m_desc = fileStr2Str(value);
+			this->m_desc = value;
 		}
 		else if (key == "layer")
 		{
