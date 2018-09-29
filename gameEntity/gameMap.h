@@ -55,6 +55,7 @@ public:
     issueCard* getNewIssue();
     infoCard* getNewInfo();
 
+	list<int> getCanAttackRoleIDList(player*);
     int run();
 
     bool unravelRiddle(position, int playerID);

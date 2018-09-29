@@ -68,7 +68,15 @@ void examine::showMsg()
     for(iter = this->efList.begin(); iter != this->efList.end(); iter++)
     {
 		efAttr = getETString(this->et);
-		ss << "如果得分在" << iter->min << "和" << iter->max << "之间则" << efAttr << "受到" << iter->eNum << "点损伤\n";
+		ss << "如果得分在" << iter->min << "和" << iter->max << "之间则" << efAttr;
+		if (iter->eNum > 0)
+		{
+			ss << "增加" << iter->eNum << "个等级\n";
+		}
+		else
+		{
+			ss << "受到" << iter->eNum << "点损伤\n";
+		}
     }
     //string roomID(tmp);
     //string roomID = new string(tmp)

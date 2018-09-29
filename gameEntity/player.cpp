@@ -32,7 +32,7 @@ player::player(int roleID, int mapID, map<string, string> playerConfig)
 	logInfo(ss.str());
 	ss.str("");
 	this->moveNum = 0;
-	this->mapID = mapID;
+	this->m_mapID = mapID;
     this->m_roleID = roleID;
 	this->m_floor = 1;
  	this->pos = position(50, 50);
@@ -86,12 +86,7 @@ player::player(int roleID, int mapID, map<string, string> playerConfig)
 	logInfo(ss.str());
 }
 
-/*
-int player::getStrength()
-{
-    return this->m_strength;
-}*/
-
+/****************************玩家输入***********************************************/
 direction player::inputDir()
 {
     cout<<"输入：上w,下s,左a,右d"<<endl;
@@ -153,6 +148,44 @@ list<int> player::rollDice(examType et, int forceDiceNum)
 	return diceNums;
 }
 
+template<class Type>
+Type player::inputFromList(const list<Type> &l)
+{
+	stringstream ss;
+	ss << "输入" << list2String(l) << "中的一个";
+	list<Type>::const_iterator begin = l.begin();
+	list<Type>::const_iterator end = l.end();
+	Type input;
+	while (cin >> input)
+	{
+		while (begin != end && *begin != input)
+		{
+			++begin;
+		}
+		if(begin != end)
+		{
+			break;
+		}
+		/**
+		bool ret = myFind(l.begin(), l.end(), input);
+		if (ret)
+		{
+			break;
+		}*/
+	}
+	/**
+	while (iter != l.end())
+	{
+		cin >> input;
+		input = *iter;
+		//iter = find(l.begin(), l.end(), input);
+	}
+	*/
+	return input;
+}
+
+/****************************玩家输入***********************************************/
+
 int player::excuteExam(examine exam)
 {
 	if (exam.et == etNone)
@@ -213,7 +246,7 @@ int player::excutePunish(examType et, int num)
 
 bool player::getReality()
 {
-	gameMap* myMap = getMyMap(this->mapID);
+	gameMap* myMap = getMyMap(this->m_mapID);
     if (myMap->getProcess() > 0)
     {
         return true;
@@ -254,6 +287,22 @@ bool player::enterRoom(roomCard* room, bool isNewRoom)
 	}
 	else
 	{
+		gameMap* myMap = getMyMap(this->m_mapID);
+		list<int> canAttackList = myMap->getCanAttackRoleIDList(this);
+		if (canAttackList.size() > 0)
+		{
+			//询问玩家是否要攻击
+			stringstream ss;
+			ss << "你当前可以攻击 " << list2String(canAttackList) << " 这些玩家，请输入要攻击目标，0为放弃攻击";
+			logInfo(ss.str());
+
+			canAttackList.push_back(0);
+			int target = this->inputFromList(canAttackList);
+			if (target != 0)
+			{
+				this->attack(target);
+			}
+		}
 		this->moveNum++;
 	}
 	return true;
@@ -306,7 +355,7 @@ int player::move()
 		{
 			break;
 		}
-		gameMap* myMap = getMyMap(this->mapID);
+		gameMap* myMap = getMyMap(this->m_mapID);
 		roomCard* thisRoom = myMap->getRoom(this->pos);
 
 		//检查这个位置从当前房间能不能通过
@@ -348,7 +397,7 @@ int player::moveTo(direction dir)
 {
 	stringstream ss;
 
-	gameMap* myMap = getMyMap(this->mapID);
+	gameMap* myMap = getMyMap(this->m_mapID);
 	position* nextPos = (this->pos).getNeibourPos(dir);
 	roomCard* nextRoom = myMap->getRoom(*nextPos);
 
@@ -380,10 +429,11 @@ int player::moveTo(direction dir)
 	ss << "，剩余移动步数：" << this->getETValue(etSpeed) - this->moveNum << "房间名：" << nextRoom->getName() << "\n\t   " << nextRoom->getDesc();
 	logInfo(ss.str());
 
-	this->enterRoom(nextRoom, enterNewRoom);
-
 	this->pos.x = nextPos->x;
 	this->pos.y = nextPos->y;
+
+	this->enterRoom(nextRoom, enterNewRoom);
+
 	return 0;
 }
 
@@ -402,7 +452,7 @@ int player::changeNewRoomRotation(direction fromDir, roomCard* room)
 
 int player::gainNewItem(configType ct)
 {
-	gameMap* myMap = getMyMap(this->mapID);
+	gameMap* myMap = getMyMap(this->m_mapID);
 	issueCard* newIssue;
 	resCard* newRes;
 	infoCard* newInfo;
@@ -445,19 +495,35 @@ int player::getID()
     return this->m_id;
 }
 
+int player::getRoleID()
+{
+	return this->m_roleID;
+}
+
 roomCard* player::getMyRoom()
 {
-	gameMap* myMap = getMyMap(this->mapID);
+	gameMap* myMap = getMyMap(this->m_mapID);
 	roomCard* room = myMap->getRoom(this->pos);
 	return room;
 }
+
+/*************************属性相关***********************************/
 int player::incrETLevel(examType et, int num)
 {
+	stringstream ss;
 	this->et2level[et] += num;
-	if(this->getETValue(et) < 0)
+	if (num != 0)
 	{
+		ss << "玩家" << this->m_roleID << "健康发生变化:属性" << getETString(et) << "变化" << num << "个等级，新等级为" << this->et2level[et] << "，新数值为" << this->getETValue(et);
+		logInfo(ss.str());
+		ss.str("");
+	}
+	if(this->et2level[et] < 0)
+	{
+		ss << "玩家" << this->m_roleID << getETString(et) << "变为0，死亡！";
+		logInfo(ss.str());
 		//死亡
-		gameMap* myMap = getMyMap(this->mapID);
+		gameMap* myMap = getMyMap(this->m_mapID);
 		myMap->tryEnd();
 	}
 	return this->et2level[et];
@@ -486,3 +552,15 @@ bool player::gainBuff(cardUseType cut, card* c)
 	}
 	return true;
 }
+/*************************属性相关***********************************/
+
+/************************攻击相关**************************************/
+int player::attack(int roleID)
+{
+	//1.先检查能不能攻击，考虑特殊道具（枪）影响攻击范围
+	//2.掷骰，检查物品和特殊房间，看是否影响骰数
+	//3.被攻击方掷骰
+	//4.判定结果，根据攻击类型对输的一方惩罚物理/精神损伤
+	return 0;
+}
+/************************攻击相关**************************************/

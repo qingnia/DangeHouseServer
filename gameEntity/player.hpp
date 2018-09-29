@@ -21,13 +21,11 @@
 class gameMgr;
 using namespace std;
 class player {
-
-    int m_floor;
     position pos;
 
     string name;
-    int age;
-    int m_id, mapID, m_roleID;
+    int age, moveNum, m_floor;
+    int m_id, m_mapID, m_roleID;
     
     map<examType, int> et2level;
     map<examType, vector<int> > etLevel2value;
@@ -35,7 +33,9 @@ class player {
  //   list<infoCard*> infoList;
     list<int> skills;
 
-    int moveNum;
+	direction inputDir();
+	list<int> rollDice(examType, int forceDiceNum = 0);
+	template<class Type> Type inputFromList(const list<Type>&);
 
     int gainNewItem(configType);
 
@@ -45,7 +45,7 @@ public:
     player();
     player(int roleID, int mapID, map<string, string>);
 
-    int getID();
+    int getID(), getRoleID();
     roomCard* getMyRoom();
 
 //    oper getOperate();
@@ -56,8 +56,6 @@ public:
     int attack(int id);
     int useSkill(int id);
 
-    direction inputDir();
-    list<int> rollDice(examType, int forceDiceNum = 0);
 	bool enterRoom(roomCard*, bool isNewRoom);
 	bool leaveRoom(roomCard*);   //从上一回合进入，这一回合离开，是“离开房间”
     bool passRoom(roomCard*);    //这一回合进入，这一回合离开，是“通过房间”

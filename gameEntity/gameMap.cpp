@@ -26,7 +26,7 @@ int gameMap::initPlayerList(map<int, int> roleID2PartID)
     map<string, string> playerConfig;
     for(iter = roleID2PartID.begin(); iter != roleID2PartID.end(); iter++)
     {
-        playerConfig = conf->playerConfig[this->m_id];
+        playerConfig = conf->playerConfig[iter->second];
         player p(iter->first, this->m_id, playerConfig);
         this->playerList.push_back(p);
     }
@@ -264,29 +264,6 @@ int gameMap::run()
     {
         iter->stop();
     }
-    /*
-    action act = *(this->nextAction);
-    player* p = act.p;
-	position pos;
-    char msg[128];
-    switch(act.at)
-    {
-    case atStart:
-        break;
-    case atMove:
-		p->move();
-        break;
-    case atStop:
-		p->stop();
-        break;
-    case atOver:
-		this->initActionList();
-        break;
-    default:
-        break;
-    }
-	this->nextAction++;
-    */
     return 0;
 }
 
@@ -325,4 +302,23 @@ bool gameMap::unravelRiddle(position pos, int playerID)
 bool gameMap::tryEnd()
 {
     return false;
+}
+
+list<int> gameMap::getCanAttackRoleIDList(player* p)
+{
+	list<int> roleIDList;
+	list<player>::iterator iter;
+	for (iter = this->playerList.begin(); iter != this->playerList.end(); iter++)
+	{
+		if (iter->getRoleID() == p->getRoleID())
+		{
+			continue;
+		}
+		//目前只考虑没武器的情况，即必须有玩家在相同房间才可以攻击
+		if (iter->getMyRoom() == p->getMyRoom())
+		{
+			roleIDList.push_back(iter->getRoleID());
+		}
+	}
+	return roleIDList;
 }

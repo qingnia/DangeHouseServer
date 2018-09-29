@@ -123,12 +123,17 @@ map<int, map<string, string> > readCsvData(string fname)
 
 
 template <class Iterator, class T>
-Iterator myFind(Iterator begin, Iterator end, const T &value)
+bool myFind(Iterator begin, Iterator end, const T &value)
 {
-	while (begin != end && *begin != value) {
+	while (begin != end && *begin != value)
+	{
 		++begin;
 	}
-	return begin;
+	if (begin != end)
+	{
+		return true;
+	}
+	return false;
 }
 
 string ws2s(const wstring& ws)
@@ -193,7 +198,7 @@ string getETString(examType et)
 		str = "力量";
 		break;
 	case etSpirit:
-		str = "精神";
+		str = "神志";
 		break;
 	case etKnowledge:
 		str = "知识";
