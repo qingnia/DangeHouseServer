@@ -554,6 +554,11 @@ int player::attack(int roleID)
 
 list<int> player::getWeapons()
 {
-
+	stringstream ss;
+	list<resCard*>::iterator resIter;
+	for(resIter = this->resList.begin(); resIter != this->resList.end(); resIter++)
+	{
+		if (resIter.useT)
+	}
 }
 /************************攻击相关**************************************/
