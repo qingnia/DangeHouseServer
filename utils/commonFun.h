@@ -94,13 +94,14 @@ string getDirString(direction);
 string getETString(examType);
 
 template <class Type>
-string list2String(list<Type> l)
+string list2String(const list<Type> &l)
 {
+	list<Type> tmp = l;
 	stringstream ss;
-	while(! l.empty())
+	while(! tmp.empty())
 	{
-		ss << l.front << ", ";
-		l.pop_front();
+		ss << tmp.front() << ", ";
+		tmp.pop_front();
 	}
 	return ss.str();
 }

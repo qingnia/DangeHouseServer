@@ -58,13 +58,13 @@ public:
 
     direction inputDir();
     list<int> rollDice(examType, int forceDiceNum = 0);
-	bool enterRoom(roomCard*);
+	bool enterRoom(roomCard*, bool isNewRoom);
 	bool leaveRoom(roomCard*);   //从上一回合进入，这一回合离开，是“离开房间”
     bool passRoom(roomCard*);    //这一回合进入，这一回合离开，是“通过房间”
     int moveTo(direction);
 
     int excuteExam(examine);
-    int excutePunish(effect);
+    int excutePunish(examType, int);
 
     bool gainBuff(cardUseType, card*);
 

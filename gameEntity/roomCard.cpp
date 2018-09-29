@@ -52,7 +52,7 @@ roomCard::roomCard(map<string, string> roomConfig)
 		{
 			this->type = configType(stringToNum<int>(value));
 		}
-		else if (key == "moveRoomType")
+		else if (key == "mrtType")
 		{
 			this->mrt = moveRoomType(stringToNum<int>(value));
 		}

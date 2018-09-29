@@ -18,7 +18,7 @@ gameMap::~gameMap()
 int gameMap::initPlayerList(map<int, int> roleID2PartID)
 {
     stringstream ss;
-    ss<<"新地图生成，玩家一共%d人"<< roleID2PartID.size();
+    ss<<"新地图生成，玩家一共"<< roleID2PartID.size() << "人";
     logInfo(ss.str());
 
     config* conf = config::getSingleConfig();

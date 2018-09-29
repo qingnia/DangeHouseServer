@@ -30,11 +30,13 @@ player::player(int roleID, int mapID, map<string, string> playerConfig)
 	stringstream ss;
 	ss<<"初始化玩家 roleID:"<<roleID;
 	logInfo(ss.str());
+	ss.str("");
 	this->moveNum = 0;
 	this->mapID = mapID;
     this->m_roleID = roleID;
 	this->m_floor = 1;
  	this->pos = position(50, 50);
+	this->et2level[etDice] = 0;
 	
 	map<string, string>::iterator iter;
 	string key, value;
@@ -120,14 +122,25 @@ direction player::inputDir()
 
 list<int> player::rollDice(examType et, int forceDiceNum)
 {
-
-	int diceNum = forceDiceNum;
-	if (diceNum == 0)
+	stringstream ss;
+	ss << "掷骰子，";
+	int diceNum;
+	if (forceDiceNum > 0)
+	{
+		diceNum = forceDiceNum;
+		ss << "骰子数量强制为" << diceNum;
+	}
+	else
 	{
 		diceNum = this->getETValue(et);
+		ss << "骰子数量为：" << diceNum;
+		if (this->et2level[etDice] > 0)
+		{
+			diceNum = diceNum + this->et2level[etDice];
+			ss << ",因玩家有特殊物品，骰子数量增加" << this->et2level[etDice];
+		}
 	}
-	stringstream ss;
-	ss<<"掷骰子，骰子数量为："<<diceNum<<"，每个骰子点数分别为：";
+	ss << "，每个骰子点数分别为：";
 	list<int> diceNums(diceNum);
 	for(int i = 0; i < diceNum; i++)
 	{
@@ -154,7 +167,7 @@ int player::excuteExam(examine exam)
         int compareNum = random(2 * exam.attackValue);
         if(score < compareNum)
         {
-            this->excutePunish(exam.attackEffect);
+            this->excutePunish(exam.attackEffect.et, compareNum - score);
         }
     }
     else
@@ -165,7 +178,7 @@ int player::excuteExam(examine exam)
            effect ef = *iter;
            if (score >= ef.min & score <= ef.max)
            {
-               this->excutePunish(ef);
+               this->excutePunish(ef.et, ef.eNum);
                break;
            }
 	    }
@@ -173,28 +186,28 @@ int player::excuteExam(examine exam)
 	return 0;
 }
 
-int player::excutePunish(effect ef)
+int player::excutePunish(examType et, int num)
 {
 	stringstream ss;
-	string efAttr = getETString(ef.et);
-	ss << "你受到" << ef.eNum << "点" << efAttr << "损伤";
+	string efAttr = getETString(et);
+	ss << "你受到" << num << "点" << efAttr << "损伤";
 	logInfo(ss.str());
 	ss.clear();
 
-	examType attribute = ef.et;
-    if (ef.et == etPhysicalDamage)
+	examType attribute = et;
+    if (et == etPhysicalDamage)
     {
         ss<<"你收到%d点物理损伤，请选择1:速度，2:力量";
 		logInfo(ss.str());
         //选择
         attribute = etSpeed;
     }
-    else if (ef.et == etMindDamage)
+    else if (et == etMindDamage)
     {
         //选择
         attribute = etSpirit;
     }
-	this->incrETLevel(attribute, ef.eNum);
+	this->incrETLevel(attribute, num);
     return true;
 }
 
@@ -209,21 +222,39 @@ bool player::getReality()
 	stringstream ss;
     ss<<"尝试揭露真相吧";
 	logInfo(ss.str());
+	ss.str("");
     int infoNum = myMap->getInfoNum();
     list<int> diceNums = this->rollDice(etNone, infoNum);
     int score = accumulate(diceNums.begin(), diceNums.end(), 0);
     if (score > 6)
     {
+		ss << "真相出现了！";
+		logInfo(ss.str());
 		myMap->unravelRiddle(this->pos, this->m_id);
         return true;
     }
+	ss << "真相还被隐藏着";
+	logInfo(ss.str());
     return false;
 }
-bool player::enterRoom(roomCard* room)
+bool player::enterRoom(roomCard* room, bool isNewRoom)
 {
+	//执行房间事件、考验、
 	if (room->needExam(mrtEnter))
 	{
 		this->excuteExam(room->cardExam);
+	}
+
+	if (isNewRoom)
+	{
+		//进新房间要拿东西
+		this->gainNewItem(room->type);
+		//新房间的事件、考验等
+		this->moveNum = this->getETValue(etSpeed);
+	}
+	else
+	{
+		this->moveNum++;
 	}
 	return true;
 }
@@ -234,6 +265,8 @@ bool player::leaveRoom(roomCard* room)
 	{
 		this->excuteExam(room->cardExam);
 	}
+
+	//执行房间内事件，如果遭遇敌人，步数再+1
 	return true;
 }
 
@@ -243,6 +276,8 @@ bool player::passRoom(roomCard* room)
 	{
 		this->excuteExam(room->cardExam);
 	}
+
+	//执行房间内事件，如果遭遇敌人，步数再+1
 	return true;
 }
 
@@ -259,7 +294,7 @@ int player::start()
 int player::move()
 {
 	stringstream ss;
-	ss<<"轮到玩家"<<this->getID()<<"移动,玩家速度："<< this->getETValue(etSpeed) <<"当前移动步数：" << this->moveNum;
+	ss << "轮到玩家" << this->m_roleID << "移动,玩家速度：" << this->getETValue(etSpeed) << "当前移动步数：" << this->moveNum;
 	logInfo(ss.str());
 	ss.clear();
     //行动值在停止行动时清零
@@ -273,6 +308,8 @@ int player::move()
 		}
 		gameMap* myMap = getMyMap(this->mapID);
 		roomCard* thisRoom = myMap->getRoom(this->pos);
+
+		//检查这个位置从当前房间能不能通过
 		if (!thisRoom->canPass(dir))
 		{
 			return -1;
@@ -315,12 +352,10 @@ int player::moveTo(direction dir)
 	position* nextPos = (this->pos).getNeibourPos(dir);
 	roomCard* nextRoom = myMap->getRoom(*nextPos);
 
+	bool enterNewRoom = false;
 	if (nextRoom == nullptr)
 	{
-		//玩家要走的位置没有房间
-		//1.检查这个位置从当前房间能不能通过
-		//2.如果能通过，则从牌库中拿到一个新房间
-		//3.执行房间事件、考验、将新房间放进地图
+		//玩家要走的位置没有房间,从牌库中拿到一个新房间,将新房间放进地图
 		nextRoom = myMap->bindNewRoom(this->m_floor, *nextPos);
 		if (nextRoom == nullptr)
 		{
@@ -328,35 +363,24 @@ int player::moveTo(direction dir)
 			return -2;
 		}
 		this->changeNewRoomRotation(dir, nextRoom);
-		ss << "玩家进入新房间：" << nextRoom->getName() << "\n\t   " << nextRoom->getDesc();
-		logInfo(ss.str());
-
-		this->enterRoom(nextRoom);
-
-		//进新房间要拿东西
-		this->gainNewItem(nextRoom->type);
-		//新房间的事件、考验等
-		this->moveNum = this->getETValue(etSpeed);
+		enterNewRoom = true;
+		ss << "玩家进入新房间";
 	}
 	else
 	{
+		//这个位置已经有了房间
+		//1.检查两个房间是否互通
 		direction revDir = reverseDir(dir);
 		if (!nextRoom->canPass(revDir))
 		{
 			return -1;
 		}
-		this->moveNum++;
-		ss << "这个房间已经被人开发过，可以进入，玩家速度："<<this->moveNum<<"房间名：" << nextRoom->getName() << "\n\t   " << nextRoom->getDesc();
-		logInfo(ss.str());
-
-		this->enterRoom(nextRoom);
-		//这个位置已经有了房间
-		//1.检查两个房间是否互通
-		//如果互通，则通过，步数+1
-		//执行房间内事件，如果遭遇敌人，步数再+1
-		//检查步数，如果还未走完，则继续等待玩家输入
-		this->moveNum++;
+		ss << "这个房间已经被人开发过，可以进入";
 	}
+	ss << "，剩余移动步数：" << this->getETValue(etSpeed) - this->moveNum << "房间名：" << nextRoom->getName() << "\n\t   " << nextRoom->getDesc();
+	logInfo(ss.str());
+
+	this->enterRoom(nextRoom, enterNewRoom);
 
 	this->pos.x = nextPos->x;
 	this->pos.y = nextPos->y;
@@ -400,12 +424,13 @@ int player::gainNewItem(configType ct)
 		ss<<"房间类型为：物品\n\t     "<<newRes->getName()<<"\n\t  "<<newRes->getDesc();
 		logInfo(ss.str());
 		this->resList.push_back(newRes);
+		this->gainBuff(cutGain, newRes);
 		break;
 	case ctInfo:
 		newInfo = myMap->getNewInfo();
 		ss<<"房间类型为：预兆\n\t     "<<newInfo->getName()<<"\n\t  "<<newInfo->getDesc();
 		logInfo(ss.str());
-
+		this->gainBuff(cutGain, newInfo);
 		//如果不是作祟阶段，需要进行揭露真相
 		this->getReality();
 		break;
@@ -445,7 +470,7 @@ int player::getETValue(examType et)
 	return Level2value[level];
 }
 
-bool gainBuff(cardUseType cut, card* c)
+bool player::gainBuff(cardUseType cut, card* c)
 {
 	map<examType, int> buff = c->getBuff(cut);
 
@@ -456,6 +481,7 @@ bool gainBuff(cardUseType cut, card* c)
 	{
 		et = iter->first;
 		value = iter->second;
+		this->incrETLevel(et, value);
 		//数值加减
 	}
 	return true;

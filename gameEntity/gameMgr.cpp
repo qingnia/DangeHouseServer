@@ -48,6 +48,8 @@ map<int, int> gameMgr::choosePart(vector<int> roleIDList)
 	{
 		string leftChara = list2String(leftPartList);
 		ss<< "剩余可选人物：" << leftChara;
+		logInfo(ss.str());
+		ss.str("");
 		int num;
 		while(partIter != leftPartList.end());
 		{

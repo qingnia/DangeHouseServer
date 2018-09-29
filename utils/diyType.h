@@ -50,7 +50,20 @@ enum examType{
     etPhysicalDamage,
     etMindDamage,
 	etDice,
+	etItem,	//可以使用物品
     etNone,
+};
+
+enum itemBuffType
+{
+	ibtNone,
+	ibtSeeCard,
+	ibtUseDog,
+	ibtUseMask,
+	ibtAttackSpirit,
+	ibtP2M,
+	ibtAttackStrengthNum,
+	ibtDiceAdd,
 };
 
 enum cardUseType
