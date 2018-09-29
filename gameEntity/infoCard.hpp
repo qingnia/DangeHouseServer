@@ -15,6 +15,8 @@
 class infoCard:public card
 {
 private:
+	int canUseTime;
+	cardUseType useType;
 	infoCard();
 
 public:

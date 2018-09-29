@@ -13,6 +13,7 @@
 using namespace std;
 class issueCard: public card
 {
+	int record;
 	issueCard();
 public:
 	issueCard(map<string, string>);

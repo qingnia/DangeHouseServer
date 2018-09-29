@@ -30,12 +30,13 @@ class player {
     map<examType, int> et2level;
     map<examType, vector<int> > etLevel2value;
     list<resCard*> resList;
- //   list<infoCard*> infoList;
+    list<infoCard*> infoList;
     list<int> skills;
 
 	direction inputDir();
 	list<int> rollDice(examType, int forceDiceNum = 0);
 	template<class Type> Type inputFromList(const list<Type>&);
+    list<card*> getWeapons();
 
     int gainNewItem(configType);
 

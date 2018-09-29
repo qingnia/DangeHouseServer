@@ -166,21 +166,7 @@ Type player::inputFromList(const list<Type> &l)
 		{
 			break;
 		}
-		/**
-		bool ret = myFind(l.begin(), l.end(), input);
-		if (ret)
-		{
-			break;
-		}*/
 	}
-	/**
-	while (iter != l.end())
-	{
-		cin >> input;
-		input = *iter;
-		//iter = find(l.begin(), l.end(), input);
-	}
-	*/
 	return input;
 }
 
@@ -480,6 +466,7 @@ int player::gainNewItem(configType ct)
 		newInfo = myMap->getNewInfo();
 		ss<<"房间类型为：预兆\n\t     "<<newInfo->getName()<<"\n\t  "<<newInfo->getDesc();
 		logInfo(ss.str());
+		this->infoList.push_back(newInfo);
 		this->gainBuff(cutGain, newInfo);
 		//如果不是作祟阶段，需要进行揭露真相
 		this->getReality();
@@ -558,9 +545,15 @@ bool player::gainBuff(cardUseType cut, card* c)
 int player::attack(int roleID)
 {
 	//1.先检查能不能攻击，考虑特殊道具（枪）影响攻击范围
+	//1.选择要不要使用武器
 	//2.掷骰，检查物品和特殊房间，看是否影响骰数
 	//3.被攻击方掷骰
 	//4.判定结果，根据攻击类型对输的一方惩罚物理/精神损伤
 	return 0;
+}
+
+list<int> player::getWeapons()
+{
+
 }
 /************************攻击相关**************************************/

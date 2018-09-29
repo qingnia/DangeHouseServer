@@ -15,6 +15,8 @@
 class resCard: public card
 {
 private:
+	int canUseTime;
+	cardUseType useType;
 	resCard();
 
 public:

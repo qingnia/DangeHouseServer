@@ -39,6 +39,10 @@ resCard::resCard(map<string, string> resConfig)
 		{
 			this->m_desc = value;
 		}
+		else if (key == "once")
+		{
+			this->canUseTime = stringToNum<int>(value);
+		}
 		else if (key == "buff")
 		{
 			//要求配置比较复杂：et1_eNum1|et2_eNum2|....
@@ -62,6 +66,14 @@ resCard::resCard(map<string, string> resConfig)
 				examType et = (examType)tmpVec[0];
 				this->deBuff[et] = tmpVec[1];
             }
+		}
+		else if( key == "examType")
+		{
+			this->useType = (cardUseType)stringToNum<int>(value);
+		}
+		else if (key == "examID")
+		{
+			this->cardExam = examine(stringToNum<int>(value));
 		}
 	}
 }

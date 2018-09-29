@@ -43,5 +43,9 @@ issueCard::issueCard(map<string, string> issueConfig)
 		{
 			this->cardExam = examine(stringToNum<int>(value));
 		}
+		else if( key == "record")
+		{
+			this->record = stringToNum<int>(value);
+		}
 	}
 }

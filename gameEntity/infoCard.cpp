@@ -63,5 +63,13 @@ infoCard::infoCard(map<string, string> infoConfig)
 				this->deBuff[et] = tmpVec[1];
 			}
 		}
+		else if( key == "examType")
+		{
+			this->useType = (cardUseType)stringToNum<int>(value);
+		}
+		else if (key == "examID")
+		{
+			this->cardExam = examine(stringToNum<int>(value));
+		}
 	}
 }
