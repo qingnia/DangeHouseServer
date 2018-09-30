@@ -15,7 +15,6 @@
 #include "roomCard.h"
 #include "issueCard.h"
 #include "resCard.h"
-#include "infoCard.hpp"
 #include "player.hpp"
 #include "action.h"
 #include "../utils/commonFun.h"
@@ -52,8 +51,8 @@ public:
 
     roomCard* bindNewRoom(int floor, position pos);
 	resCard* getNewRes();
+	resCard* getNewInfo();
     issueCard* getNewIssue();
-    infoCard* getNewInfo();
 
 	list<int> getCanAttackRoleIDList(player*);
     int run();

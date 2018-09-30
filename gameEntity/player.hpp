@@ -16,7 +16,6 @@
 #include "../utils/diyType.h"
 #include "resCard.h"
 #include "roomCard.h"
-#include "infoCard.hpp"
 
 class gameMgr;
 using namespace std;
@@ -29,14 +28,13 @@ class player {
     
     map<examType, int> et2level;
     map<examType, vector<int> > etLevel2value;
-    list<resCard*> resList;
-    list<infoCard*> infoList;
+    list<resCard*> resList, infoList;
     list<int> skills;
 
 	direction inputDir();
 	list<int> rollDice(examType, int forceDiceNum = 0);
 	template<class Type> Type inputFromList(const list<Type>&);
-    list<card*> getWeapons();
+    list<int> getWeapons();
 
     int gainNewItem(configType);
 

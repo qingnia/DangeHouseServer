@@ -46,29 +46,41 @@ int gameMap::initCardList()
         this->id2room[confIter->first] = (card*) new roomCard(confIter->second);
     }
     this->roomIter = this->roomList.begin();
+
+	//事件初始化
+	this->issueList = myShuffle2List(conf->issueConfig.size());
+	for (confIter = conf->issueConfig.begin(); confIter != conf->issueConfig.end(); confIter++)
+	{
+		
+		this->id2issue[confIter->first] = (card*) new issueCard(confIter->second);
+	}
+	this->issueIter = this->issueList.begin();
     
     //物品初始化
     this->resList = myShuffle2List(conf->resConfig.size());
+	map<string, string> oneConfig;
     for(confIter = conf->resConfig.begin(); confIter != conf->resConfig.end(); confIter++)
     {
-        this->id2res[confIter->first] = (card*) new resCard(confIter->second);
+		oneConfig = confIter->second;
+		if (oneConfig["cardType"] == "-1")
+		{
+			this->id2info[confIter->first] = (card*) new resCard(confIter->second);
+		}
+		else
+		{
+			this->id2res[confIter->first] = (card*) new resCard(confIter->second);
+		}
     }
     this->resIter = this->resList.begin();
+	this->infoIter = this->infoList.begin();
     
-    //事件初始化
-    this->issueList = myShuffle2List(conf->issueConfig.size());
-    for(confIter = conf->issueConfig.begin(); confIter != conf->issueConfig.end(); confIter++)
-    {
-        this->id2issue[confIter->first] = (card*) new issueCard(confIter->second);
-    }
-    this->issueIter = this->issueList.begin();
-    
+	/**
     this->infoList = myShuffle2List(conf->infoConfig.size());
 	for (confIter = conf->infoConfig.begin(); confIter != conf->infoConfig.end(); confIter++)
 	{
-		this->id2info[confIter->first] = (card*) new infoCard(confIter->second);
-	} 
-    this->infoIter = this->infoList.begin();
+		
+	} */
+    
     return 0;
 }
 
@@ -211,9 +223,9 @@ issueCard* gameMap::getNewIssue()
     return newIssue;
 }
 
-infoCard* gameMap::getNewInfo()
+resCard* gameMap::getNewInfo()
 {
-    infoCard* newInfo;
+    resCard* newInfo;
 	int infoID = this->infoList.front();
 	this->infoList.pop_front();
 
@@ -221,7 +233,7 @@ infoCard* gameMap::getNewInfo()
 
     config* conf = config::getSingleConfig();
     map<string, string> infoConfig = conf->getConfig(ctInfo, infoID);
-    newInfo = new infoCard(infoConfig);
+    newInfo = new resCard(infoConfig);
     return newInfo;
 }
 

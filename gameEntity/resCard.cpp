@@ -23,13 +23,21 @@ resCard::resCard(map<string, string> resConfig)
 	{
 		key = iter->first;
 		value = iter->second;
-		if (key == "name")
+		if (key == "id")
+		{
+			this->m_id = stringToNum<int>(value);
+		}
+		else if (key == "name")
 		{
 			this->m_name = value;
 		}
 		else if(key == "enlishName")
 		{
 			this->m_enlishName = value;
+		}
+		else if (key == "cardClassType")
+		{
+			this->m_cct = (cardClassType)stringToNum<int>(value);
 		}
 		else if (key == "preDesc")
 		{
@@ -38,10 +46,6 @@ resCard::resCard(map<string, string> resConfig)
 		else if (key == "desc")
 		{
 			this->m_desc = value;
-		}
-		else if (key == "once")
-		{
-			this->canUseTime = stringToNum<int>(value);
 		}
 		else if (key == "buff")
 		{

@@ -72,4 +72,11 @@ enum cardUseType
     cutLoss,
 };
 
+enum cardClassType
+{
+	ccsUnlimitRes,
+	ccsOnceRes,
+	ccsInfo,
+};
+
 #endif

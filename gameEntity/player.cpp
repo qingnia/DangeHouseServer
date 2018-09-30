@@ -441,7 +441,7 @@ int player::gainNewItem(configType ct)
 	gameMap* myMap = getMyMap(this->m_mapID);
 	issueCard* newIssue;
 	resCard* newRes;
-	infoCard* newInfo;
+	resCard* newInfo;
 
 	stringstream ss;
 	switch (ct)
@@ -555,10 +555,12 @@ int player::attack(int roleID)
 list<int> player::getWeapons()
 {
 	stringstream ss;
+	list<int> l;
 	list<resCard*>::iterator resIter;
 	for(resIter = this->resList.begin(); resIter != this->resList.end(); resIter++)
 	{
-		if (resIter.useT)
+		//if (resIter.useT)
 	}
+	return l;
 }
 /************************攻击相关**************************************/

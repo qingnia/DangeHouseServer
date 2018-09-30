@@ -18,7 +18,7 @@ class card
 {
 private:
 protected:
-	int id;
+	int m_id;
 	string m_name, m_enlishName, m_preDesc, m_desc;
 	map<examType, int> buff;	//拿到物品时
 	map<examType, int> deBuff;	//丢失物品时
