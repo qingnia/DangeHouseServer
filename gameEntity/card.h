@@ -30,6 +30,7 @@ public:
 	string getName();
 	string getEnlishName();
 	string getDesc();
+	int getID();
 
 	map<examType, int> getBuff(cardUseType);
 	

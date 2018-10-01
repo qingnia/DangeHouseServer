@@ -82,3 +82,7 @@ resCard::resCard(map<string, string> resConfig)
 	}
 }
 
+bool resCard::isWeapon()
+{
+	return false;
+}

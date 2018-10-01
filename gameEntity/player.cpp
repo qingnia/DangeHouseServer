@@ -552,15 +552,25 @@ int player::attack(int roleID)
 	return 0;
 }
 
-list<int> player::getWeapons()
+int player::useWeapon()
 {
 	stringstream ss;
 	list<int> l;
 	list<resCard*>::iterator resIter;
 	for(resIter = this->resList.begin(); resIter != this->resList.end(); resIter++)
 	{
-		//if (resIter.useT)
+		resCard* res = (resCard*)resIter;
+		if (res->isWeapon())
+		{
+			l.push_back(res->getID());
+		}
 	}
-	return l;
+	if (l.size() > 0)
+	{
+		ss<<"选择你使用的武器，0为不用"<< list2String(l);
+	}
+	int weapon = inputFromList(l);
+	//使用武器逻辑
+	return weapon;
 }
 /************************攻击相关**************************************/

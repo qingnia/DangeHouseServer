@@ -52,3 +52,8 @@ map<examType, int> card::getBuff(cardUseType cut)
     }
 	return buff;
 }
+
+int card::getID()
+{
+    return this->m_id;
+}

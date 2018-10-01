@@ -21,6 +21,7 @@ private:
 
 public:
 	resCard(map<string, string>);
+	bool isWeapon();
 	virtual ~resCard();
 
 };
