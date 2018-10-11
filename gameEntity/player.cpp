@@ -559,7 +559,7 @@ int player::useWeapon()
 	list<resCard*>::iterator resIter;
 	for(resIter = this->resList.begin(); resIter != this->resList.end(); resIter++)
 	{
-		resCard* res = (resCard*)resIter;
+		resCard* res = *resIter;
 		if (res->isWeapon())
 		{
 			l.push_back(res->getID());

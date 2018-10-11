@@ -1,0 +1,31 @@
+
+// syntax = "proto3";
+
+package example;
+
+//登陆协议
+message LoginInfo {
+    required int32 roleID = 1;
+    required int32 roomID = 2;
+}
+
+message LoginRet {
+    required int32 status = 1;
+}
+
+message CalRequest {
+    required int32 a = 1;
+    required int32 b = 2;
+}
+
+message CalResponse {
+    required int32 c = 1;
+}
+
+// �������
+service Calculator { // ��ʱֻ�ṩ�ӷ�����
+    // �ӷ�����
+    rpc add(CalRequest) returns (CalResponse); // �������������ĺ�
+    rpc login(LoginInfo) returns (LoginRet);
+}
+
