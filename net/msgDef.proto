@@ -22,10 +22,19 @@ message CalResponse {
     required int32 c = 1;
 }
 
+message StatusRequest {
+    required int32 cmd = 1;
+}
+
+message StatusResponse {
+    required int32 status = 1;
+}
+
 // �������
 service Calculator { // ��ʱֻ�ṩ�ӷ�����
     // �ӷ�����
     rpc add(CalRequest) returns (CalResponse); // �������������ĺ�
     rpc login(LoginInfo) returns (LoginRet);
+    rpc modifyStatus(StatusRequest) returns (StatusResponse);
 }
 

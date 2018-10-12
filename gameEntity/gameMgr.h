@@ -16,18 +16,29 @@ class gameMgr
 {
 private:
 	static gameMgr* gm;
-	map<int, gameMap*> id2Map;
+	map<int32_t, gameMap*> id2Map;
 	gameMgr();
+
+	map<int32_t, int64_t> role2Handle;
+	map<int64_t, int32_t> handle2Role;
+	map<int32_t, int32_t> roleID2MapID;
 
 	int mapIncrValue;
 
 	map<int, int> choosePart(vector<int> roleIDList);
+
+	int32_t getPlayerByHandle(int64_t, player& p);
 public:
 	~gameMgr();
 	static gameMgr* getGameMgr();
 
-	gameMap* getMap(int mapID);
+	gameMap* getMap(int32_t mapID);
 	gameMap* initNewMap(vector<int> roleIDList);
+
+	player getPlayer(int32_t roleID);
+
+	int32_t roleLogin(int32_t roleID, int32_t mapID, int64_t handle);
+	int32_t modifyStatus(int64_t handle, int32_t cmd);
 
 	void update();
 };

@@ -15,6 +15,13 @@ gameMap::~gameMap()
 {
 }
 
+int32_t gameMap::addNewPlayer(int32_t roleID)
+{
+    player p = player(roleID, this->m_id);
+    playerList.push_back(p);
+    return 0;
+}
+
 int gameMap::initPlayerList(map<int, int> roleID2PartID)
 {
     stringstream ss;
@@ -176,6 +183,17 @@ roomCard* gameMap::getRoom(position pos)
     //roomCard* newRoom = new roomCard(roomID);
     //this->id2room.insert(pair<int, roomCard*>(roomID, newRoom));
     //return nullptr;
+}
+
+list<int32_t> gameMap::getRoleIDList()
+{
+    list<int32_t> l;
+    list<player>::iterator iter;
+    for(iter = playerList.begin(); iter != playerList.end(); iter++)
+    {
+        l.push_back(iter->getID());
+    }
+    return l;
 }
 
 player gameMap::getPlayer(int id)

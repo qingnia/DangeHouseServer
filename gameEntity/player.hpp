@@ -20,6 +20,7 @@
 class gameMgr;
 using namespace std;
 class player {
+    playerStatus m_ps;
     position pos;
 
     string name;
@@ -43,6 +44,7 @@ class player {
     int getETValue(examType);
 public:
     player();
+    player(int32_t roleID, int32_t mapID);
     player(int roleID, int mapID, map<string, string>);
 
     int getID(), getRoleID();
@@ -70,6 +72,8 @@ public:
 
     int changeNewRoomRotation(direction, roomCard*);
 
+    ////////////组队房///////////////
+    int32_t modifyStatus(int32_t);
 };
 
 #endif /* player_hpp */

@@ -79,4 +79,10 @@ enum cardClassType
 	ccsInfo,
 };
 
+enum playerStatus
+{
+	psEnter,
+	psReady,
+	psStart,
+};
 #endif

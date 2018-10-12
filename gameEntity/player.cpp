@@ -25,6 +25,13 @@ player::player()
     this->pos = position(50, 50);
 }
 
+player::player(int32_t roleID, int32_t mapID)
+{
+	this->m_roleID = roleID;
+	this->m_mapID = mapID;
+	this->m_ps = psEnter;
+}
+
 player::player(int roleID, int mapID, map<string, string> playerConfig)
 {
 	stringstream ss;
@@ -574,3 +581,19 @@ int player::useWeapon()
 	return weapon;
 }
 /************************攻击相关**************************************/
+
+int32_t player::modifyStatus(int32_t status)
+{
+	playerStatus ps = (playerStatus)status;
+	switch(ps)
+	{
+	case psReady:
+		this->m_ps = ps;
+		break;
+	case psStart:
+		//需要所有人都准备好才能开始
+		break;
+	default:
+		break;
+	}
+}
