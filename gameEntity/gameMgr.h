@@ -38,7 +38,9 @@ public:
 	player getPlayer(int32_t roleID);
 
 	int32_t roleLogin(int32_t roleID, int32_t mapID, int64_t handle);
-	int32_t modifyStatus(int64_t handle, int32_t cmd);
+
+	int32_t modifyRoleStatus(int64_t handle, int32_t cmd);
+	int32_t inputRoleDir(int64_t handle, int32_t dir);
 
 	void update();
 };

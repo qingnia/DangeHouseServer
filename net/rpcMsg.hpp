@@ -64,5 +64,18 @@ public:
         loginRet.set_status(status);
         rsp(pebble::kRPC_SUCCESS, loginRet);
     }
+
+    virtual void move(const ::example::moveRequest& moveCMD,
+        cxx::function<void(int32_t ret_code, const ::example::StatusResponse& ret)>& rsp)
+    {
+        int32_t dir = moveCMD.direction();
+        int64_t g_last_handle = _server->GetLastMessageInfo()->_remote_handle;
+        gm.modifyRoleDir(g_last_handle, dir);
+
+        std::cout << "receive rpc loginInfo: " << roleID << " + " << roomID << " = " << status << std::endl;
+        ::example::LoginRet loginRet;
+        loginRet.set_status(status);
+        rsp(pebble::kRPC_SUCCESS, loginRet);
+    } 
 };
 #endif

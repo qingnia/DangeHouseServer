@@ -102,7 +102,15 @@ int32_t gameMgr::roleLogin(int32_t roleID, int32_t mapID, int64_t handle)
 	return 0;
 }
 	
-int32_t gameMgr::modifyStatus(int64_t handle, int32_t cmd)
+int32_t gameMgr::modifyRoleStatus(int64_t handle, int32_t cmd)
+{
+	player p = player();
+	int32_t ret = getPlayerByHandle(handle, p);
+	p.modifyStatus(cmd);
+	return 0;
+}
+	
+int32_t gameMgr::inputRoleDir(int64_t handle, int32_t dir)
 {
 	player p = player();
 	int32_t ret = getPlayerByHandle(handle, p);

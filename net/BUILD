@@ -1,46 +1,46 @@
 
 gen_rule(
-    name = 'gen_msgDef_message',
+    name = 'gen_rpcMsg_message',
     srcs = [
-        'msgDef.proto',
+        'rpcMsg.proto',
     ],
     cmd = '$BUILD_DIR/../thirdparty/protobuf/bin/protoc --cpp_out=$BUILD_DIR/ $SRCS',
     deps = [
     ],
     outs = [
-        'msgDef.pb.cc',
-        'msgDef.pb.h',
+        'rpcMsg.pb.cc',
+        'rpcMsg.pb.h',
     ],
 )
 
 gen_rule(
-    name = 'gen_msgDef_rpc',
+    name = 'gen_rpcMsg_rpc',
     srcs = [
-        'msgDef.proto',
+        'rpcMsg.proto',
     ],
     cmd = '$BUILD_DIR/../thirdparty/protobuf/bin/protoc --plugin=protoc-gen-rpc=$BUILD_DIR/tools/compiler/pb/protobuf_rpc --rpc_out=$BUILD_DIR/ $SRCS',
     deps = [
         '//tools/compiler/pb:protobuf_rpc',
     ],
     outs = [
-        'msgDef.rpc.pb.cc',
-        'msgDef.rpc.pb.h',
-        'msgDef.rpc.pb.inh',
+        'rpcMsg.rpc.pb.cc',
+        'rpcMsg.rpc.pb.h',
+        'rpcMsg.rpc.pb.inh',
     ],
 )
 
 cc_library(
-    name = 'msgDef',
+    name = 'rpcMsg',
     srcs = [
-        'msgDef.pb.cc',
-        'msgDef.rpc.pb.cc',
+        'rpcMsg.pb.cc',
+        'rpcMsg.rpc.pb.cc',
     ],
     incs = [
         '../../thirdparty/protobuf/include/',
     ],
     deps = [
-        ':gen_msgDef_message',
-        ':gen_msgDef_rpc',
+        ':gen_rpcMsg_message',
+        ':gen_rpcMsg_rpc',
         '//src/framework/:pebble_framework',
     ]
 )
@@ -54,7 +54,7 @@ cc_binary(
         '../../thirdparty/protobuf/include/',
     ],
     deps = [
-        ':msgDef',
+        ':rpcMsg',
         '//src/client/:pebble_client',
     ],
 )

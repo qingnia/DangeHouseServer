@@ -15,7 +15,7 @@
 #include <iostream>
 
 #include "server/pebble_server.h"
-#include "msgDef.hpp"
+#include "rpcMsg.hpp"
 
 #define ASSERT_EQ(expected, actual) \
     if ((expected) != (actual)) { \

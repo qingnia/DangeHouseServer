@@ -24,6 +24,8 @@
         "initializer_list": "cpp",
         "list": "cpp",
         "string": "cpp",
-        "string_view": "cpp"
+        "string_view": "cpp",
+        "__mutex_base": "cpp",
+        "thread": "cpp"
     }
 }
