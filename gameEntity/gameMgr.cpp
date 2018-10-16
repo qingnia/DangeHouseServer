@@ -23,6 +23,18 @@ gameMgr* gameMgr::getGameMgr()
 	return gm;
 }
 
+int gameMgr::setInputQueue(list< map<string, string> >* queue)
+{
+	this->inputQueue = queue;
+	return 0;
+}
+
+int gameMgr::setInputMutex(mutex* mt)
+{
+	this->inputMutex = mt;
+	return 0;
+}
+
 gameMap* gameMgr::getMap(int32_t mapID)
 {
 	map<int32_t, gameMap*>::iterator iter;
@@ -114,8 +126,26 @@ int32_t gameMgr::inputRoleDir(int64_t handle, int32_t dir)
 {
 	player p = player();
 	int32_t ret = getPlayerByHandle(handle, p);
-	p.modifyStatus(cmd);
+	p.modifyStatus(dir);
 	return 0;
+}
+
+map<string, string> gameMgr::getLegalInput(int msgID)
+{
+	std::lock_guard<std::mutex> guard(*inputMutex);
+	map<string, string> legalInput;
+	int tmpMsgID;
+	while(true)
+	{
+		legalInput = inputQueue->front();
+		tmpMsgID = stringToNum<int>(legalInput["id"]);
+		if(tmpMsgID == msgID)
+		{
+			inputQueue->clear();
+			break;
+		}
+	}
+	return legalInput;
 }
 
 void gameMgr::update()

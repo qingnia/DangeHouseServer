@@ -15,6 +15,9 @@
 class gameMgr
 {
 private:
+	list< map<string, string> >* inputQueue;
+	mutex* inputMutex;
+
 	static gameMgr* gm;
 	map<int32_t, gameMap*> id2Map;
 	gameMgr();
@@ -42,6 +45,9 @@ public:
 	int32_t modifyRoleStatus(int64_t handle, int32_t cmd);
 	int32_t inputRoleDir(int64_t handle, int32_t dir);
 
+	map<string, string> getLegalInput(int msgID);
+	int setInputQueue(list< map<string, string> >*);
+	int setInputMutex(mutex*);
 	void update();
 };
 

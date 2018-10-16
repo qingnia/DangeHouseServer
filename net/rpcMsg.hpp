@@ -13,14 +13,17 @@
 #include "example/protobuf_rpc/msgDef.rpc.pb.h"
 #include "server/pebble_server.h"
 #include "gameEntity/gameMgr.hpp"
+#include "singleServer.hpp"
 
 // Calculator服务接口的实现
 class msgDef : public ::example::msgDefServerInterface {
 public:
+    singleServer* ss;
     pebble::PebbleServer* _server;
     gameMgr* gm;
     msgDef() : _server(NULL) {
         gm = gameMgr::getSingleMgr();
+        ss = singleServer::getSingleServer();
     }
     virtual ~msgDef() {}
 

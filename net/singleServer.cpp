@@ -14,6 +14,7 @@
 #include <cstdio>
 #include <iostream>
 
+#include "singleServer.hpp"
 #include "server/pebble_server.h"
 #include "rpcMsg.hpp"
 
@@ -28,7 +29,44 @@ void usage() {
               << "default : url = tcp://127.0.0.1:9000" << std::endl;
 }
 
-int main(int argc, const char** argv) {
+static singleServer* ps = new singleServer();
+
+singleServer::singleServer()
+{
+
+}
+
+singleServer::~singleServer()
+{
+
+}
+
+singleServer* singleServer::getSingleServer()
+{
+    return ps;
+}
+
+int singleServer::setInputQueue(list< map<string, string> >* queue)
+{
+    this->inputQueue = queue;
+    return 0;
+}
+
+int singleServer::setInputMutex(mutex* mt)
+{
+	this->inputMutex = mt;
+	return 0;
+}
+
+int singleServer::saveMsg(map<string, string> newMsg)
+{
+    inputQueue.push_back(newMsg);
+    return 0;
+}
+
+int singleServer::serverStart()
+{
+    int argc, const char** argv;
     usage();
 
     std::string url("tcp://127.0.0.1:9000");
