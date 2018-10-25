@@ -10,6 +10,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <vector>
 #include <list>
 #include <map>
@@ -17,7 +18,9 @@
 #include <sstream>
 #include <random>
 #include <chrono>
-#include <codecvt>
+#include <algorithm>
+#include <locale>
+#include <codecvt.h>
 #include <locale.h>
 #include "diyType.h"
 #include "log.hpp"

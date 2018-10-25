@@ -34,6 +34,19 @@ cc_library(
     srcs = [
         'net/rpcMsg.pb.cc',
         'net/rpcMsg.rpc.pb.cc',
+	'gameEntity/gameMgr.cpp',
+	'gameEntity/gameMap.cpp',
+	'gameEntity/player.cpp',
+	'gameEntity/card.cpp',
+	'gameEntity/resCard.cpp',
+	'gameEntity/issueCard.cpp',
+	'gameEntity/roomCard.cpp',
+	'gameEntity/action.cpp',
+	'gameEntity/position.cpp',
+	'gameEntity/examine.cpp',
+	'utils/config.cpp',
+	'utils/commonFun.cpp',
+	'utils/log.cpp',
     ],
     incs = [
         '../../thirdparty/protobuf/include/',
@@ -45,7 +58,7 @@ cc_library(
     ]
 )
 
-cc_binary(
+cc_library(
     name = 'singleServer',
     srcs = [
         'net/singleServer.cpp', 
@@ -59,3 +72,15 @@ cc_binary(
     ],
 )
 
+cc_binary(
+    name = 'server',
+    srcs = [
+        'main.cpp', 
+    ],
+    incs = [
+    ],
+    deps = [
+        ':singleServer',
+	'#pthread'
+    ],
+)

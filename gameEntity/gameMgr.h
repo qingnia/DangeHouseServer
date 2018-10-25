@@ -10,6 +10,8 @@
 
 #include <stdio.h>
 #include <map>
+#include <mutex>
+#include <algorithm>
 #include "gameMap.h"
 
 class gameMgr

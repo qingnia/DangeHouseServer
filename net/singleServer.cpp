@@ -29,7 +29,7 @@ void usage() {
               << "default : url = tcp://127.0.0.1:9000" << std::endl;
 }
 
-static singleServer* ps = new singleServer();
+singleServer* singleServer::ss = new singleServer();
 
 singleServer::singleServer()
 {
@@ -43,7 +43,7 @@ singleServer::~singleServer()
 
 singleServer* singleServer::getSingleServer()
 {
-    return ps;
+    return ss;
 }
 
 int singleServer::setInputQueue(list< map<string, string> >* queue)
@@ -60,13 +60,14 @@ int singleServer::setInputMutex(mutex* mt)
 
 int singleServer::saveMsg(map<string, string> newMsg)
 {
-    inputQueue.push_back(newMsg);
+    inputQueue->push_back(newMsg);
     return 0;
 }
 
 int singleServer::serverStart()
 {
-    int argc, const char** argv;
+    int argc;
+    const char** argv;
     usage();
 
     std::string url("tcp://127.0.0.1:9000");
@@ -89,10 +90,10 @@ int singleServer::serverStart()
     server.Attach(handle, rpc);
 
     // 添加服务
-    msgDef md;
-    md._server = &server;
+    rpcMsg rs;
+    rs._server = &server;
 
-    ret = rpc->AddService(&md);
+    ret = rpc->AddService(&rs);
     ASSERT_EQ(0, ret);
 
     server.Serve();

@@ -20,7 +20,7 @@ private:
     singleServer();
     ~singleServer();
 
-    static singleServer* ps;
+    static singleServer* ss;
     list< map<string, string> > *inputQueue;
 	mutex* inputMutex;
 

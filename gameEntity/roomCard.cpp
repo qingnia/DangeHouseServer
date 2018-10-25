@@ -6,7 +6,7 @@
 //
 
 #include "roomCard.h"
-#include <codecvt>
+//#include <codecvt>
 
 roomCard::roomCard()
 {
@@ -119,7 +119,7 @@ bool roomCard::canChangeRotation()
 {
 	stringstream ss;
     int exportNum = accumulate(this->exportArray.begin(),this->exportArray.end(),0);
-	if (exportNum > 1 & exportNum < 4)
+	if (exportNum > 1 && exportNum < 4)
 	{
 		ss<<"新房间出口不止一个，并且不是四通，请选择需要哪个门面向原房间。开着的门分别为：";
 		for(int i = 0; i < 4; i++)

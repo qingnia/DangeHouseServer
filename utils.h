@@ -9,6 +9,5 @@
 #define utils_h
 
 #include <stdio.h>
-#include "pch.h"
 
 #endif /* utils_hpp */
