@@ -43,7 +43,7 @@ int gameMap::initPlayerList(map<int, int> roleID2PartID)
 int gameMap::initCardList()
 {
 	map<int, map<string, string> >::iterator confIter;
-    card* newCard;
+//    card* newCard;
 	config* conf = config::getSingleConfig();
     
     //房间初始化
@@ -324,7 +324,7 @@ int gameMap::incrProcess()
 bool gameMap::unravelRiddle(position pos, int playerID)
 {
     this->m_process++;
-    roomCard* room = this->getRoom(pos);
+    //roomCard* room = this->getRoom(pos);
 
     return false;
 }

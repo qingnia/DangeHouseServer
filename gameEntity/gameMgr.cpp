@@ -72,16 +72,17 @@ map<int, int> gameMgr::choosePart(vector<int> roleIDList)
 	map<int, int> roleID2Character;
 	stringstream ss;
 	config* conf = config::getSingleConfig();
+printf("config: %d\n", (int)conf->playerConfig.size());
 	list<int> leftPartList = myShuffle2List(conf->playerConfig.size());
 	vector<int>::iterator roleIter;
-	list<int>::iterator partIter = leftPartList.end();
+	list<int>::iterator partIter = leftPartList.begin();
 	for(roleIter = roleIDList.begin(); roleIter != roleIDList.end(); roleIter++)
 	{
 		string leftChara = list2String(leftPartList);
-		ss<< "剩余可选人物：" << leftChara;
+		ss<< "剩余可选人物：" << leftChara << "111111111111";
 		logInfo(ss.str());
 		ss.str("");
-		int num;
+		int num = 0;
 		while(partIter != leftPartList.end())
 		{
 			cin>>num;
@@ -111,7 +112,7 @@ int32_t gameMgr::roleLogin(int32_t roleID, int32_t mapID, int64_t handle)
 	int ret = map->addNewPlayer(roleID);
 	
 	role2Handle[roleID] = handle;
-	return 0;
+	return ret;
 }
 	
 int32_t gameMgr::modifyRoleStatus(int64_t handle, int32_t cmd)
@@ -119,7 +120,7 @@ int32_t gameMgr::modifyRoleStatus(int64_t handle, int32_t cmd)
 	player p = player();
 	int32_t ret = getPlayerByHandle(handle, p);
 	p.modifyStatus(cmd);
-	return 0;
+	return ret;
 }
 	
 int32_t gameMgr::inputRoleDir(int64_t handle, int32_t dir)
@@ -127,7 +128,7 @@ int32_t gameMgr::inputRoleDir(int64_t handle, int32_t dir)
 	player p = player();
 	int32_t ret = getPlayerByHandle(handle, p);
 	p.modifyStatus(dir);
-	return 0;
+	return ret;
 }
 
 map<string, string> gameMgr::getLegalInput(int msgID)

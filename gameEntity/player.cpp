@@ -160,8 +160,10 @@ Type player::inputFromList(const list<Type> &l)
 {
 	stringstream ss;
 	ss << "输入" << list2String(l) << "中的一个";
-	list<Type>::const_iterator begin = l.begin();
-	list<Type>::const_iterator end = l.end();
+	//list<Type>::const_iterator begin = l.begin();
+	//list<Type>::const_iterator end = l.end();
+	auto begin = l.begin();
+	auto end = l.begin();
 	Type input;
 	while (cin >> input)
 	{
@@ -202,7 +204,7 @@ int player::excuteExam(examine exam)
         for (iter = exam.efList.begin(); iter != exam.efList.end(); iter++)
 	    {
            effect ef = *iter;
-           if (score >= ef.min & score <= ef.max)
+           if (score >= ef.min && score <= ef.max)
            {
                this->excutePunish(ef.et, ef.eNum);
                break;
@@ -596,4 +598,5 @@ int32_t player::modifyStatus(int32_t status)
 	default:
 		break;
 	}
+return 0;
 }

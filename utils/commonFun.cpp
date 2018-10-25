@@ -157,9 +157,10 @@ string ws2s(const wstring& ws)
 
 string fileStr2Str(string str)
 {
-	std::wstring_convert<std::codecvt_utf8<wchar_t> > conv;
-	wstring wb = conv.from_bytes(str);
-	return ws2s(wb);
+	return str;
+	//std::wstring_convert<std::codecvt_utf8<wchar_t> > conv;
+	//wstring wb = conv.from_bytes(str);
+	//return ws2s(wb);
 }
 
 string getDirString(direction dir)

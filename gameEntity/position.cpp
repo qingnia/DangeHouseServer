@@ -1,5 +1,4 @@
-﻿#include "../pch.h"
-//
+﻿//
 //  main.cpp
 //  testC
 //

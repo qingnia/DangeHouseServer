@@ -8,7 +8,6 @@
 #ifndef callback_h
 #define callback_h
 
-#include "pch.h"
 #include <stdio.h>
 #include "utils.h"
 #include "gameEntity\player.hpp"
